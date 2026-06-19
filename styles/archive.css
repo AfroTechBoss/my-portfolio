@@ -1,0 +1,39 @@
+/* =========================================================
+   lumen-archive.css — full project archive page
+   Extends lumen.css. Loaded only on the archive page.
+   ========================================================= */
+
+/* ---- archive header ---- */
+.arch-hero{padding:clamp(132px,20vh,224px) 0 clamp(40px,7vh,80px)}
+.arch-hero .sec-num{display:inline-block;margin-bottom:clamp(18px,3vh,30px)}
+.arch-title{font-family:var(--magma);font-weight:400;font-size:clamp(46px,9vw,128px);line-height:.96;letter-spacing:-.02em}
+.arch-lede{margin-top:clamp(22px,3.4vh,34px);max-width:46ch;color:var(--muted);font-size:clamp(15px,1.6vw,18px);line-height:1.55}
+.arch-lede b{color:var(--ink);font-weight:600}
+
+/* ---- archive list: reuses .work-row from lumen.css ---- */
+.arch-list{border-top:1px solid var(--line)}
+/* row is a div here (links live inside the detail) */
+.arch-row{cursor:default}
+.arch-row .row-name{display:inline-flex;align-items:baseline}
+.arch-row:hover .row-detail{max-height:420px}
+
+/* detail: left column gets a links row beneath the description */
+.arch-detail-l{display:flex;flex-direction:column;gap:clamp(16px,2.4vw,26px)}
+.arch-links{display:flex;gap:clamp(16px,2.4vw,30px);flex-wrap:wrap}
+.arch-link{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.72);display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.22);padding-bottom:4px;transition:color .3s var(--ease),gap .3s var(--ease),border-color .3s}
+.arch-link .lk{color:var(--accent)}
+.arch-link:hover{color:var(--paper);gap:13px;border-color:rgba(255,255,255,.5)}
+.arch-link.disabled{color:rgba(255,255,255,.34);border-color:rgba(255,255,255,.12);pointer-events:none}
+.arch-link.disabled .lk{color:rgba(255,255,255,.34)}
+
+/* status pill (used when a project has no hard metric) */
+.arch-status{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-line);border-radius:999px;padding:7px 14px;display:inline-block;white-space:nowrap}
+
+@media (max-width:720px){
+  .arch-row:hover .row-detail{max-height:520px}
+  .arch-links{gap:18px}
+}
+
+/* ---- archive footer note ---- */
+.arch-foot{padding:clamp(48px,7vh,90px) 0 0;text-align:center}
+.arch-foot .btn-text{margin:0 auto}
