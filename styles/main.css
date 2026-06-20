@@ -27,18 +27,20 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 
-/* ───────── section snap (homepage only — html.snap-y set by lumen-app) ─────────
+/* ───────── section snap (desktop only — disabled on touch devices for smooth mobile scroll) ─────────
    Proximity, not mandatory: a scroll gesture settles on the next section, but
    sections taller than the viewport (About, Capabilities) stay fully readable. */
-html.snap-y{scroll-snap-type:y proximity;scroll-padding-top:0}
-html.snap-y .hero,
-html.snap-y .statement,
-html.snap-y #work,
-html.snap-y #capabilities,
-html.snap-y #about,
-html.snap-y #contact{scroll-snap-align:start;scroll-snap-stop:normal}
+@media (hover:hover) and (pointer:fine){
+  html.snap-y{scroll-snap-type:y proximity;scroll-padding-top:0}
+  html.snap-y .hero,
+  html.snap-y .statement,
+  html.snap-y #work,
+  html.snap-y #capabilities,
+  html.snap-y #about,
+  html.snap-y #contact{scroll-snap-align:start;scroll-snap-stop:normal}
+}
 
 body{
   background:var(--paper);

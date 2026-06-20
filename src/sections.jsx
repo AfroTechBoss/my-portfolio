@@ -39,7 +39,7 @@ function LHero() {
       <div className="hero-top">
         <div className="wrap">
           <div className="hero-eyebrow"><span className="b">Chidile | AfroTechBoss</span></div>
-          <div className="hero-coord">REMOTE · WORLDWIDE<br />AVAILABLE Q3 ’26</div>
+          <div className="hero-coord">REMOTE · WORLDWIDE<br />AVAILABLE Q3 ‘26</div>
         </div>
       </div>
 
