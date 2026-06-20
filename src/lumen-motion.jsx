@@ -124,6 +124,12 @@ function LumenCursor() {
     let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y;
     const onMove = (e) => {
       tx = e.clientX; ty = e.clientY;
+      if (window.__planeHovered) {
+        el.classList.add("hover", "plane-hover");
+        label.textContent = "I am not a cursor; I am an Airplane ✈";
+        return;
+      }
+      el.classList.remove("plane-hover");
       const t = e.target.closest("a,button,.work-row,.cap,.about-photo,.fsoc,.oc-tags span,[data-cursor]");
       el.classList.toggle("hover", !!t);
       if (t) {
@@ -165,12 +171,21 @@ function PaperAirplane() {
       "position:fixed",
       "top:0",
       "left:0",
-      "pointer-events:none",
+      "pointer-events:auto",
+      "cursor:none",
       "z-index:49",
       "will-change:transform",
       "transition:opacity .4s",
       "opacity:0",
     ].join(";");
+
+    el.addEventListener("mouseenter", () => { window.__planeHovered = true; });
+    el.addEventListener("mouseleave", () => {
+      window.__planeHovered = false;
+      // force cursor back to normal state immediately
+      const cur = document.querySelector(".lcursor");
+      if (cur) { cur.classList.remove("hover", "plane-hover"); }
+    });
 
     // SVG with live-updatable polygons for true 3D pitch morphing
     el.innerHTML = `<svg width="96" height="58" viewBox="0 0 96 58" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -210,18 +225,26 @@ function PaperAirplane() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
-      // Seg 1 (t 0→0.5): UNDER the hero headline (y > 62vh), glides right
-      // Seg 2 (t 0.5→1): climbs up the RIGHT edge of statement section (x > 82vw), avoiding text
-      const s1x = [vw*0.06, vw*0.32, vw*0.62, vw*0.84];
-      const s1y = [vh*0.72, vh*0.76, vh*0.70, vh*0.60];
-      const s2x = [vw*0.84, vw*0.90, vw*0.92, vw*0.88];
-      const s2y = [vh*0.60, vh*0.44, vh*0.26, vh*0.14];
+      // 3-segment path: loop around hero text, then climb to thesis
+      // Seg 1 (t 0→0.38): start bottom-left, arc UP and OVER the headline
+      // Seg 2 (t 0.38→0.68): sweep DOWN the right side, loop back left UNDER the text
+      // Seg 3 (t 0.68→1):  cross and exit right toward the thesis section
+      const s1x = [vw*0.05, vw*0.06, vw*0.62, vw*0.90];
+      const s1y = [vh*0.72, vh*0.08, vh*0.08, vh*0.30];
+      const s2x = [vw*0.90, vw*0.94, vw*0.48, vw*0.14];
+      const s2y = [vh*0.30, vh*0.72, vh*0.76, vh*0.66];
+      const s3x = [vw*0.14, vw*0.55, vw*0.88, vw*0.88];
+      const s3y = [vh*0.66, vh*0.60, vh*0.34, vh*0.12];
 
-      const split  = 0.5;
-      const inSeg1 = t < split;
-      const lt = inSeg1 ? t / split : (t - split) / (1 - split);
-      const sx = inSeg1 ? s1x : s2x;
-      const sy = inSeg1 ? s1y : s2y;
+      const sp1 = 0.38, sp2 = 0.68;
+      let lt, sx, sy;
+      if (t < sp1) {
+        lt = t / sp1; sx = s1x; sy = s1y;
+      } else if (t < sp2) {
+        lt = (t - sp1) / (sp2 - sp1); sx = s2x; sy = s2y;
+      } else {
+        lt = (t - sp2) / (1 - sp2); sx = s3x; sy = s3y;
+      }
 
       const x  = cb( sx[0], sx[1], sx[2], sx[3], lt);
       const y  = cb( sy[0], sy[1], sy[2], sy[3], lt);
