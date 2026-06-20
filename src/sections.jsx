@@ -60,10 +60,12 @@ function LHero() {
 const LWORK = [
   { n: "01", title: "UnioGate", tags: ["Fintech", "POS", "Solidity"],
     problem: "Merchants can accept crypto, but spending it means hours of middlemen and punishing rates. A crypto-fiat POS that settles to local currency at the point of sale.",
-    metric: { v: "<60s", l: "Settlement target" } },
+    metric: { v: "<60s", l: "Settlement target" },
+    live: "https://uniogate.com" },
   { n: "02", title: "Leak", tags: ["Civic Tech", "Privacy", "Zero-metadata"],
     problem: "Reporting wrongdoing can cost you your job — or worse. An anonymous whistleblowing platform engineered to leak nothing about the people who use it.",
-    metric: { v: "0", l: "Metadata stored" } },
+    metric: { v: "0", l: "Metadata stored" },
+    live: "https://leak.ng", repo: "https://github.com/AfroTechBoss/leak" },
   { n: "03", title: "Graso", tags: ["Crypto Infra", "RWA", "Cairo"],
     problem: "Property ownership is gated by capital and paperwork most people will never clear. Graso tokenizes real estate so ownership can start small and stay liquid.",
     metric: { v: "1st", l: "Govt-grant backed" } },
@@ -82,7 +84,7 @@ function LWork() {
 
         <div className="work-list reveal" data-d="1">
           {LWORK.map((w) => (
-            <a className="work-row" key={w.n} href="#contact" data-cursor>
+            <a className="work-row" key={w.n} href={w.live || w.repo || "#contact"} target={w.live || w.repo ? "_blank" : undefined} rel={w.live || w.repo ? "noopener noreferrer" : undefined} data-cursor>
               <span className="row-fill" />
               <div className="row-main">
                 <span className="row-num">{w.n}</span>
@@ -103,7 +105,7 @@ function LWork() {
         </div>
 
         <div className="reveal" data-d="2" style={{ marginTop: 46 }}>
-          <a href="archive.html" className="btn-text">Full archive — 11 projects <span className="ar">→</span></a>
+          <a href="/archive" className="btn-text">Full archive — 11 projects <span className="ar">→</span></a>
         </div>
       </div>
     </section>
