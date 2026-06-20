@@ -38,7 +38,7 @@ html.snap-y .statement,
 html.snap-y #work,
 html.snap-y #capabilities,
 html.snap-y #about,
-html.snap-y #contact{scroll-snap-align:start;scroll-snap-stop:always}
+html.snap-y #contact{scroll-snap-align:start;scroll-snap-stop:normal}
 
 body{
   background:var(--paper);
@@ -68,7 +68,7 @@ img{display:block;max-width:100%}
 
 /* ───────── custom cursor ───────── */
 .cursor-dot,.cursor-ring{display:none}
-.lcursor{position:fixed;top:0;left:0;z-index:95;pointer-events:none;will-change:transform;transition:opacity .3s}
+.lcursor{position:fixed;top:0;left:0;z-index:10001;pointer-events:none;will-change:transform;transition:opacity .3s}
 .lc-arrow{position:absolute;top:0;left:0;width:23px;height:23px;margin:-1px 0 0 -2px;transform-origin:top left;transition:opacity .2s var(--ease),transform .25s var(--ease)}
 .lc-arrow path{fill:var(--ink);stroke:var(--paper);stroke-width:1;stroke-linejoin:round;paint-order:stroke}
 .lcursor.hover .lc-arrow{opacity:0;transform:scale(.3)}
@@ -182,14 +182,14 @@ img{display:block;max-width:100%}
 .work-row{display:block;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
 .work-row .row-fill{position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .55s var(--ease-io);z-index:0}
 .work-row:hover .row-fill{transform:translateY(0)}
-.row-main{position:relative;z-index:2;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(16px,4vw,60px);padding:clamp(24px,3.6vw,46px) 0;transition:color .45s var(--ease),padding-left .55s var(--ease)}
-.work-row:hover .row-main{color:var(--paper);padding-left:clamp(10px,2vw,34px)}
+.row-main{position:relative;z-index:2;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(16px,4vw,60px);padding:clamp(24px,3.6vw,46px) clamp(28px,4vw,64px) clamp(24px,3.6vw,46px) clamp(10px,2vw,34px);transition:color .45s var(--ease),padding-left .55s var(--ease)}
+.work-row:hover .row-main{color:var(--paper);padding-left:clamp(20px,3vw,48px)}
 .row-num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--muted);transition:color .45s}
 .work-row:hover .row-num{color:var(--accent)}
 .row-name{font-family:var(--magma);font-size:clamp(30px,4.6vw,64px);line-height:1;letter-spacing:-.01em}
 .row-name .arr{display:inline-block;margin-left:.2em;opacity:0;transform:translate(-8px,8px);transition:opacity .45s var(--ease),transform .45s var(--ease);color:var(--accent)}
 .work-row:hover .row-name .arr{opacity:1;transform:translate(0,0)}
-.row-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:300px}
+.row-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
 .row-tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 11px;transition:border-color .45s,color .45s}
 .work-row:hover .row-tag{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.8)}
 /* expanding detail */
@@ -270,7 +270,7 @@ img{display:block;max-width:100%}
 
 /* ───────── footer ───────── */
 .footer{border-top:1px solid var(--line);padding:0 0 46px;position:relative;overflow:hidden}
-.footer-mark{font-family:var(--magma);font-weight:700;text-transform:uppercase;text-align:center;line-height:.82;font-size:clamp(88px,25vw,420px);letter-spacing:-.03em;color:var(--ink);white-space:nowrap;user-select:none;pointer-events:none;margin:clamp(20px,5vh,60px) 0 clamp(-12px,-1.5vw,-30px);opacity:.13;-webkit-mask-image:linear-gradient(to bottom,#000 8%,transparent 96%);mask-image:linear-gradient(to bottom,#000 8%,transparent 96%)}
+.footer-mark{font-family:var(--magma);font-weight:700;text-transform:uppercase;text-align:center;line-height:.82;font-size:clamp(88px,25vw,420px);letter-spacing:-.03em;white-space:nowrap;user-select:none;pointer-events:none;margin:clamp(20px,5vh,60px) 0 clamp(-12px,-1.5vw,-30px);background:linear-gradient(to right,var(--ink) 0%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:.22;-webkit-mask-image:linear-gradient(to bottom,#000 8%,transparent 96%);mask-image:linear-gradient(to bottom,#000 8%,transparent 96%)}
 .footer-inner{padding-left:var(--pad);padding-right:var(--pad);max-width:var(--wrap);margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--muted)}
 .footer-inner .logo{color:var(--ink)}
 .to-top{cursor:none;display:inline-flex;align-items:center;gap:8px;transition:gap .3s}
@@ -285,6 +285,7 @@ img{display:block;max-width:100%}
 .reduce-motion .footer-sig .sig-scribble path{animation:none;stroke-dashoffset:0}
 .footer-sig:hover .sig-scribble path{animation:sigRedraw .8s var(--ease-io) forwards}
 @keyframes sigRedraw{0%{stroke-dashoffset:560}100%{stroke-dashoffset:0}}
+@keyframes portalFadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 .footer-sig:hover .sig-name{color:var(--accent)}
 
 /* nav variant of the signature — smaller, scribble sized to match */

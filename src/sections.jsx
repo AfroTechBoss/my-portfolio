@@ -38,7 +38,7 @@ function LHero() {
     <header className="hero" id="top">
       <div className="hero-top">
         <div className="wrap">
-          <div className="hero-eyebrow"><span className="b">Chidile — afrotechboss</span></div>
+          <div className="hero-eyebrow"><span className="b">Chidile | AfroTechBoss</span></div>
           <div className="hero-coord">REMOTE · WORLDWIDE<br />AVAILABLE Q3 ’26</div>
         </div>
       </div>

@@ -5,7 +5,7 @@
    ========================================================= */
 const { useEffect: useAE, useRef: useAR } = React;
 
-const HOME = "index.html";
+const HOME = "./";
 
 /* metric: hard number/label · status: pill when there's no clean metric */
 const ARCHIVE = [

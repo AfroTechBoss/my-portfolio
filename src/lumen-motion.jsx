@@ -154,4 +154,133 @@ function LumenCursor() {
   return null;
 }
 
-Object.assign(window, { RotatingWord, Marquee, Statement, Loader, LumenCursor });
+/* ---- scroll-driven paper airplane ---- */
+function PaperAirplane() {
+  useLE(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const el = document.createElement("div");
+    el.setAttribute("aria-hidden", "true");
+    el.style.cssText = [
+      "position:fixed",
+      "top:0",
+      "left:0",
+      "pointer-events:none",
+      "z-index:49",
+      "will-change:transform",
+      "transition:opacity .4s",
+      "opacity:0",
+    ].join(";");
+
+    // SVG with live-updatable polygons for true 3D pitch morphing
+    el.innerHTML = `<svg width="96" height="58" viewBox="0 0 96 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon id="pl-upper" stroke="var(--ink)" stroke-width="0.9" stroke-linejoin="round"/>
+      <polygon id="pl-lower" stroke="var(--ink)" stroke-width="0.9" stroke-linejoin="round"/>
+      <polygon id="pl-body"  stroke="var(--ink)" stroke-width="0.7" stroke-linejoin="round"/>
+      <line    id="pl-spine" stroke="var(--ink)" stroke-width="0.45" opacity="0.2"/>
+    </svg>`;
+
+    document.body.appendChild(el);
+
+    const pU = el.querySelector('#pl-upper');
+    const pL = el.querySelector('#pl-lower');
+    const pB = el.querySelector('#pl-body');
+    const pS = el.querySelector('#pl-spine');
+
+    // Cubic-bezier helpers
+    const cb  = (p0,p1,p2,p3,t) => {
+      const m = 1 - t;
+      return m*m*m*p0 + 3*m*m*t*p1 + 3*m*t*t*p2 + t*t*t*p3;
+    };
+    const cbD = (p0,p1,p2,p3,t) => {
+      const m = 1 - t;
+      return 3*m*m*(p1-p0) + 6*m*t*(p2-p1) + 3*t*t*(p3-p2);
+    };
+
+    const update = () => {
+      const hero = document.getElementById("top");
+      const stmt = document.getElementById("about-top");
+      if (!hero || !stmt) return;
+
+      // Animate over hero + full statement section
+      const range = stmt.offsetTop + stmt.offsetHeight;
+      const raw   = window.scrollY / range;
+      const t     = Math.max(0, Math.min(1, raw));
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      // Seg 1 (t 0→0.5): UNDER the hero headline (y > 62vh), glides right
+      // Seg 2 (t 0.5→1): climbs up the RIGHT edge of statement section (x > 82vw), avoiding text
+      const s1x = [vw*0.06, vw*0.32, vw*0.62, vw*0.84];
+      const s1y = [vh*0.72, vh*0.76, vh*0.70, vh*0.60];
+      const s2x = [vw*0.84, vw*0.90, vw*0.92, vw*0.88];
+      const s2y = [vh*0.60, vh*0.44, vh*0.26, vh*0.14];
+
+      const split  = 0.5;
+      const inSeg1 = t < split;
+      const lt = inSeg1 ? t / split : (t - split) / (1 - split);
+      const sx = inSeg1 ? s1x : s2x;
+      const sy = inSeg1 ? s1y : s2y;
+
+      const x  = cb( sx[0], sx[1], sx[2], sx[3], lt);
+      const y  = cb( sy[0], sy[1], sy[2], sy[3], lt);
+      const dx = cbD(sx[0], sx[1], sx[2], sx[3], lt);
+      const dy = cbD(sy[0], sy[1], sy[2], sy[3], lt);
+      const rawAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+      // ── 3D SVG morphing based on pitch ──────────────────────────────
+      // pitch: -1 = nose-up (viewer sees belly), +1 = nose-down (viewer sees top)
+      const pitch = Math.sin(rawAngle * Math.PI / 180);
+      const mid   = 29; // SVG vertical centre
+
+      // Wing-tip Y positions spread apart at level, compress when pitching
+      const upperTipY = mid - 21 + pitch * 10;   // 8 level → 18 diving → -2 climbing
+      const lowerTipY = mid + 21 - pitch * 8;    // 50 level → 42 diving → 58 climbing
+      const foldY     = mid + pitch * 2;
+      const bellyY    = foldY + 4 + pitch;
+
+      // Shading: top face brighter when diving (viewer looks down at the top surface)
+      const p01 = (pitch + 1) / 2; // 0 = max-climb, 1 = max-dive
+      const topFill  = `rgb(${Math.round(238-p01*22)},${Math.round(234-p01*20)},${Math.round(224-p01*18)})`;
+      const botFill  = `rgb(${Math.round(188+p01*16)},${Math.round(184+p01*14)},${Math.round(175+p01*12)})`;
+      const bodyFill = '#b0aaa0';
+
+      const pts = (coords) => coords.map(([a,b]) => `${a},${b.toFixed(1)}`).join(' ');
+      pU.setAttribute('points', pts([[96,mid],[4,upperTipY],[18,foldY]]));
+      pU.setAttribute('fill', topFill);
+      pL.setAttribute('points', pts([[96,mid],[4,lowerTipY],[18,foldY]]));
+      pL.setAttribute('fill', botFill);
+      pB.setAttribute('points', pts([[18,foldY],[4,lowerTipY],[10,mid],[4,upperTipY]]));
+      pB.setAttribute('fill', bodyFill);
+      pS.setAttribute('x1','18'); pS.setAttribute('y1', foldY.toFixed(1));
+      pS.setAttribute('x2','96'); pS.setAttribute('y2', String(mid));
+
+      // ── Direction transform (flip nose to face travel direction) ────
+      const goingLeft   = Math.cos(rawAngle * Math.PI / 180) < 0;
+      const flipX       = goingLeft ? -1 : 1;
+      const noseTilt    = goingLeft
+        ? -(180 - Math.abs(rawAngle)) * Math.sign(rawAngle)
+        : rawAngle;
+      const clampedTilt = Math.max(-42, Math.min(42, noseTilt));
+
+      el.style.transform = `translate(${x - 48}px, ${y - 29}px) scaleX(${flipX}) rotate(${clampedTilt}deg)`;
+      el.style.opacity   = t <= 0.98 ? "1" : "0";
+    };
+
+    // Delay first paint until loader is gone
+    const t0 = setTimeout(() => {
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+    }, 1500);
+
+    return () => {
+      clearTimeout(t0);
+      window.removeEventListener("scroll", update);
+      el.remove();
+    };
+  }, []);
+  return null;
+}
+
+Object.assign(window, { RotatingWord, Marquee, Statement, Loader, LumenCursor, PaperAirplane });
