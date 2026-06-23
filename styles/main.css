@@ -24,6 +24,9 @@
   --wrap:min(96vw,2120px);
   --pad:clamp(22px,5.5vw,92px);
   --sec:clamp(96px,15vh,210px);
+  --ff-serif:"Instrument Serif",Georgia,serif;
+  --ff-sans:"Schibsted Grotesk",sans-serif;
+  --ff-mono:"JetBrains Mono",monospace;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}

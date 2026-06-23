@@ -1,0 +1,90 @@
+/* =========================================================
+   scope.css — multi-step scoping form
+   ========================================================= */
+
+.scope-page{min-height:100vh;background:var(--paper);display:flex;flex-direction:column;color:var(--ink)}
+
+/* progress bar */
+.scope-progress{position:fixed;top:0;left:0;height:2.5px;background:var(--accent);transition:width .55s var(--ease);z-index:200;border-radius:0 2px 2px 0}
+
+/* header */
+.scope-header{position:fixed;top:0;left:0;right:0;z-index:190;padding:18px var(--pad);display:flex;align-items:center;justify-content:space-between;background:var(--paper);border-bottom:1px solid var(--line)}
+
+.scope-dots{display:flex;gap:7px;align-items:center}
+.scope-dot{width:6px;height:6px;border-radius:50%;background:var(--line-2);border:1px solid var(--line);transition:background .3s,transform .3s,border-color .3s}
+.scope-dot.done{background:var(--ink);border-color:var(--ink)}
+.scope-dot.active{background:var(--accent);border-color:var(--accent);transform:scale(1.4)}
+
+.scope-back-link{font-family:var(--ff-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);transition:color .25s}
+.scope-back-link:hover{color:var(--ink)}
+
+/* body */
+.scope-body{flex:1;display:flex;align-items:center;justify-content:center;padding:110px var(--pad) 100px}
+
+/* step */
+.scope-step{width:100%;max-width:620px;transition:opacity .26s ease,transform .26s ease}
+.scope-step.out{opacity:0;transform:translateY(14px)}
+.scope-step.in{opacity:1;transform:translateY(0)}
+
+.scope-eyebrow{font-family:var(--ff-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.scope-title{font-family:var(--magma);font-size:clamp(1.9rem,4.5vw,3.2rem);line-height:1.1;margin-bottom:.35rem}
+.scope-sub{color:var(--muted);font-size:.88rem;font-family:var(--ff-sans);margin-bottom:2.2rem}
+
+/* fields */
+.scope-field{margin-bottom:1.6rem}
+.scope-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.scope-req{color:var(--accent)}
+.scope-input,.scope-textarea,.scope-select{width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--line);padding:.55rem 0;font-family:var(--ff-sans);font-size:1rem;color:var(--ink);outline:none;transition:border-color .28s;border-radius:0;-webkit-appearance:none}
+.scope-input:focus,.scope-textarea:focus,.scope-select:focus{border-color:var(--accent)}
+.scope-input::placeholder,.scope-textarea::placeholder{color:var(--muted-2)}
+.scope-textarea{resize:vertical;min-height:90px;line-height:1.5}
+.scope-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23736D5E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;padding-right:20px}
+
+.scope-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media(max-width:540px){.scope-grid-2{grid-template-columns:1fr}}
+
+/* radio pills */
+.scope-radio-group{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.3rem}
+.scope-radio{cursor:pointer}
+.scope-radio input{position:absolute;opacity:0;pointer-events:none}
+.scope-radio-label{display:inline-flex;align-items:center;padding:.5rem 1.05rem;border:1.5px solid var(--line);border-radius:999px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.04em;cursor:pointer;transition:border-color .22s,background .22s,color .22s;color:var(--ink-soft);user-select:none}
+.scope-radio input:checked + .scope-radio-label{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.scope-radio-label:hover{border-color:var(--ink-soft)}
+
+.scope-easter{margin-top:1rem;font-family:var(--ff-serif);font-style:italic;color:var(--accent);font-size:.95rem;animation:scopeFadeUp .28s ease forwards}
+
+/* file drop */
+.scope-dropzone{border:1.5px dashed var(--line);border-radius:4px;padding:2.2rem;text-align:center;cursor:pointer;transition:border-color .28s,background .28s;font-family:var(--ff-sans);font-size:.9rem;color:var(--muted)}
+.scope-dropzone:hover,.scope-dropzone.drag{border-color:var(--accent);background:var(--accent-soft)}
+.scope-dropzone-hint{font-family:var(--ff-mono);font-size:10px;letter-spacing:.06em;margin-top:.4rem;color:var(--muted-2)}
+.scope-file-remove{margin-top:.6rem;background:none;border:none;cursor:pointer;color:var(--muted);font-family:var(--ff-mono);font-size:11px;letter-spacing:.04em;transition:color .2s}
+.scope-file-remove:hover{color:var(--accent)}
+
+/* summary */
+.scope-summary{border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:1.5rem}
+.scope-summary-row{display:flex;gap:1rem;padding:.65rem 1rem;border-bottom:1px solid var(--line-2);font-size:.85rem}
+.scope-summary-row:last-child{border-bottom:none}
+.scope-summary-key{font-family:var(--ff-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);min-width:120px;padding-top:.1rem}
+.scope-summary-val{color:var(--ink);font-family:var(--ff-sans)}
+
+.scope-done-actions{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:.5rem}
+
+/* submitted */
+.scope-submitted{text-align:center;padding:2rem 0}
+.scope-submitted p{font-family:var(--ff-serif);font-size:1.5rem;line-height:1.4;margin-bottom:1rem}
+.scope-submitted .sub{font-family:var(--ff-sans);font-size:.9rem;color:var(--muted);margin-bottom:2rem}
+
+/* bottom nav */
+.scope-nav{position:fixed;bottom:0;left:0;right:0;padding:16px var(--pad);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);background:var(--paper);z-index:190}
+.scope-btn-back{font-family:var(--ff-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;padding:.5rem 0;transition:color .22s}
+.scope-btn-back:hover{color:var(--ink)}
+.scope-btn-next{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:none;border-radius:2px;padding:.75rem 2rem;cursor:pointer;transition:background .25s}
+.scope-btn-next:hover:not(:disabled){background:var(--accent)}
+.scope-btn-next:disabled{opacity:.35;cursor:not-allowed}
+
+.scope-error{color:var(--accent);font-family:var(--ff-mono);font-size:11px;letter-spacing:.04em;margin-top:1rem}
+
+.scope-calendly-link{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--ff-sans);font-size:.9rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px;transition:color .22s}
+.scope-calendly-link:hover{color:var(--ink)}
+
+@keyframes scopeFadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}

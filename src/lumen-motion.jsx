@@ -287,8 +287,15 @@ function PaperAirplane() {
         : rawAngle;
       const clampedTilt = Math.max(-42, Math.min(42, noseTilt));
 
-      el.style.transform = `translate(${x - 48}px, ${y - 29}px) scaleX(${flipX}) rotate(${clampedTilt}deg)`;
-      el.style.opacity   = t <= 0.98 ? "1" : "0";
+      el.style.transform     = `translate(${x - 48}px, ${y - 29}px) scaleX(${flipX}) rotate(${clampedTilt}deg)`;
+      const visible          = t <= 0.98;
+      el.style.opacity       = visible ? "1" : "0";
+      el.style.pointerEvents = visible ? "auto" : "none";
+      if (!visible && window.__planeHovered) {
+        window.__planeHovered = false;
+        const cur = document.querySelector(".lcursor");
+        if (cur) cur.classList.remove("hover", "plane-hover");
+      }
     };
 
     // Delay first paint until loader is gone

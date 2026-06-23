@@ -142,7 +142,7 @@ function LCapabilities() {
 
         <div className="caps-foot reveal" data-d="2">
           <p>Engagements are project-based, retainer, or audit/review — most start at <b>$5,000</b>.</p>
-          <Magnetic strength={0.3}><a href="#contact" className="btn-text">Scope yours <span className="ar">→</span></a></Magnetic>
+          <Magnetic strength={0.3}><a href="/scope" className="btn-text">Scope yours <span className="ar">→</span></a></Magnetic>
         </div>
       </div>
     </section>

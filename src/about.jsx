@@ -324,7 +324,7 @@ function LContact() {
         </h2>
         <div className="finale-actions">
           <Magnetic strength={0.4}>
-            <a href="mailto:chidileozoemena@gmail.com" className="btn-primary">Book a call <span>→</span></a>
+            <a href="https://calendly.com/afrotechboss/chidile-ozoemena" target="_blank" rel="noopener noreferrer" className="btn-primary">Book a call <span>→</span></a>
           </Magnetic>
           <div className="finale-socials reveal" data-d="2">
             {LSOCIALS.map((s) =>
