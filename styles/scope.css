@@ -38,7 +38,12 @@
 .scope-input:focus,.scope-textarea:focus,.scope-select:focus{border-color:var(--accent)}
 .scope-input::placeholder,.scope-textarea::placeholder{color:var(--muted-2)}
 .scope-textarea{resize:vertical;min-height:90px;line-height:1.5}
-.scope-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23736D5E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;padding-right:20px}
+.scope-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FFF0E8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;padding-right:20px;color:var(--ink)}
+/* The popup list is painted by the OS from the select's own colors, so a
+   transparent select leaves the options unreadable. Give them an explicit
+   inverted surface. */
+.scope-select option{background-color:#14100B;color:#FFF6F1}
+.scope-select option:disabled{color:rgba(255,246,241,.45)}
 
 .scope-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 @media(max-width:540px){.scope-grid-2{grid-template-columns:1fr}}
@@ -48,7 +53,7 @@
 .scope-radio{cursor:pointer}
 .scope-radio input{position:absolute;opacity:0;pointer-events:none}
 .scope-radio-label{display:inline-flex;align-items:center;padding:.5rem 1.05rem;border:1.5px solid var(--line);border-radius:999px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.04em;cursor:pointer;transition:border-color .22s,background .22s,color .22s;color:var(--ink-soft);user-select:none}
-.scope-radio input:checked + .scope-radio-label{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.scope-radio input:checked + .scope-radio-label{border-color:var(--invert-bg);background:var(--invert-bg);color:var(--invert-ink)}
 .scope-radio-label:hover{border-color:var(--ink-soft)}
 
 .scope-easter{margin-top:1rem;font-family:var(--ff-serif);font-style:italic;color:var(--accent);font-size:.95rem;animation:scopeFadeUp .28s ease forwards}

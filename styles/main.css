@@ -250,6 +250,10 @@ img{display:block;max-width:100%}
 @media (max-width:860px){.about-grid{grid-template-columns:1fr}}
 .about-photo{position:relative;border-radius:4px;overflow:hidden;aspect-ratio:4/5;background:var(--paper-2)}
 .about-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.02)}
+/* The avatar asset ships on a white studio background. Multiply drops that
+   white into the well behind it, so the figure sits on the field instead of
+   a bright card. The real portrait is full-bleed and stays untouched. */
+.about-photo .hp-avatar{mix-blend-mode:multiply}
 .about-photo .hp-real{position:absolute;inset:0;opacity:0;transform:scale(1.04);transition:opacity .7s var(--ease),transform .9s var(--ease),filter .7s}
 .about-photo.shown .hp-real{opacity:1;transform:scale(1);filter:grayscale(0)}
 @media (hover:hover){.about-photo:hover .hp-real{opacity:1;transform:scale(1);filter:grayscale(0)}}
