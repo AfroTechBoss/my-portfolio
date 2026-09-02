@@ -67,6 +67,10 @@ const TIMELINES = [
   '3 – 6 months','6+ months','Ongoing / retainer',
 ];
 
+/* REASONS and CHANNELS store a slug in state; everything a human reads —
+   the review screen, the email — wants the label. */
+const labelOf = (list, v) => (list.find(o => o.v === v) || {}).l || v || '';
+
 /* ── Field primitives ─────────────────────────────────────────────── */
 function FText({ label, name, value, onChange, placeholder, type = 'text', required }) {
   return (
@@ -292,9 +296,9 @@ function S8({ d, onSubmit, status, mailtoHref }) {
     ['Name', d.name], ['Email', d.email], ['Company', d.company],
     ['LinkedIn', d.linkedin], ['X', d.twitter], ['Telegram', d.telegram], ['Website', d.website],
     ['Industry', d.industry], ['Org size', d.org_size], ['Role', d.role],
-    ['Reason', d.reason], ['Brief', d.brief ? d.brief.slice(0, 80) + (d.brief.length > 80 ? '…' : '') : ''],
+    ['Reason', labelOf(REASONS, d.reason)], ['Brief', d.brief ? d.brief.slice(0, 80) + (d.brief.length > 80 ? '…' : '') : ''],
     ['Timeline', d.timeline], ['Budget', d.budget],
-    ['Preferred contact', d.contact_ch], ['Contact handle', d.contact_handle],
+    ['Preferred contact', labelOf(CHANNELS, d.contact_ch)], ['Contact handle', d.contact_handle],
     ['File', d.attachment?.name],
   ].filter(([, v]) => v);
 
@@ -350,41 +354,51 @@ function ScopeApp() {
   };
 
   const compileMessage = () => {
-    const f = (label, val) => val ? `${label}: ${val}\n` : '';
-    return [
-      '═══ WHO ══════════════════════════',
-      f('Name',    data.name),
-      f('Email',   data.email),
-      f('Company', data.company),
-      '',
-      '═══ FIND THEM ════════════════════',
-      f('LinkedIn', data.linkedin),
-      f('Twitter',  data.twitter),
-      f('Telegram', data.telegram),
-      f('Website',  data.website),
-      '',
-      '═══ CONTEXT ══════════════════════',
-      f('Industry',  data.industry),
-      f('Org size',  data.org_size),
-      f('Role',      data.role),
-      '',
-      '═══ THE ASK ══════════════════════',
-      f('Reason',   data.reason),
-      f('Brief',    data.brief),
-      f('Timeline', data.timeline),
-      f('Budget',   data.budget),
-      '',
-      '═══ REACH THEM ═══════════════════',
-      f('Preferred channel', data.contact_ch),
-      f('Contact handle',   data.contact_handle),
-      '',
-      '═══ FILE ═════════════════════════',
-      f('Attachment', data.attachment?.name || 'None'),
-    ].join('\n');
+    const f = (label, val) => (val ? `${label}: ${val}` : null);
+    // A section with no answered fields is left out entirely rather than
+    // arriving as a bare divider.
+    const sections = [
+      ['WHO', [
+        f('Name',    data.name),
+        f('Email',   data.email),
+        f('Company', data.company),
+      ]],
+      ['FIND THEM', [
+        f('LinkedIn', data.linkedin),
+        f('Twitter',  data.twitter),
+        f('Telegram', data.telegram),
+        f('Website',  data.website),
+      ]],
+      ['CONTEXT', [
+        f('Industry', data.industry),
+        f('Org size', data.org_size),
+        f('Role',     data.role),
+      ]],
+      ['THE ASK', [
+        f('Reason',   labelOf(REASONS, data.reason)),
+        f('Brief',    data.brief),
+        f('Timeline', data.timeline),
+        f('Budget',   data.budget),
+      ]],
+      ['REACH THEM', [
+        f('Preferred channel', labelOf(CHANNELS, data.contact_ch)),
+        f('Contact handle',    data.contact_handle),
+      ]],
+      ['FILE', [
+        f('Attachment', data.attachment?.name),
+      ]],
+    ];
+
+    const bar = (title) => `═══ ${title} ` + '═'.repeat(Math.max(3, 34 - title.length));
+
+    return sections
+      .filter(([, lines]) => lines.some(Boolean))
+      .map(([title, lines]) => [bar(title), ...lines.filter(Boolean)].join('\n'))
+      .join('\n\n');
   };
 
   const mailtoHref = () => {
-    const subject = encodeURIComponent(`Scope submission — ${data.reason || 'enquiry'} from ${data.name}`);
+    const subject = encodeURIComponent(`Scope submission — ${labelOf(REASONS, data.reason) || 'enquiry'} from ${data.name}`);
     const body    = encodeURIComponent(compileMessage());
     return `mailto:${TO_EMAIL}?subject=${subject}&body=${body}`;
   };
@@ -401,7 +415,7 @@ function ScopeApp() {
         body: JSON.stringify({
           name: data.name || '',
           email: data.email || '',
-          _subject: `Scope submission — ${data.reason || 'enquiry'} from ${data.name || 'someone'}`,
+          _subject: `Scope submission — ${labelOf(REASONS, data.reason) || 'enquiry'} from ${data.name || 'someone'}`,
           message: compileMessage(),
         }),
       });
