@@ -92,7 +92,7 @@ function LWork() {
             <span className="sec-num reveal">01 / Selected work</span>
             <h2 className="sec-title serif reveal" data-d="1" style={{ marginTop: 14 }}>Proof, measured in outcomes.</h2>
           </div>
-          <p className="sec-aside reveal" data-d="2">Six from the archive. Hover any line to open it.</p>
+          <p className="sec-aside reveal" data-d="2">Six from the archive. Every line opens the live build.</p>
         </div>
 
         <div className="work-list reveal" data-d="1">

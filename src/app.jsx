@@ -38,7 +38,6 @@ function LApp() {
       <LClients />
       <LRooms />
       <LAbout />
-      <LBand />
       <LContact />
       <LFooter />
     </>

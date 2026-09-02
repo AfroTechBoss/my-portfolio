@@ -21,7 +21,7 @@ function NFNav() {
               stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </a>
-        <div className="nav-right">
+        <div className="nav-right navscroll">
           <a href="/" className="nav-link">Home</a>
           <a href="/archive" className="nav-link">Archive</a>
           <Magnetic strength={0.35}><a href="/#contact" className="nav-cta">Let's talk</a></Magnetic>

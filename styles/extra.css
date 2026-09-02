@@ -57,7 +57,50 @@
 .mem-foot{font-size:14px;color:var(--muted);margin-top:20px}
 .mem-foot a{border-bottom:1px solid var(--line)}
 
+/* italic emphasis inside headings is always Instrument Serif, never synthesized Clash italic */
+.sec-title em,.about-lede em,.doc-name em,.nf-head em{font-family:var(--ff-serif);font-style:italic;color:var(--accent)}
+
+/* ---- 404 ---- */
+.nf{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:clamp(120px,17vh,180px) 0 clamp(40px,7vh,80px);position:relative}
+.nf-wrap{position:relative;width:100%}
+.nf-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(30px,5vw,80px);align-items:center}
+.nf .sec-num{display:inline-flex;align-items:center;gap:12px;margin-bottom:clamp(20px,3vh,32px)}
+.nf .sec-num .rule{width:42px;height:1px;background:var(--accent);display:inline-block}
+.nf-head{font-family:var(--magma);font-weight:400;font-size:clamp(38px,6.4vw,88px);line-height:1;letter-spacing:-.02em;margin:0}
+/* No entrance animation on this headline: a 404 can be loaded in a background
+   tab, where CSS animations are paused and a from-state of translateY(112%)
+   would leave the H1 invisible. The drifting numeral carries the motion. */
+.nf-line{display:block;padding-bottom:.08em}
+.nf-lede{margin-top:clamp(20px,3vh,30px);max-width:44ch;font-size:clamp(15px,1.6vw,17px);color:var(--muted);line-height:1.6}
+.nf-lede .b{color:var(--ink)}
+.nf-numeral{display:flex;align-items:center;justify-content:center;min-height:clamp(180px,26vh,320px)}
+.nf-numeral span{font-family:var(--magma);font-weight:700;font-size:clamp(140px,23vw,320px);line-height:.8;letter-spacing:-.05em;color:rgba(255,246,241,.16);user-select:none;animation:nf-drift 9s ease-in-out infinite}
+@keyframes nf-drift{0%,100%{transform:translate(0,0) rotate(-1.5deg)}50%{transform:translate(0,-14px) rotate(1.5deg)}}
+.nf-list{margin-top:clamp(40px,7vh,88px);border-top:1px solid var(--line)}
+.nf-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(16px,3vw,44px);padding:clamp(18px,2.4vw,30px) clamp(12px,2vw,26px);border-bottom:1px solid var(--line);transition:background .35s var(--ease),padding-left .35s,color .35s}
+.nf-row:hover{background:var(--invert-bg);color:var(--invert-ink);padding-left:clamp(20px,2.4vw,38px)}
+.nf-i{font-family:var(--ff-mono);font-size:12px;color:var(--muted-2)}
+.nf-h{font-family:var(--magma);font-size:clamp(22px,2.8vw,38px);line-height:1.05}
+.nf-d{font-family:var(--ff-mono);font-size:11px;letter-spacing:.06em;color:var(--muted-2);margin-left:auto;text-align:right}
+.nf-foot{margin-top:clamp(24px,3.4vh,36px);font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)}
+.nf-foot a{border-bottom:1px solid var(--line);color:var(--muted)}
+.nf-foot a:hover{color:var(--ink)}
+
+/* the 404 nav keeps its two links on mobile — there's nothing else to reach */
+.nf-nav .nav-link{display:inline-block}
+/* ...which leaves the signature and the links fighting for one row at 375px.
+   The scribble underhangs its text, so the gap has to clear that too. */
+.nf-nav .nav-inner{gap:clamp(14px,4vw,28px)}
+.nf-nav .nav-sig{flex:0 0 auto;margin-right:6px}
+
+/* ---- mobile nav: one scrolling row rather than three stacked ---- */
+.navscroll{flex-wrap:nowrap;min-width:0;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.navscroll::-webkit-scrollbar{display:none}
+.navscroll>a{white-space:nowrap;flex:0 0 auto}
+
 @media (max-width:720px){
   .stat:first-child{padding-left:clamp(18px,2vw,34px)}
   .mem-wrap{grid-column:auto}
+  .nf-numeral{order:-1;min-height:0}
+  .nf-d{margin-left:0;text-align:left;flex:1 1 100%}
 }
