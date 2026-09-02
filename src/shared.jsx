@@ -272,4 +272,58 @@ function LumenCursor() {
   return null;
 }
 
-Object.assign(window, { useRevealObserver, CountUp, Kinetic, Magnetic, Cursor, useScrollChrome, Constellation, PlotGrid, LumenCursor });
+/* ---- nav menu ----
+   Inline links on desktop; below 720px they collapse into a hamburger that
+   opens a full-screen sheet. The sheet sits under the nav bar (z-index 69 vs
+   70) so the burger stays reachable to close it again. */
+function NavMenu({ links, ctaHref = "#contact", ctaLabel = "Let's talk", meta }) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    // The sheet covers the viewport, so the page behind it must not scroll.
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    const onResize = () => { if (window.innerWidth > 720) setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
+  const close = () => setOpen(false);
+  return (
+    <React.Fragment>
+      <div className="nav-right">
+        {links.map(([l, h]) => <a key={h} href={h} className="nav-link">{l}</a>)}
+        <Magnetic strength={0.35}><a href={ctaHref} className="nav-cta">{ctaLabel}</a></Magnetic>
+      </div>
+
+      <button
+        type="button"
+        className={`nav-burger ${open ? "open" : ""}`}
+        aria-label={open ? "Close menu" : "Open menu"}
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span /><span />
+      </button>
+
+      <div className={`nav-sheet ${open ? "open" : ""}`} onClick={close}>
+        <div className="nav-sheet-inner" onClick={(e) => e.stopPropagation()}>
+          {links.map(([l, h], i) => (
+            <a key={h} href={h} className="nav-sheet-link" style={{ transitionDelay: `${70 + i * 45}ms` }} onClick={close}>
+              <span className="nav-sheet-i">{String(i + 1).padStart(2, "0")}</span>{l}
+            </a>
+          ))}
+          <a href={ctaHref} className="nav-sheet-cta" onClick={close}>{ctaLabel}</a>
+          <div className="nav-sheet-meta">{meta || "REMOTE \u00b7 WORLDWIDE \u00b7 AVAILABLE Q3 \u201826"}</div>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}
+
+Object.assign(window, { NavMenu, useRevealObserver, CountUp, Kinetic, Magnetic, Cursor, useScrollChrome, Constellation, PlotGrid, LumenCursor });

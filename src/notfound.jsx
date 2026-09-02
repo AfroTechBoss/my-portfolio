@@ -16,16 +16,8 @@ function NFNav() {
       <div className="nav-inner">
         <a href="/" className="logo footer-sig nav-sig" aria-label="Chidile — home">
           <span className="sig-name">Chidile</span>
-          <svg className="sig-scribble" viewBox="0 0 240 46" fill="none" aria-hidden="true" preserveAspectRatio="none">
-            <path d="M6 30 C 46 14, 92 12, 132 22 C 168 31, 198 33, 234 18 C 210 24, 150 30, 96 27 C 64 25, 36 27, 14 36"
-              stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
         </a>
-        <div className="nav-right navscroll">
-          <a href="/" className="nav-link">Home</a>
-          <a href="/archive" className="nav-link">Archive</a>
-          <Magnetic strength={0.35}><a href="/#contact" className="nav-cta">Let's talk</a></Magnetic>
-        </div>
+        <NavMenu links={[["Home", "/"], ["Archive", "/archive"]]} ctaHref="/#contact" />
       </div>
     </nav>
   );

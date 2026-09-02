@@ -86,18 +86,6 @@
 .nf-foot a{border-bottom:1px solid var(--line);color:var(--muted)}
 .nf-foot a:hover{color:var(--ink)}
 
-/* the 404 nav keeps its two links on mobile — there's nothing else to reach */
-.nf-nav .nav-link{display:inline-block}
-/* ...which leaves the signature and the links fighting for one row at 375px.
-   The scribble underhangs its text, so the gap has to clear that too. */
-.nf-nav .nav-inner{gap:clamp(14px,4vw,28px)}
-.nf-nav .nav-sig{flex:0 0 auto;margin-right:6px}
-
-/* ---- mobile nav: one scrolling row rather than three stacked ---- */
-.navscroll{flex-wrap:nowrap;min-width:0;overflow-x:auto;scrollbar-width:none;padding:2px 0}
-.navscroll::-webkit-scrollbar{display:none}
-.navscroll>a{white-space:nowrap;flex:0 0 auto}
-
 @media (max-width:720px){
   .stat:first-child{padding-left:clamp(18px,2vw,34px)}
   .mem-wrap{grid-column:auto}
