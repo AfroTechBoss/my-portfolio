@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# /src and /styles stay crawlable on purpose: every page is rendered in the
+# browser from those JSX files, so a crawler blocked from them sees an empty
+# <div id="root"> and nothing else.
+
+# The .html twins of the clean URLs in the sitemap. Same bytes, three
+# addresses - point crawlers at /archive and /scope only.
+Disallow: /archive.html
+Disallow: /scope.html
+Disallow: /archive/
+
+Sitemap: https://www.chidile.xyz/sitemap.xml
