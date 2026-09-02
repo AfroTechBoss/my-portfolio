@@ -16,7 +16,6 @@ function LApp() {
       <div className="grain" aria-hidden="true" />
       <div className="scroll-progress" />
       <LumenCursor />
-      <PaperAirplane />
       <PortalManager />
 
       <LNav />

@@ -217,6 +217,17 @@ function LAbout() {
   const [activeHobby, setActiveHobby] = useLS(null); // { name, origin }
   const bodyRef = useLR(null);
 
+  // Touch devices have no hover, so the photo swap is tap-to-toggle there.
+  const [isTouch, setIsTouch] = useLS(false);
+  const [photoShown, setPhotoShown] = useLS(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia("(hover:none),(pointer:coarse)");
+    const sync = () => { setIsTouch(mq.matches); if (!mq.matches) setPhotoShown(false); };
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   const openHobby = (name, e) => {
     const rect = bodyRef.current.getBoundingClientRect();
     setActiveHobby({
@@ -237,10 +248,18 @@ function LAbout() {
 
         <div className="about-grid">
           <div className="reveal">
-            <div className="about-photo" data-cursor>
+            <div
+              className={"about-photo" + (photoShown ? " shown" : "")}
+              data-cursor
+              onClick={isTouch ? () => setPhotoShown((v) => !v) : undefined}
+            >
               <img className="hp-avatar" src="assets/chidile-avatar.jpg" alt="Chidile — avatar" />
               <img className="hp-real" src="assets/chidile-photo.jpg" alt="Chidile — portrait" />
-              <span className="hp-chip">HOVER — MEET THE HUMAN</span>
+              <span className="hp-chip">
+                {isTouch
+                  ? (photoShown ? "TAP — BACK TO AVATAR" : "TAP — MEET THE HUMAN")
+                  : "HOVER — MEET THE HUMAN"}
+              </span>
             </div>
             <div className="about-cap"><span>Chidile</span><span>Remote · 2026</span></div>
           </div>
