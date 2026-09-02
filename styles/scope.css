@@ -78,7 +78,7 @@
 .scope-nav{position:fixed;bottom:0;left:0;right:0;padding:16px var(--pad);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);background:var(--paper);z-index:190}
 .scope-btn-back{font-family:var(--ff-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;padding:.5rem 0;transition:color .22s}
 .scope-btn-back:hover{color:var(--ink)}
-.scope-btn-next{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:none;border-radius:2px;padding:.75rem 2rem;cursor:pointer;transition:background .25s}
+.scope-btn-next{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--invert-bg);color:var(--invert-ink);border:none;border-radius:2px;padding:.75rem 2rem;cursor:pointer;transition:background .25s}
 .scope-btn-next:hover:not(:disabled){background:var(--accent)}
 .scope-btn-next:disabled{opacity:.35;cursor:not-allowed}
 

@@ -125,11 +125,11 @@ function ArchRow({ p, i }) {
 
 /* ---------------- PAGE ---------------- */
 const ATWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accent": "#E0431B",
+  "accent": "#14100B",
   "motion": true,
   "grain": true
 }/*EDITMODE-END*/;
-const AACCENTS = ["#E0431B", "#1F45E0", "#C9A84C", "#1E7D4F"];
+const AACCENTS = ["#14100B", "#E0431B", "#1F45E0", "#C9A84C"];
 
 function aHexToRgb(h) {
   const m = h.replace("#", "");

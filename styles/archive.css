@@ -20,14 +20,14 @@
 /* detail: left column gets a links row beneath the description */
 .arch-detail-l{display:flex;flex-direction:column;gap:clamp(16px,2.4vw,26px)}
 .arch-links{display:flex;gap:clamp(16px,2.4vw,30px);flex-wrap:wrap}
-.arch-link{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.72);display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.22);padding-bottom:4px;transition:color .3s var(--ease),gap .3s var(--ease),border-color .3s}
-.arch-link .lk{color:var(--accent)}
-.arch-link:hover{color:var(--paper);gap:13px;border-color:rgba(255,255,255,.5)}
-.arch-link.disabled{color:rgba(255,255,255,.34);border-color:rgba(255,255,255,.12);pointer-events:none}
-.arch-link.disabled .lk{color:rgba(255,255,255,.34)}
+.arch-link{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--invert-soft);display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid var(--invert-line);padding-bottom:4px;transition:color .3s var(--ease),gap .3s var(--ease),border-color .3s}
+.arch-link .lk{color:var(--accent-inv)}
+.arch-link:hover{color:var(--invert-ink);gap:13px;border-color:var(--invert-2)}
+.arch-link.disabled{color:rgba(255,246,241,.34);border-color:rgba(255,246,241,.12);pointer-events:none}
+.arch-link.disabled .lk{color:rgba(255,246,241,.34)}
 
 /* status pill (used when a project has no hard metric) */
-.arch-status{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-line);border-radius:999px;padding:7px 14px;display:inline-block;white-space:nowrap}
+.arch-status{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-inv);border:1px solid rgba(255,106,61,.42);border-radius:999px;padding:7px 14px;display:inline-block;white-space:nowrap}
 
 @media (max-width:720px){
   .arch-row:hover .row-detail{max-height:520px}
