@@ -62,11 +62,23 @@ const LWORK = [
     problem: "Merchants can accept crypto, but spending it means hours of middlemen and punishing rates. A crypto-fiat POS that settles to local currency at the point of sale.",
     metric: { v: "<60s", l: "Settlement target" },
     live: "https://uniogate.com" },
-  { n: "02", title: "Leak", tags: ["Civic Tech", "Privacy", "Zero-metadata"],
+  { n: "02", title: "BotID Protocol", tags: ["Crypto Infra", "Agents", "Solidity"],
+    problem: "Autonomous agents are moving real capital with nothing behind them but trust. BotID gives every agent a bonded identity, a verifiable record of what it executed, and a reputation score protocols can lend against.",
+    metric: { v: "255", l: "Tests, ten suites" },
+    live: "https://botidprotocol.vercel.app", repo: "https://github.com/AfroTechBoss/botid" },
+  { n: "03", title: "Honua", tags: ["Sustainability", "Next.js", "Social"],
+    problem: "Sustainability data is scattered across reports nobody reads. Honua is the world's first sustainability engine — one platform where green action is published, discovered and traded.",
+    metric: { v: "17", l: "Screens shipped" },
+    live: "https://honuaweb.vercel.app", repo: "https://github.com/honua-org/honuaweb" },
+  { n: "04", title: "Honua L2", tags: ["Blockchain", "L2", "Sustainability"],
+    problem: "Green projects have no native settlement layer of their own. Honua L2 is the on-chain infrastructure underneath them — a decentralized sustainability ecosystem with its own chain.",
+    metric: { v: "L2", l: "In development" },
+    repo: "https://github.com/Honua-Org/Honua-L2" },
+  { n: "05", title: "Leak", tags: ["Civic Tech", "Privacy", "Zero-metadata"],
     problem: "Reporting wrongdoing can cost you your job — or worse. An anonymous whistleblowing platform engineered to leak nothing about the people who use it.",
     metric: { v: "0", l: "Metadata stored" },
     live: "https://leak.ng", repo: "https://github.com/AfroTechBoss/leak" },
-  { n: "03", title: "Graso", tags: ["Crypto Infra", "RWA", "Cairo"],
+  { n: "06", title: "Graso", tags: ["Crypto Infra", "RWA", "Cairo"],
     problem: "Property ownership is gated by capital and paperwork most people will never clear. Graso tokenizes real estate so ownership can start small and stay liquid.",
     metric: { v: "1st", l: "Govt-grant backed" } },
 ];
@@ -79,7 +91,7 @@ function LWork() {
             <span className="sec-num reveal">01 / Selected work</span>
             <h2 className="sec-title serif reveal" data-d="1" style={{ marginTop: 14 }}>Proof, measured in outcomes.</h2>
           </div>
-          <p className="sec-aside reveal" data-d="2">Three from the archive. Hover any line to open it.</p>
+          <p className="sec-aside reveal" data-d="2">Six from the archive. Hover any line to open it.</p>
         </div>
 
         <div className="work-list reveal" data-d="1">
@@ -105,7 +117,7 @@ function LWork() {
         </div>
 
         <div className="reveal" data-d="2" style={{ marginTop: 46 }}>
-          <a href="/archive" className="btn-text">Full archive — 11 projects <span className="ar">→</span></a>
+          <a href="/archive" className="btn-text">Full archive — 14 projects <span className="ar">→</span></a>
         </div>
       </div>
     </section>
