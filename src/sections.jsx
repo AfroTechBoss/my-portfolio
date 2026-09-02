@@ -44,6 +44,23 @@ function LHero() {
             <span className="kline"><span style={{ "--ki": 1 }}>the world runs on —</span></span>
             <span className="kline"><span style={{ "--ki": 2 }}>then I <em className="hero-rot">write them down.</em></span></span>
           </h1>
+
+          <div className="hero-foot">
+            <p className="hero-sub">Smart contracts, settlement rails and civic platforms — plus the documentation, audits and research that make them usable. <b>I ship the system and the story of how it works.</b></p>
+            <div className="scrollcue"><span className="ln" aria-hidden="true" />Scroll</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="hero-marquee marquee" aria-hidden="true">
+        <div className="marquee-track" style={{ "--mdur": "34s" }}>
+          {[0, 1].map((pass) => (
+            <React.Fragment key={pass}>
+              <span className="mq-item">Build the system <span className="star">✦</span></span>
+              <span className="mq-item">Document the system <span className="star">✦</span></span>
+              <span className="mq-item">Rebuild it 10x <span className="star">✦</span></span>
+            </React.Fragment>
+          ))}
         </div>
       </div>
 

@@ -162,13 +162,14 @@ img{display:block;max-width:100%}
 @media (min-width:721px){.nav-sheet{display:none}}
 
 /* ───────── hero ───────── */
-.hero{min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:center;padding-bottom:0;overflow:hidden}
-.hero-top{position:absolute;top:clamp(96px,15vh,150px);left:0;width:100%}
+.hero{min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:flex-start;padding:clamp(88px,13vh,140px) 0 0;overflow:hidden}
+/* label row in normal flow — absolute positioning dropped it onto the headline */
+.hero-top{position:relative;flex:0 0 auto;left:auto;top:auto;width:100%}
 .hero-top .wrap{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
 .hero-eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);max-width:24ch}
 .hero-eyebrow .b{color:var(--ink);display:block;margin-bottom:6px}
 .hero-coord{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;color:var(--muted);text-align:right;line-height:1.9}
-.hero-stage{flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.hero-stage{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:clamp(36px,6vh,80px)}
 .hero-head{font-family:var(--magma);font-weight:400;letter-spacing:-.015em;line-height:1.0;font-size:clamp(38px,7.4vw,94px);text-align:center}
 .kline{display:block;overflow:hidden;padding-bottom:.09em}
 .kline>span{display:block;transform:translateY(112%);transition:transform .9s var(--ease-io);transition-delay:calc(var(--ki,0)*.08s)}
@@ -211,7 +212,7 @@ img{display:block;max-width:100%}
 .stmt-text{font-family:var(--magma);font-weight:400;font-size:clamp(30px,5.2vw,72px);line-height:1.14;letter-spacing:-.01em;max-width:20ch}
 .stmt-text .w{transition:color .5s var(--ease)}
 .stmt-text .dim{color:var(--muted-2)}
-.stmt-text em{font-style:italic;color:var(--accent)}
+.stmt-text em{font-family:var(--ff-serif);font-style:italic;color:var(--accent)}
 
 /* ───────── section heads ───────── */
 .section{padding:var(--sec) 0;position:relative}
@@ -235,6 +236,7 @@ img{display:block;max-width:100%}
 .row-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
 .row-tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 11px;transition:border-color .45s,color .45s}
 .work-row:hover .row-tag{border-color:var(--invert-line);color:var(--invert-soft)}
+/* expanding detail */
 /* detail is part of the row, not a hover reveal — matches the canvas version */
 .row-detail{position:relative;z-index:2}
 
@@ -307,7 +309,7 @@ img{display:block;max-width:100%}
 .finale{padding:var(--sec) 0 clamp(70px,10vh,120px);text-align:center;position:relative}
 .finale .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:30px}
 .finale-head{font-family:var(--magma);font-weight:400;font-size:clamp(48px,11vw,168px);line-height:.95;letter-spacing:-.02em}
-.finale-head em{font-style:italic;color:var(--accent)}
+.finale-head em{font-family:var(--ff-serif);font-style:italic;color:var(--accent)}
 .finale-actions{display:flex;flex-direction:column;align-items:center;gap:30px;margin-top:clamp(38px,6vh,64px)}
 .btn-primary{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:var(--invert-bg);color:var(--invert-ink);border-radius:999px;padding:18px 30px;display:inline-flex;align-items:center;gap:12px;transition:background .35s var(--ease),gap .35s var(--ease)}
 .btn-primary:hover{background:var(--accent);gap:20px}
@@ -328,12 +330,14 @@ img{display:block;max-width:100%}
 
 /* signature footer logo */
 .footer-sig{position:relative;display:inline-block;line-height:1}
-.footer-sig .sig-name{font-family:var(--ff-sans);font-style:normal;font-weight:600;font-size:clamp(26px,4vw,32px);letter-spacing:-.015em;color:var(--ink);transition:color .3s var(--ease)}
+/* Clash Display, set in caps — the display face, not the script signature.
+   Caps need the tracking opened back up that the lowercase mark didn't. */
+.footer-sig .sig-name{font-family:var(--magma);font-style:normal;font-weight:600;text-transform:uppercase;font-size:clamp(21px,3.2vw,26px);letter-spacing:.075em;color:var(--ink);transition:color .3s var(--ease)}
 @keyframes portalFadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 .footer-sig:hover .sig-name{color:var(--accent)}
 
 /* nav variant of the signature — a size down from the footer */
-.nav-sig .sig-name{font-size:clamp(21px,3.4vw,25px)}
+.nav-sig .sig-name{font-size:clamp(17px,2.6vw,20px)}
 
 /* responsive hero tweaks */
 @media (max-width:720px){
