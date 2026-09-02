@@ -4,11 +4,9 @@ Allow: /
 # /src and /styles stay crawlable on purpose: every page is rendered in the
 # browser from those JSX files, so a crawler blocked from them sees an empty
 # <div id="root"> and nothing else.
-
-# The .html twins of the clean URLs in the sitemap. Same bytes, three
-# addresses - point crawlers at /archive and /scope only.
-Disallow: /archive.html
-Disallow: /scope.html
-Disallow: /archive/
+#
+# The .html twins of the clean URLs are deliberately NOT disallowed either.
+# Each one carries a rel="canonical" pointing at the clean URL, and a crawler
+# that is blocked from fetching a page can never read the canonical inside it.
 
 Sitemap: https://www.chidile.xyz/sitemap.xml
