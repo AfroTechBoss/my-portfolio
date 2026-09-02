@@ -1,0 +1,59 @@
+/* =========================================================
+   notfound.css — 404 page
+   Extends main.css. Loaded only on 404.html.
+   ========================================================= */
+
+/* The nav is fixed, and the 404 has no hero to sit under it, so the page
+   carries its own top clearance. */
+.nf{position:relative;overflow:hidden;min-height:100svh;display:flex;align-items:center;padding:clamp(120px,17vh,180px) 0 clamp(60px,9vh,110px)}
+.nf-wrap{position:relative;z-index:2;width:100%}
+
+/* ---- header: statement left, numeral right ---- */
+.nf-top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:clamp(28px,5vw,72px)}
+.nf .sec-num{display:inline-flex;align-items:center;gap:14px;margin-bottom:clamp(20px,3vh,32px)}
+.nf .sec-num .rule{display:inline-block;width:clamp(28px,5vw,58px);height:1px;background:var(--line);transform-origin:left;animation:nfRule .7s var(--ease-io) forwards}
+
+.nf-head{font-family:var(--magma);font-weight:400;font-size:clamp(40px,7vw,96px);line-height:1.0;letter-spacing:-.02em}
+.nf-line{display:block;overflow:hidden}
+.nf-line>span{display:block;transform:translateY(112%);animation:nfRise .9s var(--ease-io) forwards;animation-delay:calc(var(--i,0)*.09s + .1s)}
+
+.nf-lede{margin-top:clamp(22px,3.4vh,34px);max-width:52ch;color:var(--muted);font-size:clamp(15px,1.6vw,18px);line-height:1.55;opacity:0;animation:nfFade .8s var(--ease) .42s forwards}
+.nf-lede .b{color:var(--ink);font-weight:600}
+
+/* Outlined so it reads as a watermark, not a second headline. */
+.nf-numeral{font-family:var(--magma);font-size:clamp(96px,17vw,250px);line-height:.8;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px var(--line);pointer-events:none;user-select:none}
+.nf-numeral>span{display:block;opacity:0;transform:translateY(18px);animation:nfFadeUp 1s var(--ease) .2s forwards}
+
+/* ---- ruled index ---- */
+.nf-list{margin-top:clamp(44px,7vh,84px);border-top:1px solid var(--line);opacity:0;animation:nfFade .8s var(--ease) .5s forwards}
+.nf-row{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.1fr);align-items:baseline;gap:clamp(14px,3vw,44px);padding:clamp(16px,2.2vw,26px) clamp(12px,2vw,26px);border-bottom:1px solid var(--line);transition:background .35s var(--ease),color .35s,padding-left .35s var(--ease)}
+.nf-row:hover{background:var(--invert-bg);color:var(--invert-ink);padding-left:clamp(22px,2.6vw,40px)}
+.nf-i{font-family:var(--ff-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);transition:color .35s}
+.nf-row:hover .nf-i{color:var(--accent-inv)}
+.nf-h{font-size:clamp(20px,2.4vw,32px);line-height:1.1}
+.nf-d{font-size:clamp(13px,1.4vw,15px);line-height:1.5;color:var(--muted);transition:color .35s}
+.nf-row:hover .nf-d{color:var(--invert-soft)}
+
+.nf-foot{margin-top:clamp(26px,4vh,40px);font-family:var(--ff-mono);font-size:12px;letter-spacing:.06em;color:var(--muted);opacity:0;animation:nfFade .8s var(--ease) .6s forwards}
+.nf-foot a{color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:2px;transition:border-color .3s,color .3s}
+.nf-foot a:hover{color:var(--accent);border-color:var(--accent)}
+
+@keyframes nfRise{to{transform:translateY(0)}}
+@keyframes nfFade{to{opacity:1}}
+@keyframes nfFadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes nfRule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---- narrow ---- */
+@media (max-width:860px){
+  .nf-top{grid-template-columns:1fr}
+  /* Numeral leads on mobile — it is the fastest read of "this is a 404". */
+  .nf-numeral{order:-1;font-size:clamp(88px,26vw,170px)}
+  .nf-row{grid-template-columns:auto minmax(0,1fr);row-gap:6px}
+  .nf-i{grid-row:1}
+  .nf-d{grid-column:1 / -1;padding-left:0}
+}
+
+/* Motion is decoration here; hold everything visible without it. */
+@media (prefers-reduced-motion:reduce){
+  .nf-line>span,.nf-lede,.nf-numeral>span,.nf-list,.nf-foot,.nf .sec-num .rule{animation:none;opacity:1;transform:none}
+}
