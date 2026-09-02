@@ -93,3 +93,4 @@
 .scope-calendly-link:hover{color:var(--ink)}
 
 @keyframes scopeFadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.scope-error a{color:inherit;text-decoration:underline;text-underline-offset:3px}

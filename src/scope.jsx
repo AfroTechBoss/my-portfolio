@@ -8,7 +8,7 @@
    3. Paste it as FORMSPREE_URL below.
    ========================================================= */
 
-const FORMSPREE_URL = 'https://formspree.io/f/mdarkdng'; // replace with your endpoint
+const FORMSPREE_URL = 'https://formspree.io/f/mdarkdng';
 const CALENDLY      = 'https://calendly.com/afrotechboss/chidile-ozoemena';
 const TO_EMAIL      = 'chidileozoemena@gmail.com';
 
@@ -275,8 +275,8 @@ function S7({ d, u }) {
   );
 }
 
-function S8({ d, onSubmit, submitted }) {
-  if (submitted) {
+function S8({ d, onSubmit, status, mailtoHref }) {
+  if (status === 'sent') {
     return (
       <div className="scope-submitted">
         <p>Got it. I'll be in touch.</p>
@@ -309,13 +309,19 @@ function S8({ d, onSubmit, submitted }) {
         ))}
       </div>
       <div className="scope-done-actions">
-        <button className="btn-primary" onClick={onSubmit}>
-          Send it <span>→</span>
+        <button className="btn-primary" onClick={onSubmit} disabled={status === 'sending'}>
+          {status === 'sending' ? 'Sending…' : status === 'error' ? 'Try again' : 'Send it'} <span>→</span>
         </button>
         <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="scope-calendly-link">
           Or book a call instead →
         </a>
       </div>
+      {status === 'error' && (
+        <p className="scope-error">
+          That didn't go through. Try again, or{' '}
+          <a href={mailtoHref}>send it as an email instead</a>.
+        </p>
+      )}
     </>
   );
 }
@@ -325,7 +331,7 @@ function ScopeApp() {
   const [step,       setStep]       = useSF(0);
   const [out,        setOut]        = useSF(false);
   const [data,      setData]      = useSF({});
-  const [submitted, setSubmitted] = useSF(false);
+  const [status,    setStatus]    = useSF('idle'); // idle | sending | sent | error
 
 
   const update = (k, v) => setData(d => ({ ...d, [k]: v }));
@@ -377,11 +383,32 @@ function ScopeApp() {
     ].join('\n');
   };
 
-  const submit = () => {
+  const mailtoHref = () => {
     const subject = encodeURIComponent(`Scope submission — ${data.reason || 'enquiry'} from ${data.name}`);
     const body    = encodeURIComponent(compileMessage());
-    window.location.href = `mailto:${TO_EMAIL}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    return `mailto:${TO_EMAIL}?subject=${subject}&body=${body}`;
+  };
+
+  const submit = async () => {
+    if (status === 'sending') return;
+    setStatus('sending');
+    try {
+      // Formspree's JSON API. The attachment is not sent — file uploads are a
+      // paid feature — so the brief carries its name and I ask for it by reply.
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name: data.name || '',
+          email: data.email || '',
+          _subject: `Scope submission — ${data.reason || 'enquiry'} from ${data.name || 'someone'}`,
+          message: compileMessage(),
+        }),
+      });
+      setStatus(res.ok ? 'sent' : 'error');
+    } catch (e) {
+      setStatus('error');
+    }
   };
 
   const stepComponents = [
@@ -392,7 +419,7 @@ function ScopeApp() {
     <S5 d={data} u={update} />,
     <S6 d={data} u={update} />,
     <S7 d={data} u={update} />,
-    <S8 d={data} onSubmit={submit} submitted={submitted} />,
+    <S8 d={data} onSubmit={submit} status={status} mailtoHref={mailtoHref()} />,
   ];
 
   const pct = Math.round((step / (STEPS.length - 1)) * 100);
@@ -428,7 +455,7 @@ function ScopeApp() {
         </div>
       </main>
 
-      {!submitted && (
+      {status !== 'sent' && (
         <nav className="scope-nav">
           <button
             className="scope-btn-back"
