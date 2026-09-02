@@ -210,7 +210,7 @@ function HobbyOverlay({ hobby, origin, onClose }) {
 /* ---------------- ABOUT ---------------- */
 const LBELIEFS = [
 "Crypto adoption isn't a trend. It's the next financial infrastructure.",
-"Great products cross borders — so I build for users anywhere.",
+"If it can't be explained in a document, it isn't finished.",
 "Clients hire people, not CVs. So I build like my name is on it."];
 
 function LAbout() {
@@ -241,7 +241,7 @@ function LAbout() {
       <div className="wrap">
         <div className="sec-head">
           <div>
-            <span className="sec-num reveal">03 / About</span>
+            <span className="sec-num reveal">07 / About</span>
             <h2 className="sec-title serif reveal" data-d="1" style={{ marginTop: 14 }}>Who you'd actually<br />be working with.</h2>
           </div>
         </div>
@@ -274,14 +274,17 @@ function LAbout() {
             )}
 
             <p className="about-lede serif reveal">
-              I build the financial infrastructure for a borderless economy — wherever value needs to move.
+              I build systems people can trust — then I make them legible to everyone who has to use, fund or maintain them.
             </p>
             <p className="reveal" data-d="1">
               I started building at 17 and never really stopped.
               <span className="muted"> That trajectory ran from early ventures into Graso — which won a state-government grant — then UnioGate, Leak, and the work I take on today.</span>
             </p>
             <p className="reveal" data-d="2">
-              I bring both the technical depth and the operator's instinct for how money actually moves — the rails, the regulatory constraints, the trust gap that makes someone hesitate before wiring funds to a stranger online. I close that gap by shipping.
+              Half my week is engineering: contracts, rails, AI systems. The other half is the part most engineers skip — auditing what a company already runs, rebuilding it to work an order of magnitude better without loosening security, and writing the documentation and research that makes the whole thing hold together after I leave.
+            </p>
+            <p className="reveal" data-d="2">
+              I'm dyslexic, which is exactly why I care so much about clear writing. If a document is hard to follow, that's the document's fault.
             </p>
 
             <div className="offclock reveal" data-d="2">
@@ -335,7 +338,7 @@ function LContact() {
   return (
     <section className="finale" id="contact">
       <div className="wrap">
-        <span className="eyebrow reveal">04 / Contact</span>
+        <span className="eyebrow reveal">08 / Contact</span>
         <h2 className="finale-head kinline">
           <span className="kin" style={{ "--ki": 0 }}><span>Let's build</span></span>{" "}
           <span className="kin" style={{ "--ki": 1 }}><span><em>something</em></span></span>{" "}

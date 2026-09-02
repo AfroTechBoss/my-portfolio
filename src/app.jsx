@@ -20,16 +20,23 @@ function LApp() {
 
       <LNav />
       <LHero />
+      <LCounts />
       <Statement
         eyebrow="The thesis"
         parts={[
-          { t: "Financial" }, { t: "infrastructure" }, { t: "for" }, { t: "a" }, { t: "borderless" }, { t: "economy," },
-          { t: "engineered", em: true }, { t: "to", em: true }, { t: "move", em: true },
-          { t: "value" }, { t: "anywhere." },
+          { t: "A" }, { t: "system" }, { t: "nobody" }, { t: "can" }, { t: "explain" },
+          { t: "is" }, { t: "a" }, { t: "system" }, { t: "nobody" }, { t: "can" }, { t: "trust." },
+          { t: "I", em: true }, { t: "build", em: true }, { t: "it,", em: true },
+          { t: "document", em: true }, { t: "it,", em: true }, { t: "and", em: true },
+          { t: "rebuild", em: true }, { t: "what's", em: true }, { t: "already", em: true }, { t: "broken.", em: true },
         ]}
       />
       <LWork />
+      <LWriting />
+      <LPractice />
       <LCapabilities />
+      <LClients />
+      <LRooms />
       <LAbout />
       <LBand />
       <LContact />
