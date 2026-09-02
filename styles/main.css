@@ -122,7 +122,12 @@ img{display:block;max-width:100%}
 
 /* ───────── nav ───────── */
 .nav{position:fixed;top:0;left:0;width:100%;z-index:70;padding:22px 0;transition:padding .4s var(--ease),background .4s}
-.nav.scrolled{padding:13px 0;background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2)}
+/* The ground lives on a pseudo-element, not on .nav itself: a backdrop-filter
+   on the bar would make it the containing block for its own position:fixed
+   children, and that shrank the open nav sheet to the height of the bar. */
+.nav::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2);transition:opacity .4s var(--ease)}
+.nav.scrolled::before{opacity:1}
+.nav.scrolled{padding:13px 0}
 .nav-inner{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:var(--magma);font-size:25px;display:inline-flex;align-items:center;gap:9px}
 .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
@@ -161,7 +166,7 @@ img{display:block;max-width:100%}
   /* The bar is transparent until .scrolled at 40px, but on a phone the hero
      headline starts right under it, so the wordmark and the bare burger sat
      straight on top of the text. Give the mobile bar its own ground always. */
-  .nav{background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px)}
+  .nav::before{opacity:1;background:color-mix(in srgb,var(--paper) 88%,transparent)}
   .nav-right{display:none}
   .nav-burger{display:block}
 }
