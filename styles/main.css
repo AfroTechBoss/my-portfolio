@@ -134,13 +134,16 @@ img{display:block;max-width:100%}
 .nav-cta:hover{background:var(--invert-bg);color:var(--invert-ink)}
 
 /* ---------- mobile nav ---------- */
-.nav-burger{display:none;position:relative;z-index:71;flex:0 0 auto;width:38px;height:38px;padding:0;border:1px solid var(--line);border-radius:50%;background:transparent;color:inherit;transition:border-color .3s var(--ease)}
-.nav-burger:hover{border-color:var(--ink)}
-.nav-burger span{position:absolute;left:11px;width:16px;height:1.5px;background:var(--ink);border-radius:1px;transition:transform .35s var(--ease)}
-.nav-burger span:nth-child(1){top:16px}
-.nav-burger span:nth-child(2){top:21px}
-.nav-burger.open span:nth-child(1){transform:translateY(2.5px) rotate(45deg)}
-.nav-burger.open span:nth-child(2){transform:translateY(-2.5px) rotate(-45deg)}
+/* No disc, no third rule — two rules of unequal length, the shorter one
+   growing to meet the longer as they cross into an X. */
+.nav-burger{display:none;position:relative;z-index:71;flex:0 0 auto;width:34px;height:34px;margin-right:-6px;padding:0;border:0;background:transparent;color:inherit;cursor:pointer}
+.nav-burger span{position:absolute;right:5px;height:1.5px;background:var(--ink);border-radius:1px;transition:width .4s var(--ease),transform .4s var(--ease)}
+.nav-burger span:nth-child(1){top:14px;width:24px}
+.nav-burger span:nth-child(2){top:20px;width:15px}
+@media (hover:hover){.nav-burger:hover span:nth-child(2){width:24px}}
+.nav-burger.open span{width:24px}
+.nav-burger.open span:nth-child(1){transform:translateY(3px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
 
 /* The sheet is a child of the nav, so the logo and burger are lifted above
    it inside that stacking context rather than by the nav's own z-index. */
@@ -330,9 +333,9 @@ img{display:block;max-width:100%}
 
 /* signature footer logo */
 .footer-sig{position:relative;display:inline-block;line-height:1}
-/* Clash Display, set in caps — the display face, not the script signature.
-   Caps need the tracking opened back up that the lowercase mark didn't. */
-.footer-sig .sig-name{font-family:var(--magma);font-style:normal;font-weight:600;text-transform:uppercase;font-size:clamp(21px,3.2vw,26px);letter-spacing:.075em;color:var(--ink);transition:color .3s var(--ease)}
+/* Clash Display at book weight, sentence case — the display face read as a
+   name, not shouted and not a script signature. */
+.footer-sig .sig-name{font-family:var(--magma);font-style:normal;font-weight:400;font-size:clamp(21px,3.2vw,26px);letter-spacing:.005em;color:var(--ink);transition:color .3s var(--ease)}
 @keyframes portalFadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 .footer-sig:hover .sig-name{color:var(--accent)}
 

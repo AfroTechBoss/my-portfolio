@@ -21,7 +21,10 @@ function NFMain() {
       <PlotGrid />
       {/* The numeral is the only content left, so it carries the page's
           meaning now and can no longer be hidden from assistive tech. */}
-      <div className="nf-numeral"><span>404</span></div>
+      <div className="nf-numeral">
+        <span className="nf-eyebrow">Not found</span>
+        <span className="nf-num">404</span>
+      </div>
     </main>
   );
 }
