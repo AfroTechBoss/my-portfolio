@@ -121,18 +121,30 @@ function LumenCursor() {
       '<div class="lc-disc"><span class="lc-label"></span></div>';
     document.body.appendChild(el);
     const label = el.querySelector(".lc-label");
-    let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y;
-    const onMove = (e) => {
-      tx = e.clientX; ty = e.clientY;
-      const t = e.target.closest("a,button,.work-row,.cap,.about-photo,.fsoc,.oc-tags span,[data-cursor]");
-      el.classList.toggle("hover", !!t);
-      if (t) {
-        label.textContent =
-          e.target.closest(".work-row") ? "OPEN" :
-          e.target.closest(".about-photo") ? "MEET" :
-          e.target.closest("a,button,.fsoc") ? "→" : "";
-      }
+    const HIT = "a,button,.work-row,.cap,.about-photo,.fsoc,.oc-tags span,[data-cursor]";
+    // The disc swallows the arrow, so it may only open when it has something to
+    // say. Client cells and capability rows are tagged [data-cursor] but have no
+    // label of their own — they used to turn the cursor into a blank black puck
+    // sitting on top of the word being read. They keep the arrow now.
+    const labelFor = (t) => {
+      if (!t) return "";
+      if (t.dataset && t.dataset.cursorLabel) return t.dataset.cursorLabel;
+      if (t.closest(".work-row")) return "OPEN";
+      if (t.closest(".about-photo")) return "MEET";
+      if (t.closest(".doc-row")) return "READ";
+      if (t.closest("a,button,.fsoc")) return "→";
+      return "";
     };
+    let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y;
+    const apply = (node) => {
+      const txt = labelFor(node && node.closest ? node.closest(HIT) : null);
+      el.classList.toggle("hover", !!txt);
+      if (txt) label.textContent = txt;
+    };
+    const onMove = (e) => { tx = e.clientX; ty = e.clientY; apply(e.target); };
+    // Without this the hover state sticks: the page scrolls out from under a
+    // still pointer and no mousemove ever fires to clear it.
+    const onScroll = () => apply(document.elementFromPoint(tx, ty));
     let raf;
     const loop = () => {
       x += (tx - x) * 0.22; y += (ty - y) * 0.22;
@@ -141,11 +153,13 @@ function LumenCursor() {
     };
     loop();
     window.addEventListener("mousemove", onMove);
+    window.addEventListener("scroll", onScroll, { passive: true });
     const hide = () => (el.style.opacity = 0), show = () => (el.style.opacity = 1);
     document.addEventListener("mouseleave", hide);
     document.addEventListener("mouseenter", show);
     return () => {
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("mouseleave", hide);
       document.removeEventListener("mouseenter", show);
       cancelAnimationFrame(raf); el.remove();

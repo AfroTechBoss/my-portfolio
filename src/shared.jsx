@@ -227,50 +227,8 @@ function PlotGrid() {
   );
 }
 
-function LumenCursor() {
-  useEffect(() => {
-    if (window.matchMedia("(hover:none),(pointer:coarse)").matches) return;
-    const el = document.createElement("div");
-    el.className = "lcursor";
-    el.innerHTML =
-      '<svg class="lc-arrow" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="M3 1.5 L3 19.5 L8.3 14.6 L11.7 22 L14.6 20.7 L11.1 13.4 L18 13.4 Z"/></svg>' +
-      '<div class="lc-disc"><span class="lc-label"></span></div>';
-    document.body.appendChild(el);
-    const label = el.querySelector(".lc-label");
-    let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y;
-    const onMove = (e) => {
-      tx = e.clientX; ty = e.clientY;
-      const t = e.target.closest("a,button,.work-row,.cap,.about-photo,.fsoc,.oc-tags span,[data-cursor]");
-      el.classList.toggle("hover", !!t);
-      if (t) {
-        label.textContent =
-          e.target.closest(".work-row") ? "OPEN" :
-          e.target.closest(".about-photo") ? "MEET" :
-          e.target.closest("a,button,.fsoc") ? "→" : "";
-      }
-    };
-    let raf;
-    const loop = () => {
-      x += (tx - x) * 0.22; y += (ty - y) * 0.22;
-      el.style.transform = `translate(${x}px, ${y}px)`;
-      raf = requestAnimationFrame(loop);
-    };
-    loop();
-    window.addEventListener("mousemove", onMove);
-    const hide = () => (el.style.opacity = 0);
-    const show = () => (el.style.opacity = 1);
-    document.addEventListener("mouseleave", hide);
-    document.addEventListener("mouseenter", show);
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseleave", hide);
-      document.removeEventListener("mouseenter", show);
-      cancelAnimationFrame(raf); el.remove();
-    };
-  }, []);
-  return null;
-}
+/* LumenCursor lives in lumen-motion.jsx, which every page loads after this
+   file — the copy that used to sit here was dead code the moment it did. */
 
 /* ---- nav menu ----
    Inline links on desktop; below 720px they collapse into a hamburger that
@@ -326,4 +284,4 @@ function NavMenu({ links, ctaHref = "#contact", ctaLabel = "Let's talk", meta })
   );
 }
 
-Object.assign(window, { NavMenu, useRevealObserver, CountUp, Kinetic, Magnetic, Cursor, useScrollChrome, Constellation, PlotGrid, LumenCursor });
+Object.assign(window, { NavMenu, useRevealObserver, CountUp, Kinetic, Magnetic, Cursor, useScrollChrome, Constellation, PlotGrid });
