@@ -38,7 +38,12 @@
 .client-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
 .client{padding:clamp(20px,2.4vw,32px) clamp(16px,1.8vw,24px);border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-family:var(--magma);font-size:clamp(17px,1.5vw,22px);line-height:1.2;min-height:96px;display:flex;align-items:flex-end;transition:background .3s var(--ease),color .3s}
 @media (hover:hover){.client:hover{background:var(--invert-bg);color:var(--invert-ink)}}
-.client img{max-height:44px;width:auto;filter:grayscale(1)}
+/* Every mark is flattened to the ink colour: the logos arrive in a dozen
+   brand palettes, and a row of them raw would fight the orange ground and
+   each other. brightness(0) crushes any colour to black, invert(1) lifts it
+   back to white, and the alpha channel is left alone. */
+.client img{max-height:30px;max-width:100%;width:auto;object-fit:contain;object-position:left bottom;filter:brightness(0) invert(1);opacity:.72;transition:opacity .3s var(--ease)}
+@media (hover:hover){.client:hover img{opacity:1}}
 .client.nda{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)}
 .client.nda:hover{background:transparent;color:var(--muted-2)}
 

@@ -285,12 +285,23 @@ function LPractice() {
 /* ---------------- CLIENTS ---------------- */
 /* logo: drop a file in assets/clients/ and add `logo: "assets/clients/x.svg"` */
 const LCLIENTS = [
-  { n: "Google" }, { n: "ICANN" }, { n: "Trust Wallet" }, { n: "Bybit" },
-  { n: "WEEX Exchange" }, { n: "Internet Computer" }, { n: "Reef Chain" },
+  { n: "Google" },
+  { n: "ICANN", logo: "assets/clients/icann.png" },
+  { n: "Trust Wallet", logo: "assets/clients/trust-wallet.svg" },
+  { n: "Bybit", logo: "assets/clients/bybit.svg" },
+  { n: "WEEX Exchange", logo: "assets/clients/weex.svg" },
+  { n: "Internet Computer", logo: "assets/clients/internet-computer.svg" },
+  { n: "Reef Chain", logo: "assets/clients/reef.png" },
   { n: "Cassava Network" }, { n: "Sui on Campus" }, { n: "Uglycash" },
-  { n: "Victus Global" }, { n: "Funded" }, { n: "Cyqur" }, { n: "Imrat Group" },
-  { n: "BotChain" }, { n: "Honua" }, { n: "Bitcoin Africa" },
-  { n: "Birmingham University" }, { n: "CyreneAI" }, { n: "Binarii Labs" }, { n: "Maringo" },
+  { n: "Victus Global" }, { n: "Funded" },
+  { n: "Cyqur", logo: "assets/clients/cyqur.svg" },
+  { n: "Imrat Group" },
+  { n: "BotChain", logo: "assets/clients/botchain.webp" },
+  { n: "Honua" }, { n: "Bitcoin Africa" },
+  { n: "Birmingham University", logo: "assets/clients/birmingham.svg" },
+  { n: "CyreneAI", logo: "assets/clients/cyrene.webp" },
+  { n: "Binarii Labs", logo: "assets/clients/binarii-labs.svg" },
+  { n: "Maringo" },
 ];
 function LClients() {
   return (
@@ -306,7 +317,7 @@ function LClients() {
 
         <div className="client-grid reveal" data-d="1">
           {LCLIENTS.map((c) => (
-            <div className="client" key={c.n} data-cursor>
+            <div className={`client ${c.logo ? "has-logo" : ""}`} key={c.n} data-cursor>
               {c.logo ? <img src={c.logo} alt={c.n} /> : c.n}
             </div>
           ))}
