@@ -311,19 +311,11 @@ function LAbout() {
 
 }
 
-/* ---------------- MARQUEE BAND ---------------- */
-function LBand() {
-  return (
-    <section aria-hidden="true" style={{ padding: "clamp(40px,7vh,90px) 0", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}>
-      <Marquee dur={30} itemClass="out" items={["Let's build something that ships", "Local roots → Global reach", "Built to ship, not to impress"]} />
-    </section>);
-
-}
-
 /* ---------------- CONTACT / FINALE ---------------- */
 const LSOCIALS = [
 { h: "in",  l: "LinkedIn", u: "Chidile Ozoemena",  url: "https://www.linkedin.com/in/chidileozoemena/" },
 { h: "𝕏",   l: "Twitter",  u: "0xAfroTechBoss",    url: "https://x.com/0xAfroTechBoss" },
+{ h: "tg",  l: "Telegram", u: "afrotechboss",      url: "https://t.me/afrotechboss" },
 { h: "{ }", l: "GitHub",   u: "afrotechboss",       url: "https://github.com/AfroTechBoss" },
 ];
 
@@ -377,4 +369,4 @@ function LFooter() {
 
 }
 
-Object.assign(window, { LAbout, LBand, LContact, LFooter, PortalManager });
+Object.assign(window, { LAbout, LContact, LFooter, PortalManager });
