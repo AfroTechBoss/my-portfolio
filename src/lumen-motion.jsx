@@ -33,12 +33,44 @@ function RotatingWord({ words, interval = 2100, className = "" }) {
   );
 }
 
-/* ---- marquee row (duplicated track) ---- */
+/* ---- marquee row (duplicated track) ----
+   The track slides by exactly half its width and snaps back, so the seam is
+   invisible only while half a track is wider than the window — otherwise the
+   row runs out mid-travel and you watch it end. Two passes is enough for the
+   big band but not for the smaller hero row on a wide screen, so count the
+   passes we actually need: `k` copies to cover the box, doubled so half the
+   track is still a whole number of passes. Duration scales with `k` to hold
+   the speed steady in pixels per second. */
 function Marquee({ items, dur = 38, reverse = false, className = "", itemClass = "" }) {
-  const row = [...items, ...items];
+  const box = useLR(null);
+  const [k, setK] = useLS(1);
+
+  useLE(() => {
+    const el = box.current;
+    if (!el) return;
+    const fit = () => {
+      const track = el.firstElementChild;
+      const w = track && track.getBoundingClientRect().width;
+      if (!w) return;
+      const pass = w / (k * 2);   // width of one set of items
+      // +1 so an exact fit still has a pixel in hand once widths land on
+      // fractions and the seam would otherwise graze the right edge.
+      if (pass > 0) setK(Math.max(1, Math.ceil((el.clientWidth + 1) / pass)));
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    // Webfonts land after first paint and change every measurement.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    return () => ro.disconnect();
+  }, [k, items]);
+
+  const row = [];
+  for (let p = 0; p < k * 2; p++) row.push(...items);
+
   return (
-    <div className={`marquee ${reverse ? "rev" : ""} ${className}`}>
-      <div className="marquee-track" style={{ "--mdur": `${dur}s` }}>
+    <div className={`marquee ${reverse ? "rev" : ""} ${className}`} ref={box} aria-hidden="true">
+      <div className="marquee-track" style={{ "--mdur": `${dur * k}s` }}>
         {row.map((it, i) => (
           <span className={`mq-item ${itemClass}`} key={i}>
             {it}<span className="star">✦</span>

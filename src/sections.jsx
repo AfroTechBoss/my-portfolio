@@ -52,17 +52,11 @@ function LHero() {
         </div>
       </div>
 
-      <div className="hero-marquee marquee" aria-hidden="true">
-        <div className="marquee-track" style={{ "--mdur": "34s" }}>
-          {[0, 1].map((pass) => (
-            <React.Fragment key={pass}>
-              <span className="mq-item">Build the system <span className="star">✦</span></span>
-              <span className="mq-item">Document the system <span className="star">✦</span></span>
-              <span className="mq-item">Rebuild it 10x <span className="star">✦</span></span>
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
+      <Marquee
+        className="hero-marquee"
+        dur={34}
+        items={["Build the system", "Document the system", "Rebuild it 10x"]}
+      />
 
     </header>
   );

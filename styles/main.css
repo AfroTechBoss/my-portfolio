@@ -205,7 +205,7 @@ img{display:block;max-width:100%}
 
 /* ───────── marquee ───────── */
 .marquee{overflow:hidden;white-space:nowrap;display:flex;user-select:none}
-.marquee-track{display:inline-flex;gap:0;animation:marq var(--mdur,38s) linear infinite;will-change:transform}
+.marquee-track{display:inline-flex;flex:none;gap:0;animation:marq var(--mdur,38s) linear infinite;will-change:transform}
 .marquee.rev .marquee-track{animation-direction:reverse}
 .marquee:hover .marquee-track{animation-play-state:paused}
 .reduce-motion .marquee-track{animation:none}
