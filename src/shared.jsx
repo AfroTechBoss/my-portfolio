@@ -27,6 +27,44 @@ function useRevealObserver(key) {
   }, [key]);
 }
 
+/* ---- land on the #hash a visitor arrived with ----
+   The page is built by React after the HTML loads, so when the browser first
+   looks for #writing the section does not exist yet and it stays at the top.
+   Re-align once the sections are mounted, and again while the loader lifts and
+   fonts and images settle — unless the visitor has already scrolled. */
+function useHashLanding() {
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+    let cancelled = false;
+    const stop = () => { cancelled = true; };
+    const opts = { passive: true };
+    ["wheel", "touchstart", "keydown"].forEach((e) => window.addEventListener(e, stop, opts));
+
+    const align = () => {
+      if (cancelled) return;
+      const el = document.getElementById(id);
+      if (!el) return;
+      const y = el.getBoundingClientRect().top + window.scrollY;
+      if (Math.abs(y - window.scrollY) < 2) return;
+      window.scrollTo({ top: y, behavior: "auto" });
+    };
+
+    const raf = requestAnimationFrame(align);
+    const timers = [120, 600, 1500, 2600].map((ms) => setTimeout(align, ms));
+    window.addEventListener("load", align);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      timers.forEach(clearTimeout);
+      window.removeEventListener("load", align);
+      ["wheel", "touchstart", "keydown"].forEach((e) => window.removeEventListener(e, stop, opts));
+    };
+  }, []);
+}
+
 /* ---- count-up when in view ---- */
 function CountUp({ to, from = 0, dur = 1600, prefix = "", suffix = "", decimals = 0 }) {
   const ref = useRef(null);
@@ -284,4 +322,4 @@ function NavMenu({ links, ctaHref = "#contact", ctaLabel = "Let's talk", meta })
   );
 }
 
-Object.assign(window, { NavMenu, useRevealObserver, CountUp, Kinetic, Magnetic, Cursor, useScrollChrome, Constellation, PlotGrid });
+Object.assign(window, { NavMenu, useRevealObserver, useHashLanding, CountUp, Kinetic, Magnetic, Cursor, useScrollChrome, Constellation, PlotGrid });

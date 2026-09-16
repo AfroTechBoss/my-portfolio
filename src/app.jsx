@@ -4,6 +4,7 @@
    ========================================================= */
 function LApp() {
   useRevealObserver("lumen");
+  useHashLanding();
 
   React.useEffect(() => {
     // Section snapping (rides with the always-on motion).
