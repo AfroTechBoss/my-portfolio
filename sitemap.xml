@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.chidile.xyz/</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.chidile.xyz/assets/og-card.jpg</image:loc>
+      <image:title>Chidile Ozoemena — blockchain engineer and technical writer</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.chidile.xyz/assets/chidile-photo.jpg</image:loc>
+      <image:title>Chidile Ozoemena</image:title>
+    </image:image>
   </url>
-
   <url>
     <loc>https://www.chidile.xyz/archive</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://www.chidile.xyz/scope</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
-
 </urlset>

@@ -1,5 +1,8 @@
+# https://www.chidile.xyz/robots.txt
+
 User-agent: *
 Allow: /
+Disallow: /404.html
 
 # /src and /styles stay crawlable on purpose: every page is rendered in the
 # browser from those JSX files, so a crawler blocked from them sees an empty
@@ -8,5 +11,46 @@ Allow: /
 # The .html twins of the clean URLs are deliberately NOT disallowed either.
 # Each one carries a rel="canonical" pointing at the clean URL, and a crawler
 # that is blocked from fetching a page can never read the canonical inside it.
+
+# Named search crawlers: same rules, spelled out so there is nothing to guess.
+User-agent: Googlebot
+Allow: /
+Disallow: /404.html
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Disallow: /404.html
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Assistants and answer engines are search too now, and I would rather be
+# quoted with a link than left out of the answer.
+User-agent: Google-Extended
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
 
 Sitemap: https://www.chidile.xyz/sitemap.xml
