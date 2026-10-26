@@ -278,7 +278,7 @@ function LAbout() {
             </p>
             <p className="reveal" data-d="1">
               I started building at 17 and never really stopped.
-              <span className="muted"> That trajectory ran from early ventures into Graso — which won a state-government grant — then UnioGate, Leak, and the work I take on today.</span>
+              <span className="muted"> That trajectory ran from early ventures into Graso — which won a state-government grant — then UnioGate, Leak, and Uzo Labs — the developer-infrastructure org I run today.</span>
             </p>
             <p className="reveal" data-d="2">
               Half my week is engineering: contracts, rails, AI systems. The other half is the part most engineers skip — auditing what a company already runs, rebuilding it to work an order of magnitude better without loosening security, and writing the documentation and research that makes the whole thing hold together after I leave.

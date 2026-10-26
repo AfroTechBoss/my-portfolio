@@ -175,6 +175,29 @@
               "areaServed": "Worldwide"
             }
           }
+        ],
+        "worksFor": {
+          "@id": "https://uzolabs.xyz/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://uzolabs.xyz/#organization",
+        "name": "Uzo Labs",
+        "alternateName": "uzolabs",
+        "url": "https://uzolabs.xyz",
+        "slogan": "The developer path for BOT Chain.",
+        "description": "Developer infrastructure for BOT Chain: a viem-native TypeScript SDK, clone-and-deploy contract templates, and verified contract deployment from the browser, with hosted RPC and indexing planned. Independent — not affiliated with or endorsed by BOT Chain.",
+        "email": "hello@uzolabs.xyz",
+        "founder": {
+          "@id": "https://www.chidile.xyz/#chidile"
+        },
+        "sameAs": [
+          "https://github.com/uzolabs",
+          "https://x.com/uzolabs",
+          "https://docs.uzolabs.xyz",
+          "https://deploy.uzolabs.xyz",
+          "https://www.npmjs.com/package/@uzolabs/sdk"
         ]
       },
       {
@@ -212,12 +235,25 @@
         "@type": "ItemList",
         "name": "Selected work",
         "url": "https://www.chidile.xyz/#work",
-        "numberOfItems": 6,
+        "numberOfItems": 7,
         "itemListOrder": "https://schema.org/ItemListOrderAscending",
         "itemListElement": [
           {
             "@type": "ListItem",
             "position": 1,
+            "item": {
+              "@type": "CreativeWork",
+              "name": "Uzo Labs",
+              "author": {
+                "@id": "https://www.chidile.xyz/#chidile"
+              },
+              "description": "Developer infrastructure for BOT Chain — a viem-native SDK, clone-and-deploy templates and browser-based verified contract deploys.",
+              "url": "https://uzolabs.xyz"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
             "item": {
               "@type": "CreativeWork",
               "name": "UnioGate",
@@ -230,7 +266,7 @@
           },
           {
             "@type": "ListItem",
-            "position": 2,
+            "position": 3,
             "item": {
               "@type": "CreativeWork",
               "name": "BotID Protocol",
@@ -243,7 +279,7 @@
           },
           {
             "@type": "ListItem",
-            "position": 3,
+            "position": 4,
             "item": {
               "@type": "CreativeWork",
               "name": "Honua",
@@ -256,7 +292,7 @@
           },
           {
             "@type": "ListItem",
-            "position": 4,
+            "position": 5,
             "item": {
               "@type": "CreativeWork",
               "name": "Honua L2",
@@ -269,7 +305,7 @@
           },
           {
             "@type": "ListItem",
-            "position": 5,
+            "position": 6,
             "item": {
               "@type": "CreativeWork",
               "name": "Leak",
@@ -282,7 +318,7 @@
           },
           {
             "@type": "ListItem",
-            "position": 6,
+            "position": 7,
             "item": {
               "@type": "CreativeWork",
               "name": "Graso",
@@ -341,6 +377,7 @@
 
       <h2>Selected work</h2>
       <ul>
+        <li><b>Uzo Labs</b> — developer infrastructure for BOT Chain: a viem-native SDK, clone-and-deploy templates and verified contract deploys from the browser. <a href="https://uzolabs.xyz">https://uzolabs.xyz</a></li>
         <li><b>UnioGate</b> — A crypto-to-fiat point-of-sale that settles to local currency at the counter, in under a minute. <a href="https://uniogate.com">https://uniogate.com</a></li>
         <li><b>BotID Protocol</b> — Bonded on-chain identity, execution records and reputation scoring for autonomous agents moving real capital. <a href="https://botidprotocol.vercel.app">https://botidprotocol.vercel.app</a></li>
         <li><b>Honua</b> — A sustainability engine where green action is published, discovered and traded. <a href="https://honuaweb.vercel.app">https://honuaweb.vercel.app</a></li>
@@ -348,15 +385,24 @@
         <li><b>Leak</b> — An anonymous whistleblowing platform engineered to store zero metadata about the people who use it. <a href="https://leak.ng">https://leak.ng</a></li>
         <li><b>Graso</b> — Tokenized real estate so property ownership can start small and stay liquid.</li>
       </ul>
-      <p><a href="/archive">Full archive — 14 projects</a></p>
+      <p><a href="/archive">Full archive — 15 projects</a></p>
 
       <h2>Documentation</h2>
       <ul>
+        <li><a href="https://docs.uzolabs.xyz">Uzo Docs</a> — SDK reference, Hardhat and Foundry quickstarts and verification guides for BOT Chain</li>
         <li><a href="https://docs.ifalabs.com">Ifa Labs</a> — protocol documentation for a multi-chain stablecoin oracle</li>
         <li><a href="https://docs.honua.green/honua-whitepaper">Honua Whitepaper</a> — thesis, tokenomics and architecture of a sustainability network</li>
         <li><a href="https://frenspool.gitbook.io/frenspool-documentation">Frenspool</a> — product and mechanism docs for a social staking pool</li>
         <li><a href="https://brij-2.gitbook.io/brij-docs">Brij</a> — on-chain product docs: contract surfaces, user flows, developer onboarding</li>
       </ul>
+
+      <h2>Uzo Labs</h2>
+      <p>I run <a href="https://uzolabs.xyz">Uzo Labs</a>, the developer path for BOT Chain —
+      <a href="https://www.npmjs.com/package/@uzolabs/sdk">@uzolabs/sdk</a> for chain data, typed
+      ABIs and a BOTScan client, starter templates for tokens, NFTs, DEX integrations and gasless
+      apps, and <a href="https://deploy.uzolabs.xyz">Uzo Deploy</a> for verified contract deploys
+      from the browser. Uzo RPC and hosted indexing are next. Uzo Labs is independent and is not
+      affiliated with or endorsed by BOT Chain.</p>
 
       <h2>Track record</h2>
       <ul>
