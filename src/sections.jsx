@@ -64,14 +64,14 @@ function LHero() {
 
 /* ---------------- WORK ---------------- */
 const LWORK = [
-  { n: "01", title: "Uzo Labs", tags: ["Developer Infra", "TypeScript", "viem"],
-    problem: "Building on BOT Chain meant hunting down scattered network details, writing your own chain config, and working around a public RPC that refuses event queries. Uzo Labs is the developer path out \u2014 a typed, viem-native SDK, clone-and-deploy templates, and verified contracts deployed straight from the browser. Hosted RPC and indexing are next.",
-    metric: { v: "3", l: "Products live" },
-    live: "https://uzolabs.xyz", repo: "https://github.com/uzolabs" },
-  { n: "02", title: "UnioGate", tags: ["Fintech", "POS", "Solidity"],
+  { n: "01", title: "UnioGate", tags: ["Fintech", "POS", "Solidity"],
     problem: "Merchants can accept crypto, but spending it means hours of middlemen and punishing rates. A crypto-fiat POS that settles to local currency at the point of sale.",
     metric: { v: "<60s", l: "Settlement target" },
     live: "https://uniogate.com" },
+  { n: "02", title: "Uzo Labs", tags: ["Developer Infra", "TypeScript", "viem"],
+    problem: "Building on BOT Chain meant hunting down scattered network details, writing your own chain config, and working around a public RPC that refuses event queries. Uzo Labs is the developer path out \u2014 a typed, viem-native SDK, clone-and-deploy templates, and verified contracts deployed straight from the browser. Hosted RPC and indexing are next.",
+    metric: { v: "3", l: "Products live" },
+    live: "https://uzolabs.xyz", repo: "https://github.com/uzolabs" },
   { n: "03", title: "BotID Protocol", tags: ["Crypto Infra", "Agents", "Solidity"],
     problem: "Autonomous agents are moving real capital with nothing behind them but trust. BotID gives every agent a bonded identity, a verifiable record of what it executed, and a reputation score protocols can lend against.",
     metric: { v: "255", l: "Tests, ten suites" },

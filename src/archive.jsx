@@ -9,14 +9,14 @@ const HOME = "./";
 
 /* metric: hard number/label · status: pill when there's no clean metric */
 const ARCHIVE = [
-  { n: "01", title: "Uzo Labs", tags: ["Developer Infra", "TypeScript", "viem"],
-    desc: "The developer path for BOT Chain, and the org I run. Shipped so far: @uzolabs/sdk \u2014 chain definitions, contract addresses, typed ABIs and a BOTScan client, all viem-native; clone-and-deploy templates for a token, an NFT, a DEX integration and a gasless ERC-2771 app; and Uzo Deploy, which deploys verified contracts from your own wallet through an immutable factory that charges no fees and holds no keys over what you ship. Uzo RPC (with eth_getLogs and WebSockets) and hosted indexing are next. Independent \u2014 not affiliated with or endorsed by BOT Chain.",
-    metric: { v: "3", l: "Products live" },
-    live: "https://uzolabs.xyz", repo: "https://github.com/uzolabs" },
-  { n: "02", title: "UnioGate", tags: ["Fintech", "POS", "Solidity"],
+  { n: "01", title: "UnioGate", tags: ["Fintech", "POS", "Solidity"],
     desc: "A crypto-fiat POS terminal that lets Nigerian SMEs accept USDT, USDC and cNGN and settle to Naira the same day — removing the middlemen and punishing rates that stand between merchants and the value they've already earned.",
     status: "Pre-launch",
     live: "https://uniogate.com" },
+  { n: "02", title: "Uzo Labs", tags: ["Developer Infra", "TypeScript", "viem"],
+    desc: "The developer path for BOT Chain, and the org I run. Shipped so far: @uzolabs/sdk \u2014 chain definitions, contract addresses, typed ABIs and a BOTScan client, all viem-native; clone-and-deploy templates for a token, an NFT, a DEX integration and a gasless ERC-2771 app; and Uzo Deploy, which deploys verified contracts from your own wallet through an immutable factory that charges no fees and holds no keys over what you ship. Uzo RPC (with eth_getLogs and WebSockets) and hosted indexing are next. Independent \u2014 not affiliated with or endorsed by BOT Chain.",
+    metric: { v: "3", l: "Products live" },
+    live: "https://uzolabs.xyz", repo: "https://github.com/uzolabs" },
   { n: "03", title: "BotID Protocol", tags: ["Crypto Infra", "Agents", "Solidity"],
     desc: "A reputation and accountability layer for autonomous agents managing capital on BOT Chain. Every agent posts a bond, and every execution settles into a verifiable record — proofs graded Bronze by signature, Silver by TEE attestation, Gold by Groth16 — so an agent's credit line is earned from outcomes rather than extended on trust.",
     metric: { v: "255", l: "Tests, ten suites" },
