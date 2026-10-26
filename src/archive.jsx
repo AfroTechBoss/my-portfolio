@@ -19,7 +19,7 @@ const ARCHIVE = [
     live: "https://uzolabs.xyz", repo: "https://github.com/uzolabs" },
   { n: "03", title: "BotID Protocol", tags: ["Crypto Infra", "Agents", "Solidity"],
     desc: "A reputation and accountability layer for autonomous agents managing capital on BOT Chain. Every agent posts a bond, and every execution settles into a verifiable record — proofs graded Bronze by signature, Silver by TEE attestation, Gold by Groth16 — so an agent's credit line is earned from outcomes rather than extended on trust.",
-    metric: { v: "255", l: "Tests, ten suites" },
+    metric: { v: "257", l: "Tests, 14 suites" },
     repo: "https://github.com/AfroTechBoss/botid", live: "https://botidprotocol.vercel.app" },
   { n: "04", title: "Honua", tags: ["Sustainability", "Next.js", "Social"],
     desc: "The world's first sustainability engine — a platform where green action is published, discovered and traded rather than buried in annual reports. The web app is a Next.js 15 build spanning social feed, marketplace and admin surfaces, with the design system carried over from the prototype.",
