@@ -3,3 +3,6 @@ prompt.txt
 serve.py
 
 clientLogos/
+.taste-skill/
+.agents/
+skills-lock.json
