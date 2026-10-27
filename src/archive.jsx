@@ -62,7 +62,7 @@ const RUNNING = [
   { t: "Revelation Bot", cat: "Trading · Telegram · WebSocket",
     d: "A Telegram trading-signal bot wired to Deriv's live WebSocket feed, running an eleven-signal confluence engine across Forex, Gold and Synthetics, with automated take-profit and stop-loss tracking and a live win-rate dashboard.",
     m: { v: "11", l: "Signal confluence" },
-    live: "https://t.me/revelationtradingbot", repo: "https://github.com/AfroTechBoss/revelation-bot" },
+    live: "https://t.me/revelationtradingbot" },
 
   { t: "NaijaRights", cat: "Civic Tech · Next.js · Legal",
     d: "A civic-tech app that helps Nigerian citizens understand their legal rights, built and maintained on a steady release cadence rather than a single drop.",
@@ -88,8 +88,7 @@ const RUNNING = [
 const RECORD = [
   { t: "Honua L2", cat: "Blockchain · L2 · Sustainability",
     d: "The on-chain infrastructure underneath Honua: a layer-2 chain built to support green projects and settle the sustainability ecosystem on-chain. Early development, no public network yet.",
-    st: "In development",
-    repo: "https://github.com/Honua-Org/Honua-L2" },
+    st: "In development" },
 
   { t: "Leak", cat: "Civic Tech · Privacy · PWA",
     d: "A secure, anonymous whistleblowing PWA for Nigerian investigative journalists, engineered to leak nothing about the people who use it and deliberately hosted in Frankfurt, outside Nigerian legal reach.",
@@ -184,14 +183,16 @@ function Row({ p, alt }) {
 
       <div className="ar-body">
         <p>{p.d}</p>
-        <p className="ar-links">
-          {p.live
-            ? <a className="lnk" href={p.live} target="_blank" rel="noopener noreferrer">Open it</a>
-            : <span className="ar-none">No live site yet</span>}
-          {p.repo
-            ? <a className="lnk" href={p.repo} target="_blank" rel="noopener noreferrer">Read the code</a>
-            : <span className="ar-none">Repository private</span>}
-        </p>
+        {(p.live || p.repo) && (
+          <p className="ar-links">
+            {p.live
+              ? <a className="lnk" href={p.live} target="_blank" rel="noopener noreferrer">Open it</a>
+              : <span className="ar-none">No live site yet</span>}
+            {p.repo
+              ? <a className="lnk" href={p.repo} target="_blank" rel="noopener noreferrer">Read the code</a>
+              : <span className="ar-none">Repository private</span>}
+          </p>
+        )}
       </div>
 
       <div className="ar-meta">
