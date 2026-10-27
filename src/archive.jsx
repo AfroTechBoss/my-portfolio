@@ -1,217 +1,275 @@
 /* =========================================================
-   lumen-archive.jsx — full project archive (rows that open)
-   Reuses lumen-lib (Loader, LumenCursor) + lib (Magnetic, useScrollChrome,
-   useRevealObserver) + tweaks-panel. Mounts its own page.
+   archive.jsx: the file drawer — every project, on the record
+   Direction: page-is-the-object (seed 2087627529)
+   Self-contained: mounts its own root, no shared.jsx dependency.
    ========================================================= */
-const { useEffect: useAE, useRef: useAR } = React;
+const { useEffect: aUE } = React;
 
-const HOME = "./";
+const EMAIL = "chidileozoemena@gmail.com";
 
-/* metric: hard number/label · status: pill when there's no clean metric */
-const ARCHIVE = [
-  { n: "01", title: "UnioGate", tags: ["Fintech", "POS", "Solidity"],
-    desc: "A crypto-fiat POS terminal that lets Nigerian SMEs accept USDT, USDC and cNGN and settle to Naira the same day — removing the middlemen and punishing rates that stand between merchants and the value they've already earned.",
-    status: "Pre-launch",
+function useReveal() {
+  aUE(() => {
+    const nodes = document.querySelectorAll(".rv");
+    if (!("IntersectionObserver" in window)) {
+      nodes.forEach((n) => n.classList.add("in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      }),
+      { rootMargin: "0px 0px -8% 0px", threshold: 0 }
+    );
+    nodes.forEach((n) => io.observe(n));
+    // the archive list IS the page: nothing here may depend on an observer that never fires.
+    const safety = setTimeout(() => nodes.forEach((n) => n.classList.add("in")), 6000);
+    return () => { clearTimeout(safety); io.disconnect(); };
+  }, []);
+}
+
+/* ---------------- the record ----------------
+   metric: a hard number · status: the stage, when there is no clean number */
+const RUNNING = [
+  { t: "UnioGate", cat: "Fintech · POS · Solidity",
+    d: "A crypto-fiat POS terminal that lets Nigerian SMEs accept USDT, USDC and cNGN and settle to Naira the same day, removing the middlemen and punishing rates that stand between merchants and the value they have already earned.",
+    st: "Pre-launch",
+    shot: "assets/shots/uniogate.jpg", alt: "The UnioGate merchant dashboard",
     live: "https://uniogate.com" },
-  { n: "02", title: "Uzo Labs", tags: ["Developer Infra", "TypeScript", "viem"],
-    desc: "The developer path for BOT Chain, and the org I run. Shipped so far: @uzolabs/sdk \u2014 chain definitions, contract addresses, typed ABIs and a BOTScan client, all viem-native; clone-and-deploy templates for a token, an NFT, a DEX integration and a gasless ERC-2771 app; and Uzo Deploy, which deploys verified contracts from your own wallet through an immutable factory that charges no fees and holds no keys over what you ship. Uzo RPC (with eth_getLogs and WebSockets) and hosted indexing are next. Independent \u2014 not affiliated with or endorsed by BOT Chain.",
-    metric: { v: "3", l: "Products live" },
+
+  { t: "Uzo Labs", cat: "Developer Infra · TypeScript · viem",
+    d: "The developer path for BOT Chain, and the org I run. A viem-native SDK with chain definitions, typed ABIs and a BOTScan client; clone-and-deploy templates for a token, an NFT, a DEX integration and a gasless ERC-2771 app; and Uzo Deploy, which ships verified contracts from your own wallet through an immutable factory that charges no fees and holds no keys. Hosted RPC and indexing are next. Independent, not affiliated with or endorsed by BOT Chain.",
+    m: { v: "3", l: "Products live" },
+    shot: "assets/shots/uzolabs.jpg", alt: "The Uzo Labs developer site",
     live: "https://uzolabs.xyz", repo: "https://github.com/uzolabs" },
-  { n: "03", title: "BotID Protocol", tags: ["Crypto Infra", "Agents", "Solidity"],
-    desc: "A reputation and accountability layer for autonomous agents managing capital on BOT Chain. Every agent posts a bond, and every execution settles into a verifiable record — proofs graded Bronze by signature, Silver by TEE attestation, Gold by Groth16 — so an agent's credit line is earned from outcomes rather than extended on trust.",
-    metric: { v: "300", l: "Tests, 14 suites" },
-    repo: "https://github.com/AfroTechBoss/botid", live: "https://botidprotocol.vercel.app" },
-  { n: "04", title: "Honua", tags: ["Sustainability", "Next.js", "Social"],
-    desc: "The world's first sustainability engine — a platform where green action is published, discovered and traded rather than buried in annual reports. The web app is a Next.js 15 build spanning social feed, marketplace and admin surfaces, with the design system carried over from the prototype.",
-    metric: { v: "17", l: "Screens shipped" },
-    repo: "https://github.com/honua-org/honuaweb", live: "https://honuaweb.vercel.app" },
-  { n: "05", title: "Honua L2", tags: ["Blockchain", "L2", "Sustainability"],
-    desc: "The on-chain infrastructure underneath Honua — a layer-2 chain built to support green projects and settle the sustainability ecosystem on-chain. Early development; no public network yet.",
-    status: "In development",
+
+  { t: "BotID Protocol", cat: "Crypto Infra · Agents · Solidity",
+    d: "A reputation and accountability layer for autonomous agents managing capital on BOT Chain. Every agent posts a bond and every execution settles into a verifiable record. Proofs are graded Bronze by signature, Silver by TEE attestation and Gold by Groth16, so an agent's credit line is earned from outcomes rather than extended on trust.",
+    m: { v: "300", l: "Tests, 14 suites" },
+    shot: "assets/shots/botid.jpg", alt: "The BotID Protocol site",
+    live: "https://botidprotocol.vercel.app", repo: "https://github.com/AfroTechBoss/botid" },
+
+  { t: "Honua", cat: "Sustainability · Next.js · Social",
+    d: "A sustainability engine where green action is published, discovered and traded rather than buried in an annual report. A Next.js 15 build spanning social feed, marketplace and admin surfaces, with the design system carried over from the prototype.",
+    m: { v: "17", l: "Screens shipped" },
+    shot: "assets/shots/honua.jpg", alt: "The Honua web app",
+    live: "https://honuaweb.vercel.app", repo: "https://github.com/honua-org/honuaweb" },
+
+  { t: "Certo.ng", cat: "E-commerce · Verification · Forex",
+    d: "Sources genuine Apple products from the US, verifies every serial against Apple's own database, and delivers to Nigeria with full US warranty plus twelve months of additional Certo coverage, with live USD to Naira pricing shown before checkout.",
+    m: { v: "12mo", l: "Added warranty" },
+    live: "https://certo.ng", repo: "https://github.com/AfroTechBoss/certo" },
+
+  { t: "Revelation Bot", cat: "Trading · Telegram · WebSocket",
+    d: "A Telegram trading-signal bot wired to Deriv's live WebSocket feed, running an eleven-signal confluence engine across Forex, Gold and Synthetics, with automated take-profit and stop-loss tracking and a live win-rate dashboard.",
+    m: { v: "11", l: "Signal confluence" },
+    live: "https://t.me/revelationtradingbot", repo: "https://github.com/AfroTechBoss/revelation-bot" },
+
+  { t: "NaijaRights", cat: "Civic Tech · Next.js · Legal",
+    d: "A civic-tech app that helps Nigerian citizens understand their legal rights, built and maintained on a steady release cadence rather than a single drop.",
+    m: { v: "15", l: "Releases shipped" },
+    live: "https://naijarights.vercel.app", repo: "https://github.com/AfroTechBoss/NaijaRights" },
+
+  { t: "Kast", cat: "Web3 · Farcaster · Solidity",
+    d: "The Info-Fi layer of Farcaster: a Next.js frontend paired with Solidity contracts and a Postgres and Prisma backend. Real contracts, a real database layer, MIT-licensed.",
+    m: { v: "MIT", l: "Open source" },
+    live: "https://kast-lyart.vercel.app", repo: "https://github.com/AfroTechBoss/kast" },
+
+  { t: "WarpKey", cat: "Web3 · Farcaster · Wallets",
+    d: "A Farcaster-native entry point into web3, built on Next.js with wallet-connection flows that take a user from cold to connected in a few taps.",
+    st: "Live demo",
+    live: "https://warpkey.vercel.app", repo: "https://github.com/AfroTechBoss/warpkey" },
+
+  { t: "HelloACA", cat: "AI · Contracts · SME",
+    d: "An AI contract analyzer that gives freelancers and small businesses a fast, plain-language read on an agreement before they sign it.",
+    st: "Early-stage",
+    live: "https://helloaca-two.vercel.app", repo: "https://github.com/AfroTechBoss/helloaca" },
+];
+
+const RECORD = [
+  { t: "Honua L2", cat: "Blockchain · L2 · Sustainability",
+    d: "The on-chain infrastructure underneath Honua: a layer-2 chain built to support green projects and settle the sustainability ecosystem on-chain. Early development, no public network yet.",
+    st: "In development",
     repo: "https://github.com/Honua-Org/Honua-L2" },
-  { n: "06", title: "Leak", tags: ["Civic Tech", "Privacy", "PWA"],
-    desc: "A secure, anonymous whistleblowing PWA for Nigerian investigative journalists — engineered to leak nothing about the people who use it, and deliberately hosted in Frankfurt for jurisdictional protection beyond Nigerian legal reach.",
-    metric: { v: "0", l: "Metadata stored" },
+
+  { t: "Leak", cat: "Civic Tech · Privacy · PWA",
+    d: "A secure, anonymous whistleblowing PWA for Nigerian investigative journalists, engineered to leak nothing about the people who use it and deliberately hosted in Frankfurt, outside Nigerian legal reach.",
+    m: { v: "0", l: "Metadata stored" },
     repo: "https://github.com/AfroTechBoss/leak" },
-  { n: "07", title: "Graso", tags: ["Crypto Infra", "RWA", "Cairo"],
-    desc: "Property ownership is gated by capital and paperwork most people will never clear. Graso tokenizes real estate so ownership can start small and stay liquid.",
-    metric: { v: "1st", l: "Govt-grant backed" } },
-  { n: "08", title: "Certo.ng", tags: ["E-commerce", "Verification", "Forex"],
-    desc: "Sources genuine Apple products from the US, verifies every serial against Apple's own database, and delivers to Nigeria with full US warranty plus 12 months of additional Certo coverage — with live USD/NGN pricing shown transparently before checkout.",
-    metric: { v: "12mo", l: "Added warranty" },
-    repo: "https://github.com/AfroTechBoss/certo", live: "https://certo.ng" },
-  { n: "09", title: "Revelation Bot", tags: ["Trading", "Telegram", "WebSocket"],
-    desc: "A Telegram trading-signal bot wired to Deriv's live WebSocket feed, running an 11-signal confluence engine across Forex, Gold and Synthetics, with automated TP/SL outcome tracking and a live win-rate dashboard.",
-    metric: { v: "11", l: "Signal confluence" },
-    repo: "https://github.com/AfroTechBoss/revelation-bot", live: "https://t.me/revelationtradingbot" },
-  { n: "10", title: "NaijaRights", tags: ["Civic Tech", "Next.js", "Legal"],
-    desc: "A civic-tech app that helps Nigerian citizens understand their legal rights — built and maintained with a steady release cadence rather than a single drop.",
-    metric: { v: "15", l: "Releases shipped" },
-    repo: "https://github.com/AfroTechBoss/NaijaRights", live: "https://naijarights.vercel.app" },
-  { n: "11", title: "Kast", tags: ["Web3", "Farcaster", "Solidity"],
-    desc: "The Info-Fi layer of Farcaster — a Next.js frontend paired with Solidity contracts and a Postgres / Prisma backend. Real contracts, real database layer, MIT-licensed.",
-    metric: { v: "MIT", l: "Open source" },
-    repo: "https://github.com/AfroTechBoss/kast", live: "https://kast-lyart.vercel.app" },
-  { n: "12", title: "WarpKey", tags: ["Web3", "Farcaster", "Wallets"],
-    desc: "A Farcaster-native entry point into web3, built on Next.js with wallet-connection flows that get a user from cold to connected in a few taps.",
-    status: "Live demo",
-    repo: "https://github.com/AfroTechBoss/warpkey", live: "https://warpkey.vercel.app" },
-  { n: "13", title: "HelloACA", tags: ["AI", "Contracts", "SME"],
-    desc: "An AI contract analyzer that gives freelancers and small businesses a fast, plain-language read on an agreement before they sign it.",
-    status: "Early-stage",
-    repo: "https://github.com/AfroTechBoss/helloaca", live: "https://helloaca-two.vercel.app" },
-  { n: "14", title: "FrensPool", tags: ["Web3", "Base", "Solidity"],
-    desc: "A Base-testnet pooling concept pairing a Next.js frontend with Solidity contracts — an early exploration of social, on-chain group savings.",
-    status: "Prototype",
+
+  { t: "Graso", cat: "Crypto Infra · RWA · Cairo",
+    d: "Property ownership is gated by capital and paperwork most people will never clear. Graso tokenizes real estate so ownership can start small and stay liquid. The first build of mine backed by a government grant.",
+    m: { v: "1st", l: "Govt-grant backed" } },
+
+  { t: "FrensPool", cat: "Web3 · Base · Solidity",
+    d: "A Base-testnet pooling concept pairing a Next.js frontend with Solidity contracts: an early exploration of social, on-chain group savings.",
+    st: "Prototype",
     repo: "https://github.com/AfroTechBoss/frenspool" },
-  { n: "15", title: "CarbonSystem", tags: ["Academic", "PHP", "Sustainability"],
-    desc: "A PHP-based carbon-tracking system — my BSc final-year project, included for the record as an academic build rather than a shipped product.",
-    status: "Academic",
+
+  { t: "CarbonSystem", cat: "Academic · PHP · Sustainability",
+    d: "A PHP carbon-tracking system, my BSc final-year project, kept in the file as an academic build rather than a shipped product.",
+    st: "Academic",
     repo: "https://github.com/AfroTechBoss/CarbonSystem" },
 ];
 
-/* ---------------- NAV ---------------- */
-function ArchNav() {
-  const scrolled = useScrollChrome();
+const COUNT = RUNNING.length + RECORD.length;
+
+/* =========================================================
+   HEAD OF THE PAGE
+   ========================================================= */
+function Top() {
   return (
-    <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
-      <div className="nav-inner">
-        <a href={HOME} className="logo footer-sig nav-sig" aria-label="Chidile — home">
-          <span className="sig-name">Chidile</span>
-        </a>
-        <NavMenu
-          links={[["Home", HOME], ["Work", `${HOME}#work`], ["About", `${HOME}#about`]]}
-          ctaHref={`${HOME}#contact`}
-        />
+    <header className="ar-ho">
+      <div className="ar-top">
+        <a className="ar-mark" href="/">Chidile</a>
+        <span className="ar-where">The archive</span>
       </div>
-    </nav>
+
+      <div className="ar-say">
+        <h1 className="ar-h1 dx rv in">Everything on the record</h1>
+        <p className="ar-sub rv in" data-d="1">
+          {COUNT} projects, shipped products and early prototypes alike, with the
+          stage each one is at, and the code where there is code to read.
+        </p>
+        <a className="act rv in" data-d="2" href="/#contact">Scope a project</a>
+      </div>
+
+      <div className="ar-band rv in" data-d="3">
+        <img src="assets/arch/arch-corner.jpg" alt="The corner of a concrete building against the sky" />
+      </div>
+    </header>
   );
 }
 
-/* ---------------- ROW ---------------- */
-function ArchRow({ p, i }) {
+function Sheet() {
+  const live = RUNNING.filter((p) => p.live).length + RECORD.filter((p) => p.live).length;
+  const repos = [...RUNNING, ...RECORD].filter((p) => p.repo).length;
+  const rows = [
+    ["Projects in the file", String(COUNT)],
+    ["With a live site", String(live)],
+    ["Open repositories", String(repos)],
+    ["Fields", "Fintech, crypto infrastructure, civic tech, AI, academic"],
+  ];
   return (
-    <div className="work-row arch-row reveal" data-cursor style={{ transitionDelay: `${Math.min(i * 0.035, 0.3)}s` }}>
-      <span className="row-fill" />
-      <div className="row-main">
-        <span className="row-num">{p.n}</span>
-        <span className="row-name serif">{p.title}<span className="arr">↗</span></span>
-        <span className="row-tags">{p.tags.map((t) => <span className="row-tag" key={t}>{t}</span>)}</span>
-      </div>
-      <div className="row-detail">
-        <div className="row-detail-inner">
-          <div className="arch-detail-l">
-            <p className="row-prob">{p.desc}</p>
-            <div className="arch-links">
-              {p.live
-                ? <a className="arch-link" href={p.live} target="_blank" rel="noopener noreferrer">Live <span className="lk">↗</span></a>
-                : <span className="arch-link disabled">No live site <span className="lk">·</span></span>}
-              {p.repo
-                ? <a className="arch-link" href={p.repo} target="_blank" rel="noopener noreferrer">Repository <span className="lk">↗</span></a>
-                : <span className="arch-link disabled">Private repo <span className="lk">·</span></span>}
+    <section className="ar-sum sec">
+      <div className="wrapx ar-sum-grid">
+        <h2 className="sec-h dx rv">What is in the drawer</h2>
+        <dl className="ar-sheet rv" data-d="1">
+          {rows.map(([k, v]) => (
+            <div key={k}>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
             </div>
-          </div>
-          <div className="row-metric">
-            {p.metric
-              ? <><div className="mv serif">{p.metric.v}</div><span className="ml">{p.metric.l}</span></>
-              : <span className="arch-status">{p.status}</span>}
-          </div>
-        </div>
+          ))}
+        </dl>
       </div>
-    </div>
+    </section>
   );
 }
 
-/* ---------------- PAGE ---------------- */
-const ATWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accent": "#14100B",
-  "motion": true,
-  "grain": true
-}/*EDITMODE-END*/;
-const AACCENTS = ["#14100B", "#E0431B", "#1F45E0", "#C9A84C"];
-
-function aHexToRgb(h) {
-  const m = h.replace("#", "");
-  const n = parseInt(m.length === 3 ? m.split("").map((c) => c + c).join("") : m, 16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-}
-function aApplyAccent(hex) {
-  const [r, g, b] = aHexToRgb(hex);
-  const root = document.documentElement.style;
-  root.setProperty("--accent", hex);
-  root.setProperty("--accent-soft", `rgba(${r},${g},${b},0.10)`);
-  root.setProperty("--accent-line", `rgba(${r},${g},${b},0.34)`);
-}
-
-function ArchApp() {
-  const [t, setTweak] = useTweaks(ATWEAK_DEFAULTS);
-  useRevealObserver("lumen-archive");
-
-  // Reveal deterministically once the loader lifts — the IntersectionObserver
-  // can be unreliable (offscreen/print contexts), and the archive list IS the
-  // content, so it must never stay hidden. Per-row transitionDelay staggers it.
-  useAE(() => {
-    const reveal = () => document.querySelectorAll(".reveal:not(.in)").forEach((e) => e.classList.add("in"));
-    const t0 = setTimeout(reveal, 1400);
-    return () => clearTimeout(t0);
-  }, []);
-
-  useAE(() => { aApplyAccent(t.accent); }, [t.accent]);
-  useAE(() => {
-    document.body.classList.toggle("reduce-motion", !t.motion);
-    document.body.classList.toggle("no-grain", !t.grain);
-  }, [t.motion, t.grain]);
-
+/* =========================================================
+   THE LEDGER
+   ========================================================= */
+function Row({ p, alt }) {
   return (
-    <>
-      <Loader />
-      <div className="grain" aria-hidden="true" />
-      <div className="scroll-progress" />
-      {t.motion && <LumenCursor />}
+    <article className={"ar-row rv" + (alt ? " alt" : "")}>
+      <div className="ar-id">
+        <h3 className="ar-name dx">{p.t}</h3>
+        <p className="ar-cat">{p.cat}</p>
+        {p.shot && (
+          <span className="ar-pic">
+            <img src={p.shot} alt={p.alt} loading="lazy" />
+          </span>
+        )}
+      </div>
 
-      <ArchNav />
+      <div className="ar-body">
+        <p>{p.d}</p>
+        <p className="ar-links">
+          {p.live
+            ? <a className="lnk" href={p.live} target="_blank" rel="noopener noreferrer">Open it</a>
+            : <span className="ar-none">No live site yet</span>}
+          {p.repo
+            ? <a className="lnk" href={p.repo} target="_blank" rel="noopener noreferrer">Read the code</a>
+            : <span className="ar-none">Repository private</span>}
+        </p>
+      </div>
 
-      <header className="arch-hero" id="top">
-        <div className="wrap">
-          <span className="sec-num reveal">Index — Full archive</span>
-          <h1 className="arch-title serif reveal" data-d="1">Everything,<br />on the record.</h1>
-          <p className="arch-lede reveal" data-d="2">
-            <b>{ARCHIVE.length} projects</b> — shipped products, live concepts and early prototypes alike, listed honestly. Hover any line to open it.
-          </p>
-        </div>
-      </header>
-
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <div className="arch-list">
-            {ARCHIVE.map((p, i) => <ArchRow key={p.n} p={p} i={i} />)}
-          </div>
-          <div className="arch-foot reveal">
-            <a href={`${HOME}#contact`} className="btn-text">Start a conversation <span className="ar">→</span></a>
-          </div>
-        </div>
-      </section>
-
-      <footer className="footer">
-        <div className="footer-mark" aria-hidden="true">Chidile</div>
-        <div className="footer-inner">
-          <a href={HOME} className="logo footer-sig" aria-label="Chidile — back to home">
-            <span className="sig-name">Chidile</span>
-          </a>
-          <span>© 2026 · afrotechboss · Building worldwide</span>
-          <a href={HOME} className="to-top">Back to home <span>↑</span></a>
-        </div>
-      </footer>
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection label="Accent" />
-        <TweakColor label="Color" value={t.accent} options={AACCENTS} onChange={(v) => setTweak("accent", v)} />
-        <TweakSection label="Motion" />
-        <TweakToggle label="Animations & cursor" value={t.motion} onChange={(v) => setTweak("motion", v)} />
-        <TweakToggle label="Film grain" value={t.grain} onChange={(v) => setTweak("grain", v)} />
-      </TweaksPanel>
-    </>
+      <div className="ar-meta">
+        {p.m
+          ? <p className="ar-m"><b>{p.m.v}</b><span>{p.m.l}</span></p>
+          : <p className="ar-st">{p.st}</p>}
+      </div>
+    </article>
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<ArchApp />);
+function Ledger({ id, title, lede, list, from }) {
+  return (
+    <section className="ar-sec" id={id}>
+      <div className="wrapx ar-sec-head">
+        <h2 className="sec-h dx rv">{title}</h2>
+        <p className="lede rv" data-d="1">{lede}</p>
+      </div>
+      <div className="ar-led">
+        {list.map((p, n) => <Row key={p.t} p={p} alt={(from + n) % 2 === 1} />)}
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   FOOT OF THE PAGE
+   ========================================================= */
+function End() {
+  return (
+    <footer className="ar-end">
+      <div className="ar-end-pic">
+        <img src="assets/arch/arch-well.jpg" alt="" loading="lazy" />
+      </div>
+      <div className="ar-end-card rv">
+        <h2 className="dx">That is the whole file</h2>
+        <p>
+          The seven builds I would put my name on first are written up on the home
+          page, with the documentation that goes with them. If one of these is close
+          to something you need, say which and I will tell you what it would take.
+        </p>
+        <div className="ar-end-rows">
+          <div><span>Email</span><span>{EMAIL}</span></div>
+          <div><span>Next availability</span><span>Q3 2026</span></div>
+          <div><span>Reply inside</span><span>24 hours</span></div>
+        </div>
+        <p className="ar-end-go">
+          <a className="act" href="/#work">Back to the work</a>
+          <a className="lnk" href={"mailto:" + EMAIL}>Write to me</a>
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+function Page() {
+  useReveal();
+  return (
+    <React.Fragment>
+      <Top />
+      <Sheet />
+      <Ledger
+        id="running"
+        title="Shipped and running"
+        lede="Ten builds with something at the other end of a link: a product, a demo, a bot you can message."
+        list={RUNNING}
+        from={0}
+      />
+      <Ledger
+        id="record"
+        title="In development, and for the record"
+        lede="Five more in the drawer: infrastructure still being built, one deliberately unpublished, and the academic build kept for honesty."
+        list={RECORD}
+        from={1}
+      />
+      <End />
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Page />);
