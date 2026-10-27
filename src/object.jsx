@@ -58,20 +58,26 @@ function Hero() {
       </div>
 
       <div className="ho-stack">
-        {FOLDERS.map((f, n) => (
-          <a
-            key={f.id}
-            className="fold"
-            href={"#" + f.id}
-            style={{ "--i": n, "--z": n + 1, "--fc": f.c, "--fi": f.i }}
-          >
-            <span className="fold-tab">{f.name}</span>
-            {n === FOLDERS.length - 1 && (
-              <span className="act fold-act">Scope a project</span>
-            )}
-          </a>
-        ))}
-        <p className="ho-note">Five sheets. One file.</p>
+        {FOLDERS.map((f, n) => {
+          const last = n === FOLDERS.length - 1;
+          const style = { "--i": n, "--z": n + 1, "--fc": f.c, "--fi": f.i };
+          if (!last) {
+            return (
+              <a key={f.id} className="fold" href={"#" + f.id} style={style}>
+                <span className="fold-tab">{f.name}</span>
+              </a>
+            );
+          }
+          return (
+            <div key={f.id} className="fold" style={style}>
+              <a className="fold-tab" href={"#" + f.id}>{f.name}</a>
+              <a className="act fold-act" href={"#" + f.id}>Scope a project</a>
+              <span className="fold-pic">
+                <img src="assets/arch/arch-concrete.jpg" alt="Concrete steps, shot from above" />
+              </span>
+            </div>
+          );
+        })}
       </div>
     </header>
   );
@@ -116,18 +122,30 @@ const BANDS = [
   { t: "Honua L2", cat: "Blockchain · L2 · Sustainability",
     d: "The on-chain infrastructure underneath Honua: a layer-2 chain built to support green projects and settle the sustainability ecosystem on-chain. Early development; no public network yet.",
     m: { v: "L2", l: "In development" },
+    spec: [["Layer", "Layer 2, settles to its base chain"],
+           ["Settles", "The Honua sustainability market"],
+           ["Public network", "None yet"],
+           ["Stage", "Early development, open repository"]],
     repo: "https://github.com/Honua-Org/Honua-L2",
     fc: "#1f2b4d", fi: "#ffffff", fa: "#f4f4f2", fai: "#1f2b4d" },
 
   { t: "Leak", cat: "Civic Tech · Privacy · PWA",
     d: "A secure, anonymous whistleblowing app for Nigerian investigative journalists, engineered to leak nothing about the people who use it, and deliberately hosted in Frankfurt for jurisdictional protection beyond Nigerian legal reach.",
     m: { v: "0", l: "Metadata stored" },
+    spec: [["Metadata stored", "None, by design"],
+           ["Hosted", "Frankfurt, outside Nigerian legal reach"],
+           ["Delivery", "Installable PWA, no app store"],
+           ["Written for", "Nigerian investigative journalists"]],
     repo: "https://github.com/AfroTechBoss/leak",
     fc: "#e3e1dc", fi: "#1f2b4d", fa: "#05070a", fai: "#ffffff" },
 
   { t: "Graso", cat: "Crypto Infra · RWA · Cairo",
     d: "Property ownership is gated by capital and paperwork most people will never clear. Graso tokenizes real estate so ownership can start small and stay liquid.",
     m: { v: "1st", l: "Govt-grant backed" },
+    spec: [["Contracts", "Cairo"],
+           ["Asset", "Real estate, tokenized into tradable shares"],
+           ["Entry", "Ownership can start small and stay liquid"],
+           ["Backing", "First government-grant-backed build"]],
     fc: "#05070a", fi: "#ffffff", fa: "#f4f4f2", fai: "#1f2b4d" },
 ];
 
@@ -153,10 +171,14 @@ function Work() {
               {b.shot ? (
                 <div className="band-pic rv"><img src={b.shot} alt={b.alt} loading="lazy" /></div>
               ) : (
-                <div className="band-figure rv">
-                  <b>{b.m.v}</b>
-                  <span>{b.m.l}</span>
-                </div>
+                <dl className="band-spec rv">
+                  {b.spec.map(([k, v]) => (
+                    <div key={k}>
+                      <dt>{k}</dt>
+                      <dd>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
               )}
               <div className="band-text rv" data-d="1">
                 <p>{b.d}</p>
@@ -260,9 +282,9 @@ const DOCS = [
 function Writing() {
   return (
     <section className="wr" id="writing">
-      <div className="wrapx">
+      <div className="wrapx wr-top">
         <h2 className="sec-h dx rv">The written half</h2>
-        <p className="lede rv" data-d="1" style={{ marginTop: 22, color: "#c9ccd6" }}>
+        <p className="lede rv" data-d="1">
           Five documentation sets, three platforms. If it cannot be explained in a
           document, it is not finished.
         </p>
@@ -303,6 +325,7 @@ function About() {
     <section className="ab" id="about">
       <div className="wrapx">
         <div className="ab-sheet rv">
+          <h2 className="ab-h">Who you are hiring</h2>
           <div className="ab-por">
             <img src="assets/chidile-avatar.jpg" alt="Chidile Ozoemena" loading="lazy" />
           </div>
