@@ -1,54 +1,53 @@
 /* =========================================================
-   object.jsx: type and nothing else
-   Direction: type-only-statement (seed 1747536568)
-   The first screen is words, colour and space. After it the
-   ground colour changes as you read, and the grade of each
-   claim is what carries you from one field to the next.
+   object.jsx — the split stage
+   Direction: split-stage (seed 508810379)
+   Half the screen never moves. The fixed half holds the thing
+   that runs; the scrolling half does the writing. The index in
+   the reading column is what changes the fixed half.
    Self-contained: mounts its own root.
    ========================================================= */
-const { useState: uS, useEffect: uE, useRef: uR, useMemo: uM } = React;
+const { useState: uS, useEffect: uE, useMemo: uM } = React;
 
 const EMAIL = "chidileozoemena@gmail.com";
 const CALL  = "https://calendly.com/afrotechboss/chidile-ozoemena";
+const GH    = "https://github.com/AfroTechBoss";
 
 /* ---------------- the grading ---------------- */
 const RANK  = { Bronze: 0, Silver: 1, Gold: 2 };
-const GRADE = [
-  { g: "Bronze", say: "You have my word, and nothing else." },
-  { g: "Silver", say: "You can read the source. There is nothing hosted to open." },
-  { g: "Gold",   say: "You can open it and use it right now." },
-];
-
-/* the four disciplines, and the colour each one takes on the shelf */
-const FIELD = {
-  Money:  "#ff8126",
-  Civic:  "#4db3ff",
-  Agents: "#c5f53d",
-  Docs:   "#de194b",
+const GRADE = {
+  Bronze: "You have my word, and nothing else.",
+  Silver: "You can read the source. There is nothing hosted to open.",
+  Gold:   "You can open it and use it right now.",
 };
 
+const FIELDS = ["Money", "Civic", "Agents", "Docs"];
+
+/* Twenty claims. `s` is the screenshot of the thing itself, where one exists;
+   the eight without one get a plate that says so rather than a borrowed picture. */
 const BUILDS = [
-  { n: "UnioGate",     d: "Money",  g: "Gold",   live: "https://uniogate.com" },
-  { n: "Uzo Labs",     d: "Agents", g: "Gold",   live: "https://uzolabs.xyz" },
-  { n: "BotID",        d: "Agents", g: "Gold",   live: "https://botidprotocol.vercel.app" },
-  { n: "Honua",        d: "Civic",  g: "Gold",   live: "https://honuaweb.vercel.app" },
-  { n: "Certo",        d: "Money",  g: "Gold",   live: "https://certo.ng" },
-  { n: "NaijaRights",  d: "Civic",  g: "Gold",   live: "https://naijarights.vercel.app" },
-  { n: "Kast",         d: "Civic",  g: "Gold",   live: "https://kast-lyart.vercel.app" },
-  { n: "WarpKey",      d: "Money",  g: "Gold",   live: "https://warpkey.vercel.app" },
-  { n: "HelloACA",     d: "Agents", g: "Gold",   live: "https://helloaca-two.vercel.app" },
-  { n: "Revelation",   d: "Money",  g: "Gold",   live: "https://t.me/revelationtradingbot" },
-  { n: "Leak",         d: "Civic",  g: "Silver", repo: "https://github.com/AfroTechBoss/leak" },
-  { n: "FrensPool",    d: "Money",  g: "Silver", repo: "https://github.com/AfroTechBoss/frenspool" },
-  { n: "CarbonSystem", d: "Civic",  g: "Silver", repo: "https://github.com/AfroTechBoss/CarbonSystem" },
-  { n: "Honua L2",     d: "Money",  g: "Bronze" },
-  { n: "Graso",        d: "Money",  g: "Bronze" },
-  { n: "Uzo Docs",     d: "Docs",   g: "Gold",   live: "https://docs.uzolabs.xyz" },
-  { n: "Ifa Labs",     d: "Docs",   g: "Gold",   live: "https://docs.ifalabs.com" },
-  { n: "Honua paper",  d: "Docs",   g: "Gold",   live: "https://docs.honua.green" },
-  { n: "Frenspool doc", d: "Docs",  g: "Bronze" },
-  { n: "Brij",         d: "Docs",   g: "Bronze" },
+  { n: "UnioGate",      d: "Money",  g: "Gold",   live: "https://uniogate.com",                   s: "uniogate" },
+  { n: "Uzo Labs",      d: "Agents", g: "Gold",   live: "https://uzolabs.xyz",                    s: "uzolabs" },
+  { n: "BotID",         d: "Agents", g: "Gold",   live: "https://botidprotocol.vercel.app",       s: "botid" },
+  { n: "Honua",         d: "Civic",  g: "Gold",   live: "https://honuaweb.vercel.app",            s: "honua" },
+  { n: "Certo",         d: "Money",  g: "Gold",   live: "https://certo.ng",                       s: "certo" },
+  { n: "NaijaRights",   d: "Civic",  g: "Gold",   live: "https://naijarights.vercel.app",         s: "naijarights" },
+  { n: "Kast",          d: "Civic",  g: "Gold",   live: "https://kast-lyart.vercel.app",          s: "kast" },
+  { n: "WarpKey",       d: "Money",  g: "Gold",   live: "https://warpkey.vercel.app",             s: "warpkey" },
+  { n: "Revelation",    d: "Money",  g: "Gold",   live: "https://t.me/revelationtradingbot",      s: "revelation" },
+  { n: "Uzo Docs",      d: "Docs",   g: "Gold",   live: "https://docs.uzolabs.xyz",               s: "uzo-docs" },
+  { n: "Ifa Labs",      d: "Docs",   g: "Gold",   live: "https://docs.ifalabs.com",               s: "ifa-docs" },
+  { n: "Honua paper",   d: "Docs",   g: "Gold",   live: "https://docs.honua.green",               s: "honua-paper" },
+  { n: "HelloACA",      d: "Agents", g: "Gold",   live: "https://helloaca-two.vercel.app" },
+  { n: "Leak",          d: "Civic",  g: "Silver", repo: "https://github.com/AfroTechBoss/leak" },
+  { n: "FrensPool",     d: "Money",  g: "Silver", repo: "https://github.com/AfroTechBoss/frenspool" },
+  { n: "CarbonSystem",  d: "Civic",  g: "Silver", repo: "https://github.com/AfroTechBoss/CarbonSystem" },
+  { n: "Honua L2",      d: "Money",  g: "Bronze" },
+  { n: "Graso",         d: "Money",  g: "Bronze" },
+  { n: "FrensPool docs", d: "Docs",  g: "Bronze" },
+  { n: "Brij",          d: "Docs",   g: "Bronze" },
 ];
+
+const SHOTS = BUILDS.filter((b) => b.s);
 
 const CLIENTS = [
   { n: "Google",              f: "google.svg" },
@@ -74,15 +73,32 @@ const CLIENTS = [
   { n: "Maringo" },
 ];
 
-const SERVICES = [
-  { n: "Smart contracts",                      v: "Solidity, Cairo, Rust, Move" },
-  { n: "Blockchain infrastructure",            v: "Chains, SDKs, indexers" },
-  { n: "AI and agent products",                v: "With a trail behind them" },
-  { n: "Technical documentation",              v: "GitBook, Mintlify, Notion" },
-  { n: "Product and market research",          v: "Per report" },
-  { n: "Systems analysis and redesign",        v: "Audit" },
-  { n: "Technical co-founder, fractional CTO", v: "Retainer" },
-  { n: "Workshops, teaching and talks",        v: "Per day" },
+/* Prices are set like a menu: the shape of the engagement on the right,
+   the floor stated once beside the heading. Nothing here is invented. */
+const MENU = [
+  {
+    g: "Building",
+    items: [
+      { n: "Smart contracts",           v: "Per project", d: "Solidity, Cairo, Rust and Move, audited before anyone touches money." },
+      { n: "Blockchain infrastructure", v: "Per project", d: "Chains, SDKs and indexers, with the operator in mind." },
+      { n: "AI and agent products",     v: "Per project", d: "Agents that leave a trail you can read afterwards." },
+    ],
+  },
+  {
+    g: "Writing",
+    items: [
+      { n: "Technical documentation",   v: "Per set",    d: "GitBook, Mintlify or Notion. Five sets of mine are open right now." },
+      { n: "Product and market research", v: "Per report", d: "The numbers, where they came from, and what they do not say." },
+    ],
+  },
+  {
+    g: "Advising",
+    items: [
+      { n: "Systems analysis and redesign", v: "Audit",     d: "I read what you have and tell you what is load-bearing." },
+      { n: "Technical co-founder, fractional CTO", v: "Retainer", d: "Monthly, with a cap on hours so neither of us pretends." },
+      { n: "Workshops, teaching and talks", v: "Per day",   d: "Lagos in the room, or anywhere on a call." },
+    ],
+  },
 ];
 
 /* ---------------- entrances ---------------- */
@@ -108,245 +124,229 @@ function useReveal() {
 }
 
 /* =========================================================
-   THE FIRST SCREEN — words, colour and space
+   THE SPLIT — the sheet and the index scroll, the stage does not
    ========================================================= */
-function Hero() {
+function Stage({ pick }) {
+  const open = pick.live || pick.repo;
+
+  return (
+    <aside className="split-stage" aria-live="polite">
+      {SHOTS.map((b, i) => (
+        <img
+          key={b.s}
+          className={"stage-shot" + (b.n === pick.n ? " on" : "")}
+          src={"assets/shots/" + b.s + ".jpg"}
+          alt={b.n + ", as it stands today"}
+          width="2880"
+          height="1800"
+          loading={i === 0 ? "eager" : "lazy"}
+          decoding="async"
+        />
+      ))}
+
+      <div className={"stage-plate" + (pick.s ? "" : " on")} aria-hidden={pick.s ? "true" : "false"}>
+        <strong>{pick.n}</strong>
+        <span>
+          Nothing to show you. {GRADE[pick.g]} A picture of something else would be
+          worth less than this sentence.
+        </span>
+      </div>
+
+      <p className="stage-bar">
+        <b>{pick.n}</b>
+        {open ? (
+          <a className="act-2" href={open} target="_blank" rel="noreferrer">
+            {pick.live ? "Open it" : "Read the source"}
+          </a>
+        ) : (
+          <span>{pick.g}, my word only</span>
+        )}
+      </p>
+    </aside>
+  );
+}
+
+function Split() {
   const [lit, setLit] = uS(false);
+  const [pick, setPick] = uS(BUILDS[0]);
+  const openable = uM(() => BUILDS.filter((b) => b.live).length, []);
+
   uE(() => {
     const t = requestAnimationFrame(() => setLit(true));
     return () => cancelAnimationFrame(t);
   }, []);
 
   return (
-    <header className={"hero f f-orange" + (lit ? " lit" : "")}>
-      <div className="hero-top">
-        <b>Chidile Ozoemena</b>
-        <nav aria-label="Sections">
-          <a href="#work">Work</a>
-          <a href="/archive">Archive</a>
-          <a href={"mailto:" + EMAIL}>Email</a>
-        </nav>
-      </div>
+    <div className="split">
+      <div className="split-read">
+        <header className={"hero" + (lit ? " lit" : "")}>
+          <nav className="hero-top" aria-label="Top">
+            <b>Chidile Ozoemena</b>
+            <a href="/archive">Archive</a>
+          </nav>
 
-      <h1 className="hero-say">
-        <span className="l hero-l1"><span>Built</span></span>
-        <span className="l hero-l2"><span>and written</span></span>
-      </h1>
+          <h1 className="hero-say">
+            Built to run, <i>written</i> to last.
+          </h1>
 
-      <div className="hero-foot">
-        <p>
-          I build settlement rails, civic platforms and agent infrastructure in Nigeria,
-          then write the documentation that keeps them alive.
-        </p>
-        <a className="act" href={CALL} target="_blank" rel="noreferrer">Book a call</a>
-      </div>
-    </header>
-  );
-}
-
-/* =========================================================
-   THE SHELF — twenty claims, and the ladder that sorts them
-   The live thing on this page: choosing a grade brings the
-   claims that meet it to the front of the shelf.
-   ========================================================= */
-function Shelf() {
-  const [sel, setSel] = uS("Bronze");
-  const met = uM(() => BUILDS.filter((x) => RANK[x.g] >= RANK[sel]).length, [sel]);
-  const said = GRADE.find((x) => x.g === sel).say;
-
-  return (
-    <section className="sh f f-dark" id="work">
-      <div className="wrap">
-        <div className="sh-top">
-          <div>
-            <h2 className="sec-h rv">Twenty claims, on one shelf</h2>
-            <p className="sh-count rv" data-d="1">
-              <b>{met} of {BUILDS.length}</b> meet {sel}. {said}
+          <div className="hero-mid">
+            <p>
+              I build settlement rails, civic platforms and agent infrastructure in
+              Nigeria, then write the documentation that keeps them alive.
             </p>
-          </div>
-
-          <div className="ladder rv" data-d="2" role="group" aria-label="Sort the shelf by proof">
-            {GRADE.map((x) => (
-              <button
-                key={x.g}
-                type="button"
-                aria-pressed={sel === x.g}
-                onClick={() => setSel(x.g)}
-              >
-                {x.g}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="shelf">
-          {BUILDS.map((x) => {
-            const held = RANK[x.g] >= RANK[sel];
-            const href = x.live || x.repo || "/archive";
-            const out = !href.startsWith("/");
-            return (
-              <a
-                key={x.n}
-                className={"spine" + (held ? "" : " late")}
-                data-k={x.d === "Docs" ? "crimson" : x.d}
-                style={{ "--sp": FIELD[x.d] }}
-                href={href}
-                target={out ? "_blank" : undefined}
-                rel={out ? "noreferrer" : undefined}
-              >
-                {x.n}<i>{x.d}</i>
-              </a>
-            );
-          })}
-        </div>
-
-        <p className="sh-key rv">
-          {Object.keys(FIELD).map((k) => (
-            <span key={k}><b style={{ "--sp": FIELD[k] }} aria-hidden="true"></b>{k}</span>
-          ))}
-        </p>
-
-        <p className="sh-foot rv" data-d="1">
-          <a className="act-2" href="/archive">Every claim in one ledger</a>
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* =========================================================
-   WHAT I AM HIRED FOR — one item per poster line
-   ========================================================= */
-function Hired() {
-  return (
-    <section className="po f f-sky" id="scope">
-      <div className="wrap">
-        <div className="po-h">
-          <h2 className="sec-h rv">What I am hired for</h2>
-        </div>
-        <ul className="po-list">
-          {SERVICES.map((s, i) => (
-            <li key={s.n} className="rv" data-d={String((i % 5) + 1)}>
-              <span className="po-n">{s.n}</span>
-              <span className="po-v">{s.v}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-/* =========================================================
-   THE PICTURES — large and few, as relief from the type
-   ========================================================= */
-function Pictures() {
-  return (
-    <section className="ph f f-orange" id="screens">
-      <div className="wrap">
-        <div className="ph-h">
-          <h2 className="sec-h rv">Five of them, as shipped</h2>
-        </div>
-
-        <figure className="ph-big rv">
-          <img src="assets/shots/uniogate.jpg" alt="The UnioGate point-of-sale dashboard"
-               width="1440" height="900" loading="lazy" />
-          <figcaption>UnioGate. Cards and stablecoins settling into one merchant ledger.</figcaption>
-        </figure>
-
-        <figure className="ph-pair rv" data-d="1">
-          <img src="assets/shots/honua.jpg" alt="The Honua climate network feed"
-               width="1440" height="900" loading="lazy" />
-          <img src="assets/shots/kast.jpg" alt="The Kast broadcasting client"
-               width="1440" height="900" loading="lazy" />
-          <figcaption>Honua and Kast. Both open in a new tab, right now.</figcaption>
-        </figure>
-
-        <figure className="ph-pair rv" data-d="2">
-          <img src="assets/shots/certo.jpg" alt="The Certo seller verification page"
-               width="1440" height="900" loading="lazy" />
-          <img src="assets/shots/naijarights.jpg" alt="The NaijaRights constitution reader"
-               width="1440" height="900" loading="lazy" />
-          <figcaption>Certo and NaijaRights. Verification, and the constitution in plain words.</figcaption>
-        </figure>
-      </div>
-    </section>
-  );
-}
-
-/* =========================================================
-   ABOUT — side facts, wide paragraph
-   ========================================================= */
-function About() {
-  return (
-    <section className="ab f f-orange" id="about">
-      <div className="wrap">
-        <h2 className="sec-h rv">Who you are hiring</h2>
-        <div className="ab-in">
-          <div className="ab-facts rv">
-            <div><b>Nigeria</b><em>Working from Lagos, hired from everywhere</em></div>
-            <div><b>Q3 2026</b><em>Next availability</em></div>
-            <div><b>24 hours</b><em>Reply time on a cold email</em></div>
-          </div>
-
-          <div>
-            <p className="ab-say rv" data-d="1">
-              I build the systems and then I write them down. Most engineers skip that
-              second half. It is why the first half survives.
-            </p>
-            <p className="ab-body rv" data-d="2">
-              Most of my work sits where money, records and public interest meet: settlement
-              rails for merchants who lose too much to middlemen, an accountability layer for
-              agents that move capital, a whistleblowing app built to know nothing about the
-              people using it. Clients hire people, not CVs, so I build like my name is on it,
-              because it is: on the contracts, on the docs, and on{" "}
-              <a href="#clients">this page</a>.
-            </p>
-            <figure className="ab-por rv" data-d="3">
-              <img src="assets/chidile-photo.jpg" alt="Chidile Ozoemena"
-                   width="625" height="625" loading="lazy" />
-              <figcaption>Chidile Ozoemena, Lagos.</figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* =========================================================
-   THE PRICE, VERY LARGE
-   ========================================================= */
-function Price() {
-  return (
-    <section className="pr f f-lime" id="price">
-      <div className="wrap pr-in">
-        <div className="pr-say rv">
-          <h2 className="sec-h">What it costs to start</h2>
-          <p>
-            Scopes differ, and the number beside this is a floor rather than a quote. Tell me
-            what you are building and I will send back a written scope before you commit
-            to anything.
-          </p>
-          <div className="pr-go">
             <a className="act" href={CALL} target="_blank" rel="noreferrer">Book a call</a>
-            <a className="act-2" href="/scope">See the full scope sheet</a>
           </div>
-        </div>
+        </header>
 
-        <div>
-          <p className="pr-fig rv" data-d="1">
-            <span className="pr-cur">$</span>
-            <span className="pr-num">2,000</span>
-            <span className="pr-per">per project, most start here</span>
+        <section className="ix" id="work">
+          <h2 className="sec-h rv ix-h">Twenty claims, and what backs each one</h2>
+          <p className="lead rv ix-count" data-d="1">
+            <b>{openable} of {BUILDS.length}</b> you can open in a new tab right now. Pick any
+            line and the half beside it changes to that one.
           </p>
-          <ul className="pr-list">
-            {SERVICES.slice(0, 4).map((s, i) => (
-              <li key={s.n} className="rv" data-d={String((i % 5) + 1)}>
-                {s.n}<span>{s.v}</span>
+
+          <ul className="ix-list rv" data-d="2">
+            {BUILDS.map((b) => (
+              <li key={b.n}>
+                <button
+                  type="button"
+                  aria-current={b.n === pick.n}
+                  onClick={() => setPick(b)}
+                >
+                  {b.n}
+                  <em>{b.d} · {b.g}</em>
+                </button>
               </li>
             ))}
           </ul>
+
+          <p className="lead rv ix-foot" data-d="3">
+            Gold means you can open it. Silver means you can read the source. Bronze means
+            you have my word and nothing else, and I would rather say so than dress it up.
+          </p>
+        </section>
+      </div>
+
+      <Stage pick={pick} />
+    </div>
+  );
+}
+
+/* =========================================================
+   FIXED OUTPUT, LIVE CONTROLS — the ledger you configure
+   ========================================================= */
+function Config() {
+  const [field, setField] = uS("All");
+  const [bar, setBar] = uS("Bronze");
+  const [only, setOnly] = uS(false);
+  const [q, setQ] = uS("");
+
+  const rows = uM(() => BUILDS.filter((b) => {
+    if (field !== "All" && b.d !== field) return false;
+    if (RANK[b.g] < RANK[bar]) return false;
+    if (only && !b.live) return false;
+    if (q.trim() && !b.n.toLowerCase().includes(q.trim().toLowerCase())) return false;
+    return true;
+  }), [field, bar, only, q]);
+
+  return (
+    <section className="cf" id="services">
+      <div className="wrap grid12 cf-in">
+        <h2 className="sec-h cf-h rv">How to check my work</h2>
+
+        <div className="cf-fix">
+          <div className="ledger rv" data-ui>
+            <div className="ledger-h">
+              <strong>The ledger</strong>
+              <span>{field === "All" ? "every field" : field}, {bar} and up</span>
+            </div>
+
+            {rows.length ? (
+              <ul>
+                {rows.map((b) => (
+                  <li key={b.n}>
+                    <b>{b.n}</b>
+                    <i>{b.g}</i>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="ledger-empty">Nothing I have built meets that. I am not going to invent one.</p>
+            )}
+
+            <p className="ledger-sum">
+              <span>Claims shown</span>
+              <b>{rows.length} of {BUILDS.length}</b>
+            </p>
+          </div>
+        </div>
+
+        <div className="cf-read">
+          <div className="blk rv">
+            <h3>Four fields, and I will not pretend to a fifth.</h3>
+            <p>
+              Money moves, civic records, agent infrastructure, and the documentation
+              that keeps all three usable. Narrow the ledger to one and see how much is
+              left standing.
+            </p>
+            <div className="seg" role="group" aria-label="Field">
+              {["All", ...FIELDS].map((f) => (
+                <button key={f} type="button" aria-pressed={field === f} onClick={() => setField(f)}>{f}</button>
+              ))}
+            </div>
+          </div>
+
+          <div className="blk rv">
+            <h3>Set the proof you need before you believe me.</h3>
+            <p>
+              Every claim carries a grade I gave it myself, and the bar you set here is
+              the one the ledger answers to. Raise it to Gold and the list gets honest fast.
+            </p>
+            <div className="seg" role="group" aria-label="Lowest grade">
+              {["Bronze", "Silver", "Gold"].map((g) => (
+                <button key={g} type="button" aria-pressed={bar === g} onClick={() => setBar(g)}>{g}</button>
+              ))}
+            </div>
+          </div>
+
+          <div className="blk rv">
+            <h3>Hosted, or only hosted on my word.</h3>
+            <p>
+              Some of this is a running service with a URL. Some is a repository. Some is
+              finished work I cannot show you. Switch this on to drop everything you
+              cannot click.
+            </p>
+            <div className="sw">
+              <button
+                type="button"
+                role="switch"
+                aria-checked={only}
+                aria-labelledby="only-l"
+                onClick={() => setOnly(!only)}
+              >
+                <span />
+              </button>
+              <label id="only-l">Only things with a live URL</label>
+            </div>
+          </div>
+
+          <div className="blk rv">
+            <h3>Or go straight to the one you came for.</h3>
+            <p>
+              If somebody sent you here about a particular build, type its name. The
+              ledger keeps whatever you set above.
+            </p>
+            <div className="fld">
+              <label className="sr" htmlFor="q">Search claims by name</label>
+              <input
+                id="q"
+                type="search"
+                value={q}
+                placeholder="UnioGate, Certo, Ifa Labs…"
+                onChange={(e) => setQ(e.target.value)}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -354,22 +354,107 @@ function Price() {
 }
 
 /* =========================================================
-   THE NAMES, AS ONE SENTENCE
+   THE LETTER
    ========================================================= */
-function Clients() {
+function Letter() {
+  return (
+    <section className="lt" id="about">
+      <div className="wrap lt-col">
+        <img className="rv" src="assets/chidile-photo.jpg" alt="Chidile Ozoemena" width="625" height="625" loading="lazy" />
+
+        <h2 className="sec-h rv" data-d="1">Why there is a grade on everything here</h2>
+
+        <p className="rv" data-d="1">
+          I started writing documentation because I kept inheriting systems nobody could
+          explain. The code ran; the reasoning behind it had left with whoever wrote it.
+        </p>
+        <p className="rv" data-d="2">
+          So I began shipping both halves, the thing that runs and the writing that keeps
+          it alive, and I stopped being able to tell you which half is the real work.
+        </p>
+        <p className="rv" data-d="2">
+          That habit is why this page grades itself. <mark>If I cannot show you, I say so.</mark>{" "}
+          Eight of the twenty claims on this page have nothing for you to open, and they
+          are still on the list, marked for what they are.
+        </p>
+        <p className="rv" data-d="3">
+          I work out of Nigeria, mostly on money that has to settle and records that have
+          to hold. If that is your problem, we will get along.
+        </p>
+
+        <p className="lt-sign rv" data-d="3">
+          <b>Chidile Ozoemena</b>
+          <span>Engineer and technical writer, Lagos</span>
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   PRICES, SET LIKE A MENU
+   ========================================================= */
+function Prices() {
+  return (
+    <section className="pr" id="prices">
+      <div className="wrap grid12">
+        <div className="pr-h">
+          <h2 className="sec-h rv">Rates, plainly</h2>
+          <p className="lead rv" data-d="1">Engagements start at <b>$2,000</b>.</p>
+          <figure className="rv" data-d="2">
+            <img
+              src="assets/arch/arch-wedge.jpg"
+              alt="A narrow wedge-shaped building corner seen from below against a teal sky"
+              width="600"
+              height="800"
+              loading="lazy"
+            />
+            <figcaption>Photograph: Anthony DELANOIX</figcaption>
+          </figure>
+        </div>
+
+        <div className="pr-list">
+          {MENU.map((grp, i) => (
+            <div className="pr-group rv" data-d={String(i + 1)} key={grp.g}>
+              <h3>{grp.g}</h3>
+              <ul>
+                {grp.items.map((it) => (
+                  <li key={it.n}>
+                    <p className="pr-row">
+                      <b>{it.n}</b>
+                      <i>{it.v}</i>
+                    </p>
+                    <p className="pr-note">{it.d}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================
+   THE NAMES
+   ========================================================= */
+function Names() {
   const [on, setOn] = uS(0);
+
   uE(() => {
     const t = setInterval(() => setOn((i) => (i + 1) % CLIENTS.length), 2000);
     return () => clearInterval(t);
   }, []);
+
   const marks = CLIENTS.filter((c) => c.f);
 
   return (
-    <section className="cl f f-sky" id="clients">
+    <section className="nm" id="clients">
       <div className="wrap">
         <h2 className="sec-h rv">Twenty-one names have paid for this</h2>
 
-        <p className="cl-names rv" data-d="1">
+        <p className="nm-say rv" data-d="1">
           {CLIENTS.map((c, i) => (
             <React.Fragment key={c.n}>
               <i className={i === on ? "on" : ""}>{c.n}</i>
@@ -378,22 +463,23 @@ function Clients() {
           ))}
         </p>
 
-        <div className="cl-marks rv" data-d="2">
+        <div className="nm-marks rv" data-d="2">
           {marks.map((c) => (
             <img
               key={c.n}
               className={c.sq ? "sq" : ""}
               src={"assets/logos/" + c.f}
               alt={c.n}
-              height="40"
+              height={c.sq ? "40" : "34"}
               loading="lazy"
             />
           ))}
         </div>
 
-        <p className="cl-note rv" data-d="3">
-          Eleven of them have a mark above. The other ten are named because the work
-          happened, not because I have their logo on file.
+        <p className="nm-note rv" data-d="3">
+          Contracts, infrastructure, agent work and documentation, between 2021 and today.
+          Ten of the names above have no mark here yet; I would rather leave a gap than
+          draw one myself.
         </p>
       </div>
     </section>
@@ -401,46 +487,26 @@ function Clients() {
 }
 
 /* =========================================================
-   CONTACT — one prompt, one field
+   THE LAST PHOTOGRAPH
    ========================================================= */
-function Contact() {
-  const [who, setWho] = uS("");
-
-  const send = (e) => {
-    e.preventDefault();
-    const body = who ? "Reply to: " + who + "\n\n" : "";
-    window.location.href =
-      "mailto:" + EMAIL + "?subject=" + encodeURIComponent("A build to talk about") +
-      "&body=" + encodeURIComponent(body);
-  };
-
+function Close() {
   return (
-    <section className="co f f-dark" id="contact">
-      <div className="wrap co-in">
-        <h2 className="co-p rv">
-          <span>Tell me what you are building.</span>
-          Leave an address and I will write back.
-        </h2>
-
-        <form className="co-f rv" data-d="1" onSubmit={send}>
-          <input
-            type="email"
-            value={who}
-            onChange={(e) => setWho(e.target.value)}
-            placeholder="you@company.com"
-            aria-label="Your email address"
-          />
-          <button type="submit" aria-label="Start the email">&#9654;</button>
-        </form>
-
-        <p className="co-next rv" data-d="2">
-          This opens your mail client with my address already in it. Reply time is 24 hours.
-        </p>
-
-        <div className="co-rows rv" data-d="3">
-          <div><b>Email</b><a href={"mailto:" + EMAIL}>{EMAIL}</a></div>
-          <div><b>Calls</b><a href={CALL} target="_blank" rel="noreferrer">Calendly</a></div>
-          <div><b>Where</b><span>Lagos, Nigeria. Remote worldwide.</span></div>
+    <section className="cta">
+      <img
+        src="assets/arch/arch-concrete.jpg"
+        alt="A white angular concrete building standing against a black sky"
+        width="1600"
+        height="1000"
+        loading="lazy"
+      />
+      <div className="wrap grid12 cta-in">
+        <div className="cta-t rv">
+          <h2>The part nobody documents</h2>
+          <p>
+            Tell me what has to settle, what has to hold, and who has to be able to read
+            it afterwards. I will tell you what it takes.
+          </p>
+          <a className="act" href={CALL} target="_blank" rel="noreferrer">Book a call</a>
         </div>
       </div>
     </section>
@@ -448,58 +514,73 @@ function Contact() {
 }
 
 /* =========================================================
-   FOOTER — the address is the headline
+   FOOTER — photograph half, menu half
    ========================================================= */
-function Footer() {
+function Foot() {
   return (
-    <footer className="ft f f-dark">
-      <div className="wrap ft-top">
-        <p>
-          Chidile Ozoemena, engineer and technical writer. Member of The Rotary Foundation,
-          ForbesBLK, ICANN and Bitcoin Africa.
-        </p>
-        <a className="act-2" href="#work">Back to the top</a>
+    <footer className="ft">
+      <div className="ft-shot">
+        <img
+          src="assets/arch/arch-well.jpg"
+          alt="The view straight up a dark building lightwell to a bright sky"
+          width="1200"
+          height="800"
+          loading="lazy"
+        />
       </div>
 
-      <div className="wrap ft-mid">
-        <h2 className="ft-h rv">Write to me</h2>
-        <a className="ft-mail rv" data-d="1" href={"mailto:" + EMAIL}>
-          chidileozoemena<wbr />@gmail.com
-        </a>
-      </div>
+      <div className="ft-menu">
+        <p className="ft-mark">Chidile Ozoemena</p>
 
-      <div className="wrap ft-meta">
-        <nav aria-label="Elsewhere">
+        <h2>The rest of this page</h2>
+        <nav className="ft-nav" aria-label="Sections">
+          <a href="#work">Work</a>
+          <a href="#services">Services</a>
+          <a href="#about">About</a>
+          <a href="#prices">Rates</a>
+          <a href="#clients">Clients</a>
           <a href="/archive">Archive</a>
-          <a href="https://github.com/afrotechboss" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://linkedin.com/in/chidileozoemena/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href="https://x.com/0xAfroTechBoss" target="_blank" rel="noreferrer">X</a>
-          <a href="https://t.me/afrotechboss" target="_blank" rel="noreferrer">Telegram</a>
         </nav>
-        <span>Screenshots are of my own builds.</span>
-        <span>Lagos, 2026</span>
+
+        <div className="ft-cols">
+          <div>
+            <b>Write to me</b>
+            <a href={"mailto:" + EMAIL}>{EMAIL}</a>
+            <a href={CALL} target="_blank" rel="noreferrer">Book a call</a>
+          </div>
+          <div>
+            <b>Elsewhere</b>
+            <a href={GH} target="_blank" rel="noreferrer">GitHub</a>
+            <a href="/archive">The archive</a>
+          </div>
+          <div>
+            <b>Photographs</b>
+            <span>Carl Nenzen Loven</span>
+            <span>Liam Andrew</span>
+            <span>Anthony DELANOIX</span>
+          </div>
+        </div>
+
+        <p className="ft-legal">
+          Lagos, Nigeria. Screenshots are of my own work, taken {new Date().getFullYear()}.
+        </p>
       </div>
     </footer>
   );
 }
 
-/* =========================================================
-   THE PAGE
-   ========================================================= */
 function App() {
   useReveal();
   return (
-    <>
-      <Hero />
-      <Shelf />
-      <Hired />
-      <Pictures />
-      <About />
-      <Price />
-      <Clients />
-      <Contact />
-      <Footer />
-    </>
+    <React.Fragment>
+      <Split />
+      <Config />
+      <Letter />
+      <Prices />
+      <Names />
+      <Close />
+      <Foot />
+    </React.Fragment>
   );
 }
 
