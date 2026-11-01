@@ -33,9 +33,9 @@ const WORK = [
   { n: "Brij", s: "brij.jpg", f: "Documentation", d: "On-chain product docs: contract surfaces, user flows and developer onboarding.", live: "https://brij-2.gitbook.io/brij-docs" },
   { n: "FrensPool", s: "frenspool.jpg", f: "Web3", d: "A Base-testnet pooling concept: an early look at on-chain group savings between friends.", repo: "https://github.com/AfroTechBoss/frenspool" },
   { n: "CarbonSystem", s: "carbonsystem.jpg", f: "Academic", d: "A PHP carbon-tracking system, my final-year project, kept on the record as what it is.", repo: "https://github.com/AfroTechBoss/CarbonSystem" },
-  { n: "Graso", f: "Real-world assets", d: "Tokenised real estate, so ownership can start small and stay liquid. The first build of mine backed by a government grant.", priv: "In development" },
-  { n: "Honua L2", f: "Blockchain", d: "The chain underneath Honua: a layer two built to settle green projects. No public network yet.", priv: "In development" },
-  { n: "FrensPool docs", f: "Documentation", d: "The written half of FrensPool: contract surfaces and the flows between them.", priv: "Unpublished" },
+  { n: "Graso", plate: "Not built yet.", f: "Real-world assets", d: "Tokenised real estate, so ownership can start small and stay liquid. The first build of mine backed by a government grant.", priv: "In development" },
+  { n: "Honua L2", plate: "No network yet.", f: "Blockchain", d: "The chain underneath Honua: a layer two built to settle green projects.", priv: "In development" },
+  { n: "FrensPool docs", plate: "Not published yet.", f: "Documentation", d: "The written half of FrensPool: contract surfaces and the flows between them.", priv: "Unpublished" },
 ];
 
 const CLIENTS = [
@@ -130,13 +130,28 @@ function Hero() {
 
       <div className="wrap hero">
         <h1>I build systems, then I write them down.</h1>
-        <p className="sub">
-          Smart contracts, blockchain infrastructure and AI agents, with the documentation
-          that makes them usable by somebody who is not me. Twenty-one builds. Lagos.
-        </p>
-        <div className="acts">
-          <a className="btn" href={CALL}>Book a call</a>
-          <a className="btn ghost" href="#work">See the work</a>
+        <div className="hero-b">
+          <div>
+            <p className="sub">
+              Smart contracts, blockchain infrastructure and AI agents, with the documentation
+              that makes them usable by somebody who is not me. Twenty-one builds. Lagos.
+            </p>
+            <div className="acts">
+              <a className="btn" href={CALL}>Book a call</a>
+              <a className="btn ghost" href="#work">See the work</a>
+            </div>
+          </div>
+          <div className="hero-now">
+            <h2>Right now</h2>
+            <Lit
+              as="p"
+              t={"I am building UnioGate, a crypto-fiat POS terminal that lets Nigerian merchants take USDT and settle in Naira the same day. It goes live before the new year."}
+            />
+            <Lit
+              as="p"
+              t={"The next slot I can give a client is Q1 2027. I work from Lagos, on UTC+1."}
+            />
+          </div>
         </div>
       </div>
     </header>
@@ -179,10 +194,12 @@ function Work() {
       <div className="wrap">
         <h2 className="sh">The work</h2>
         <div className="wk-list">
-          {WORK.map((p) => (
+          {WORK.slice(0, 8).map((p) => (
             <article className="wk" key={p.n}>
-              <div className={"wk-shot" + (p.s ? "" : " none")}>
-                {p.s ? <img src={SHOT + p.s} alt={"The first screen of " + p.n} loading="lazy" /> : null}
+              <div className={"wk-shot" + (p.s ? "" : " plate")}>
+                {p.s
+                  ? <img src={SHOT + p.s} alt={"The first screen of " + p.n} loading="lazy" />
+                  : <span>{p.plate}</span>}
               </div>
               <h3>{p.n}<span>{p.f}</span></h3>
               <Lit as="p" t={p.d} />
@@ -193,6 +210,7 @@ function Work() {
           ))}
         </div>
         <p className="wk-more">
+          <Lit as="span" t={"Eight of twenty-one. The rest, including the ones still being built and the ones kept for the record, are in the archive."} />
           <a className="btn ghost" href="/archive">The full archive</a>
         </p>
       </div>

@@ -98,17 +98,17 @@ const WRITTEN = [
     st: "Public", s: "brij.jpg", alt: "The Brij documentation",
     live: "https://brij-2.gitbook.io/brij-docs" },
 
-  { t: "FrensPool docs", cat: "Documentation · Base · Solidity",
+  { t: "FrensPool docs", plate: "Not published yet.", cat: "Documentation · Base · Solidity",
     d: "The written half of FrensPool: contract surfaces, the flows between them, and the reasoning behind a pooling model built for friends rather than strangers. Unpublished.",
     st: "Unpublished" },
 ];
 
 const RECORD = [
-  { t: "Graso", cat: "Crypto infrastructure · Real-world assets · Cairo",
+  { t: "Graso", plate: "Not built yet.", cat: "Crypto infrastructure · Real-world assets · Cairo",
     d: "Property ownership is gated by capital and paperwork most people will never clear. Graso tokenises real estate so ownership can start small and stay liquid. The first build of mine backed by a government grant.",
     m: { v: "1st", l: "Govt-grant backed" } },
 
-  { t: "Honua L2", cat: "Blockchain · Layer two · Sustainability",
+  { t: "Honua L2", plate: "No network yet.", cat: "Blockchain · Layer two · Sustainability",
     d: "The on-chain infrastructure underneath Honua: a layer-two chain built to support green projects and settle the sustainability ecosystem on-chain. Early development, no public network yet.",
     st: "In development" },
 
@@ -210,8 +210,10 @@ function Top() {
 function Row({ p }) {
   return (
     <article className="wk ar-row">
-      <div className={"wk-shot" + (p.s ? "" : " none")}>
-        {p.s ? <img src={SHOT + p.s} alt={p.alt} loading="lazy" /> : null}
+      <div className={"wk-shot" + (p.s ? "" : " plate")}>
+        {p.s
+          ? <img src={SHOT + p.s} alt={p.alt} loading="lazy" />
+          : <span>{p.plate}</span>}
       </div>
       <h3>{p.t}<span>{p.cat}</span></h3>
       <div className="ar-body">
