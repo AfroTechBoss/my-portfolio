@@ -241,3 +241,10 @@ section{padding-block:var(--gap)}
   .btn{transition:none}
   .btn:hover{transform:none}
 }
+
+/* ---------- the page that is not there ----------
+   A wrong address gets the same first screen as a right one: a line,
+   a way back, and the four places most people were actually heading. */
+.nf-hero h1{max-width:18ch}
+.nf-ways{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:var(--t-sm);color:var(--soft)}
+.nf-ways a{font-weight:500;color:var(--ink)}

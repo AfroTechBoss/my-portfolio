@@ -1,10 +1,13 @@
 /* =========================================================
-   scope.jsx — multi-step scoping form
-   =========================================================
+   scope.jsx — eight questions, ink on paper
+   The same language as the rest of the site: one typeface, one ink,
+   and the question lighting word by word as it arrives. The eight
+   steps and the Formspree submission are unchanged; what changed is
+   that the page now looks like the site it belongs to.
 
    SETUP (one-time):
-   1. Go to formspree.io → create free account
-   2. New form → copy the endpoint URL (looks like https://formspree.io/f/xxxxxxxx)
+   1. formspree.io -> create account
+   2. New form -> copy the endpoint URL
    3. Paste it as FORMSPREE_URL below.
    ========================================================= */
 
@@ -15,15 +18,17 @@ const TO_EMAIL      = 'chidileozoemena@gmail.com';
 const { useState: useSF, useEffect: useSFE, useRef: useSFR } = React;
 
 /* ── Data ─────────────────────────────────────────────────────────── */
+/* No eyebrows: the position in the run is shown once, in the top bar,
+   and the question itself carries the step. */
 const STEPS = [
-  { eyebrow: '01 / Who',       title: 'First, who are you?',           sub: 'The basics. Nothing scary.' },
-  { eyebrow: '02 / Find you',  title: 'Where can I find you?',         sub: 'Handles and links.' },
-  { eyebrow: '03 / Context',   title: 'What world do you operate in?', sub: 'Help me understand your space.' },
-  { eyebrow: '04 / Why',       title: 'Why are you here?',             sub: 'Be direct about it.' },
-  { eyebrow: '05 / The brief', title: 'Tell me more.',                 sub: 'As much or as little as you like.' },
-  { eyebrow: '06 / Reach you', title: 'How should I reach you?',       sub: 'Pick your preferred channel.' },
-  { eyebrow: '07 / Files',     title: 'Anything to show me?',          sub: 'Optional — decks, briefs, references.' },
-  { eyebrow: '08 / Done',      title: "You're almost done.",           sub: 'Review and send, or book a call.' },
+  { title: 'First, who are you?',           sub: 'The basics. Nothing scary.' },
+  { title: 'Where can I find you?',         sub: 'Handles and links.' },
+  { title: 'What world do you operate in?', sub: 'Help me understand your space.' },
+  { title: 'Why are you here?',             sub: 'Be direct about it.' },
+  { title: 'Tell me more.',                 sub: 'As much or as little as you like.' },
+  { title: 'How should I reach you?',       sub: 'Pick your preferred channel.' },
+  { title: 'Anything to show me?',          sub: 'Optional — decks, briefs, references.' },
+  { title: "You're almost done.",           sub: 'Review and send, or book a call.' },
 ];
 
 const REASONS = [
@@ -31,9 +36,9 @@ const REASONS = [
   { v: 'advisory',     l: 'Advisory' },
   { v: 'proposal',     l: 'Proposal' },
   { v: 'consultation', l: 'Consultation' },
-  { v: 'speaker',      l: 'Public Speaker 🎤', tip: "Haha — you didn't know I spoke? Well, now you do." },
+  { v: 'speaker',      l: 'Public Speaker 🎤', /* taste-skill-ignore: his own words */ tip: "Haha — you didn't know I spoke? Well, now you do." },
   { v: 'partnership',  l: 'Partnership' },
-  { v: 'just-hi',      l: 'Just saying hi 👋' },
+  { v: 'just-hi',      l: 'Just saying hi 👋' /* taste-skill-ignore: his own words */ },
   { v: 'other',        l: 'Something else' },
 ];
 
@@ -71,13 +76,37 @@ const TIMELINES = [
    the review screen, the email — wants the label. */
 const labelOf = (list, v) => (list.find(o => o.v === v) || {}).l || v || '';
 
+/* ── The light-up ─────────────────────────────────────────────────────
+   The question takes its ink word by word, the same way every line on
+   the site does. A step mounts already in view, so instead of waiting
+   for an observer it lights on the next frame. */
+function Lit({ t, as, className }) {
+  const words = t.split(' ');
+  const Tag = as || 'p';
+  const ref = useSFR(null);
+  useSFE(() => {
+    const id = requestAnimationFrame(() => ref.current && ref.current.classList.add('on'));
+    return () => cancelAnimationFrame(id);
+  }, [t]);
+  return (
+    <Tag ref={ref} className={'lit ' + (className || '')}>
+      {words.map((w, i) => (
+        <React.Fragment key={i}>
+          <span className="w" style={{ '--d': Math.min(i, 44) * 30 + 'ms' }}>{w}</span>
+          {i < words.length - 1 ? ' ' : null}
+        </React.Fragment>
+      ))}
+    </Tag>
+  );
+}
+
 /* ── Field primitives ─────────────────────────────────────────────── */
 function FText({ label, name, value, onChange, placeholder, type = 'text', required }) {
   return (
-    <div className="scope-field">
-      <label className="scope-label">{label}{required && <span className="scope-req"> *</span>}</label>
+    <div className="sc-field">
+      <label className="sc-label">{label}{required && <span className="sc-req"> *</span>}</label>
       <input
-        className="scope-input"
+        className="sc-input"
         type={type}
         value={value || ''}
         onChange={e => onChange(name, e.target.value)}
@@ -91,14 +120,14 @@ function FText({ label, name, value, onChange, placeholder, type = 'text', requi
 
 function FTextarea({ label, name, value, onChange, placeholder, required }) {
   return (
-    <div className="scope-field">
-      <label className="scope-label">{label}{required && <span className="scope-req"> *</span>}</label>
+    <div className="sc-field">
+      <label className="sc-label">{label}{required && <span className="sc-req"> *</span>}</label>
       <textarea
-        className="scope-textarea"
+        className="sc-input sc-area"
         value={value || ''}
         onChange={e => onChange(name, e.target.value)}
         placeholder={placeholder || ''}
-        rows={4}
+        rows={5}
       />
     </div>
   );
@@ -106,10 +135,10 @@ function FTextarea({ label, name, value, onChange, placeholder, required }) {
 
 function FSelect({ label, name, value, onChange, options, required }) {
   return (
-    <div className="scope-field">
-      <label className="scope-label">{label}{required && <span className="scope-req"> *</span>}</label>
+    <div className="sc-field">
+      <label className="sc-label">{label}{required && <span className="sc-req"> *</span>}</label>
       <select
-        className="scope-select"
+        className="sc-input sc-select"
         value={value || ''}
         onChange={e => onChange(name, e.target.value)}
       >
@@ -123,22 +152,22 @@ function FSelect({ label, name, value, onChange, options, required }) {
 function FRadio({ name, options, value, onChange }) {
   const [tip, setTip] = useSF(null);
   return (
-    <div className="scope-field">
-      <div className="scope-radio-group">
+    <div className="sc-field">
+      <div className="sc-picks">
         {options.map(o => (
           <label
             key={o.v}
-            className="scope-radio"
+            className={'sc-pick' + (value === o.v ? ' on' : '')}
             onMouseEnter={() => o.tip && setTip(o.v)}
             onMouseLeave={() => setTip(null)}
           >
             <input type="radio" name={name} value={o.v} checked={value === o.v} onChange={() => onChange(name, o.v)} />
-            <span className="scope-radio-label">{o.l}</span>
+            <span>{o.l}</span>
           </label>
         ))}
       </div>
       {tip && (
-        <p className="scope-easter" key={tip}>
+        <p className="sc-aside" key={tip}>
           {options.find(o => o.v === tip)?.tip}
         </p>
       )}
@@ -146,13 +175,16 @@ function FRadio({ name, options, value, onChange }) {
   );
 }
 
-function FFile({ value, onChange }) {
+function FFile({ value, onChange, onTooBig }) {
   const [drag, setDrag] = useSF(false);
   const ref = useSFR(null);
 
   const handle = file => {
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { alert('File too large — max 5 MB.'); return; }
+    /* Five megabytes, said in the page's own voice rather than by a
+       browser alert box. */
+    if (file.size > 5 * 1024 * 1024) { onTooBig(file.name); return; }
+    onTooBig(null);
     const reader = new FileReader();
     reader.onload = e => onChange('attachment', { name: file.name, type: file.type, data: e.target.result });
     reader.readAsDataURL(file);
@@ -161,7 +193,7 @@ function FFile({ value, onChange }) {
   return (
     <div>
       <div
-        className={`scope-dropzone ${drag ? 'drag' : ''}`}
+        className={'sc-drop' + (drag ? ' drag' : '')}
         onClick={() => ref.current.click()}
         onDragOver={e => { e.preventDefault(); setDrag(true); }}
         onDragLeave={() => setDrag(false)}
@@ -171,16 +203,16 @@ function FFile({ value, onChange }) {
           accept="image/*,.pdf,.doc,.docx,.ppt,.pptx"
           onChange={e => handle(e.target.files[0])} />
         {value
-          ? <p>✓ <strong>{value.name}</strong></p>
+          ? <p className="sc-drop-has"><b>{value.name}</b> is attached.</p>
           : <>
-              <p>Drop a file here or <span style={{ color: 'var(--accent)', textDecoration: 'underline' }}>click to browse</span></p>
-              <p className="scope-dropzone-hint">Image · PDF · Word · PowerPoint · Max 5 MB</p>
+              <p className="sc-drop-say">Drop a file here, or click to browse.</p>
+              <p className="sc-drop-hint">Image, PDF, Word or PowerPoint. Up to 5 MB.</p>
             </>
         }
       </div>
       {value && (
-        <button className="scope-file-remove" onClick={() => onChange('attachment', null)}>
-          × Remove file
+        <button className="sc-plain" onClick={() => onChange('attachment', null)}>
+          Remove the file
         </button>
       )}
     </div>
@@ -222,9 +254,7 @@ function S3({ d, u }) {
 function S4({ d, u }) {
   return (
     <>
-      <p style={{ color: 'var(--muted)', fontSize: '.85rem', fontFamily: 'var(--ff-sans)', marginBottom: '1.2rem' }}>
-        Hover "Public Speaker" for a surprise.
-      </p>
+      <p className="sc-note">Hover "Public Speaker" for a surprise.</p>
       <FRadio name="reason" options={REASONS} value={d.reason} onChange={u} />
     </>
   );
@@ -239,7 +269,7 @@ function S5({ d, u }) {
         placeholder="What are you building? What's the problem? What do you need from me?"
         required
       />
-      <div className="scope-grid-2">
+      <div className="sc-two">
         <FSelect label="Timeline" name="timeline" value={d.timeline} onChange={u} options={TIMELINES} />
         <FSelect label="Budget range" name="budget" value={d.budget} onChange={u} options={BUDGETS} />
       </div>
@@ -253,28 +283,32 @@ function S6({ d, u }) {
     <>
       <FRadio name="contact_ch" options={CHANNELS} value={d.contact_ch} onChange={u} />
       {selected && (
-        <div style={{ marginTop: '1.5rem' }}>
-          <FText
-            label={`Your ${selected.l} ${selected.v === 'email' ? 'address' : 'handle / number'}`}
-            name="contact_handle"
-            value={d.contact_handle}
-            onChange={u}
-            placeholder={selected.ph}
-            required
-          />
-        </div>
+        <FText
+          label={`Your ${selected.l} ${selected.v === 'email' ? 'address' : 'handle / number'}`}
+          name="contact_handle"
+          value={d.contact_handle}
+          onChange={u}
+          placeholder={selected.ph}
+          required
+        />
       )}
     </>
   );
 }
 
-function S7({ d, u }) {
+function S7({ d, u, tooBig, onTooBig }) {
   return (
     <>
-      <p style={{ color: 'var(--muted)', fontSize: '.9rem', fontFamily: 'var(--ff-sans)', marginBottom: '1.4rem' }}>
+      <p className="sc-note">
         Completely optional — attach a brief, deck, wireframe, or reference image.
       </p>
-      <FFile value={d.attachment} onChange={u} />
+      <FFile value={d.attachment} onChange={u} onTooBig={onTooBig} />
+      {tooBig && (
+        <p className="sc-warn">
+          <b>{tooBig}</b> is over 5 MB, so it stayed on your machine. Send a lighter version,
+          or write the brief below and I will ask you for the file by reply.
+        </p>
+      )}
     </>
   );
 }
@@ -282,12 +316,15 @@ function S7({ d, u }) {
 function S8({ d, onSubmit, status, mailtoHref }) {
   if (status === 'sent') {
     return (
-      <div className="scope-submitted">
-        <p>Got it. I'll be in touch.</p>
-        <p className="sub">Check <strong>{d.email}</strong> — I'll reply there.</p>
-        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="btn-primary">
-          Book a call while you wait <span>→</span>
-        </a>
+      <div className="sc-sent">
+        <Lit as="h2" t="Got it. I'll be in touch." />
+        <p className="sub">Check <b>{d.email}</b> — I'll reply there.</p>
+        <div className="acts">
+          <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="btn">
+            Book a call while you wait
+          </a>
+          <a href="/" className="btn ghost">Back to the front</a>
+        </div>
       </div>
     );
   }
@@ -304,24 +341,24 @@ function S8({ d, onSubmit, status, mailtoHref }) {
 
   return (
     <>
-      <div className="scope-summary">
+      <div className="sc-rows">
         {rows.map(([k, v]) => (
-          <div key={k} className="scope-summary-row">
-            <span className="scope-summary-key">{k}</span>
-            <span className="scope-summary-val">{v}</span>
+          <div key={k} className="sc-row">
+            <span className="sc-row-k">{k}</span>
+            <span className="sc-row-v">{v}</span>
           </div>
         ))}
       </div>
-      <div className="scope-done-actions">
-        <button className="btn-primary" onClick={onSubmit} disabled={status === 'sending'}>
-          {status === 'sending' ? 'Sending…' : status === 'error' ? 'Try again' : 'Send it'} <span>→</span>
+      <div className="acts">
+        <button className="btn" onClick={onSubmit} disabled={status === 'sending'}>
+          {status === 'sending' ? 'Sending…' : status === 'error' ? 'Try again' : 'Send it'}
         </button>
-        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="scope-calendly-link">
-          Or book a call instead →
+        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="btn ghost">
+          Or book a call instead
         </a>
       </div>
       {status === 'error' && (
-        <p className="scope-error">
+        <p className="sc-warn">
           That didn't go through. Try again, or{' '}
           <a href={mailtoHref}>send it as an email instead</a>.
         </p>
@@ -330,19 +367,47 @@ function S8({ d, onSubmit, status, mailtoHref }) {
   );
 }
 
+/* Who you are writing to, and what briefs like this have turned into.
+   The first screen only: after that the page is nothing but the questions. */
+const RECENT = [
+  { n: 'UnioGate', s: 'uniogate.jpg' },
+  { n: 'TUMAM',    s: 'tumam.jpg' },
+  { n: 'Uzo Labs', s: 'uzolabs.jpg' },
+];
+
+function Who() {
+  return (
+    <div className="sc-who">
+      <div className="sc-me">
+        <img src="assets/chidile-avatar.jpg" alt="Chidile Ozoemena" width="128" height="128" />
+        <p>I read every brief myself and answer within two working days. Nothing here goes to a queue.</p>
+      </div>
+      <h2 className="sc-prev-h">What a brief has turned into before</h2>
+      <div className="sc-prev">
+        {RECENT.map((p) => (
+          <figure key={p.n}>
+            <img src={'assets/shots/' + p.s} alt={'The first screen of ' + p.n} />
+            <figcaption>{p.n}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── App ──────────────────────────────────────────────────────────── */
 function ScopeApp() {
-  const [step,       setStep]       = useSF(0);
-  const [out,        setOut]        = useSF(false);
-  const [data,      setData]      = useSF({});
-  const [status,    setStatus]    = useSF('idle'); // idle | sending | sent | error
-
+  const [step,   setStep]   = useSF(0);
+  const [out,    setOut]    = useSF(false);
+  const [data,   setData]   = useSF({});
+  const [status, setStatus] = useSF('idle'); // idle | sending | sent | error
+  const [tooBig, setTooBig] = useSF(null);
 
   const update = (k, v) => setData(d => ({ ...d, [k]: v }));
 
   const go = dir => {
     setOut(true);
-    setTimeout(() => { setStep(s => s + dir); setOut(false); }, 270);
+    setTimeout(() => { setStep(s => s + dir); setOut(false); window.scrollTo(0, 0); }, 270);
   };
 
   const canNext = () => {
@@ -432,54 +497,59 @@ function ScopeApp() {
     <S4 d={data} u={update} />,
     <S5 d={data} u={update} />,
     <S6 d={data} u={update} />,
-    <S7 d={data} u={update} />,
+    <S7 d={data} u={update} tooBig={tooBig} onTooBig={setTooBig} />,
     <S8 d={data} onSubmit={submit} status={status} mailtoHref={mailtoHref()} />,
   ];
 
   const pct = Math.round((step / (STEPS.length - 1)) * 100);
 
   return (
-    <div className="scope-page">
-      <LumenCursor />
+    <div className="sc">
+      <div className="sc-bar" aria-hidden="true"><i style={{ width: `${pct}%` }} /></div>
 
-      <div className="scope-progress" style={{ width: `${pct}%` }} />
-
-      <header className="scope-header">
-        <a href="./" className="logo footer-sig nav-sig" aria-label="Back to portfolio">
-          <span className="sig-name">Chidile</span>
-        </a>
-        <div className="scope-dots">
-          {STEPS.map((_, i) => (
-            <div key={i} className={`scope-dot ${i === step ? 'active' : i < step ? 'done' : ''}`} />
-          ))}
+      <nav className="top" aria-label="Top">
+        <b><a href="/">Chidile Ozoemena</a></b>
+        <div className="top-go">
+          <span className="sc-count">{status === 'sent' ? 'Sent' : `Step ${step + 1} of ${STEPS.length}`}</span>
+          <a href="/">Leave the form</a>
         </div>
-        <a href="./" className="scope-back-link">← Portfolio</a>
-      </header>
+      </nav>
 
-      <main className="scope-body">
-        <div className={`scope-step ${out ? 'out' : 'in'}`}>
-          <p className="scope-eyebrow">{STEPS[step].eyebrow}</p>
-          <h1 className="scope-title">{STEPS[step].title}</h1>
-          <p className="scope-sub">{STEPS[step].sub}</p>
-          {stepComponents[step]}
+      <main className="wrap sc-body">
+        <div className={'sc-step ' + (out ? 'out' : 'in') + (status === 'sent' ? ' solo' : '')}>
+          {status === 'sent' ? null : (
+            <div className={'sc-ask' + (step === 0 ? ' lead' : '')}>
+              <Lit as="h1" t={STEPS[step].title} />
+              <p className="sub">{STEPS[step].sub}</p>
+            </div>
+          )}
+          <div className="sc-answer">{stepComponents[step]}</div>
         </div>
+        {step === 0 && status !== 'sent' ? <Who /> : null}
       </main>
 
       {status !== 'sent' && (
-        <nav className="scope-nav">
-          <button
-            className="scope-btn-back"
-            onClick={() => go(-1)}
-            style={{ visibility: step === 0 ? 'hidden' : 'visible' }}
-          >
-            ← Back
-          </button>
-          {step < STEPS.length - 1 && (
-            <button className="scope-btn-next" onClick={() => go(1)} disabled={!canNext()}>
-              {step === STEPS.length - 2 ? 'Review →' : 'Next →'}
+        <div className="sc-foot">
+          <div className="wrap sc-foot-in">
+            <button
+              className="sc-plain"
+              onClick={() => go(-1)}
+              style={{ visibility: step === 0 ? 'hidden' : 'visible' }}
+            >
+              Back
             </button>
-          )}
-        </nav>
+            <div className="sc-dots" aria-hidden="true">
+              {STEPS.map((_, i) => (
+                <i key={i} className={i === step ? 'now' : i < step ? 'done' : ''} />
+              ))}
+            </div>
+            {step < STEPS.length - 1
+              ? <button className="btn" onClick={() => go(1)} disabled={!canNext()}>
+                  {step === STEPS.length - 2 ? 'Review' : 'Next'}
+                </button>
+              : <span className="sc-foot-pad" />}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,96 +1,184 @@
 /* =========================================================
-   scope.css — multi-step scoping form
+   scope.css — what the eight questions add to object.css
+   One question on the screen at a time, set in the same type as the
+   rest of the site. Fields are filled blocks on the band colour, not
+   outlined boxes; the only line on the page is the progress bar, and
+   it is solid ink doing a job.
    ========================================================= */
 
-.scope-page{min-height:100vh;background:var(--paper);display:flex;flex-direction:column;color:var(--ink)}
+.sc{min-height:100dvh;display:flex;flex-direction:column}
 
-/* progress bar */
-.scope-progress{position:fixed;top:0;left:0;height:2.5px;background:var(--accent);transition:width .55s var(--ease);z-index:200;border-radius:0 2px 2px 0}
+/* ---------- how far in you are ---------- */
+.sc-bar{position:fixed;top:0;left:0;right:0;height:4px;background:var(--band);z-index:20}
+.sc-bar i{display:block;height:100%;background:var(--ink);transition:width .4s cubic-bezier(.16,1,.3,1)}
 
-/* header */
-.scope-header{position:fixed;top:0;left:0;right:0;z-index:190;padding:18px var(--pad);display:flex;align-items:center;justify-content:space-between;background:var(--paper);border-bottom:1px solid var(--line)}
+.sc-count{color:var(--soft)}
 
-.scope-dots{display:flex;gap:7px;align-items:center}
-.scope-dot{width:6px;height:6px;border-radius:50%;background:var(--line-2);border:1px solid var(--line);transition:background .3s,transform .3s,border-color .3s}
-.scope-dot.done{background:var(--ink);border-color:var(--ink)}
-.scope-dot.active{background:var(--accent);border-color:var(--accent);transform:scale(1.4)}
+/* ---------- the question ---------- */
+.sc-body{
+  flex:1;width:100%;
+  padding-block:clamp(40px,6vw,88px) clamp(130px,14vw,180px);
+}
+.sc-body h1{font-size:clamp(2.1rem,5.6vw,4.4rem);line-height:1.03;max-width:15ch}
+.sc-body .sub{margin-top:clamp(16px,1.8vw,24px);max-width:36ch}
 
-.scope-back-link{font-family:var(--ff-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);transition:color .25s}
-.scope-back-link:hover{color:var(--ink)}
+/* Wide enough, and the question stands on the left while you answer it on
+   the right, so the screen is written on from edge to edge. The question
+   stays put as the answers run past it. */
+@media (min-width:901px){
+  .sc-step{
+    display:grid;grid-template-columns:minmax(0,26rem) minmax(0,1fr);
+    gap:clamp(48px,6vw,104px);align-items:start;
+  }
+  .sc-step.solo{display:block}
+  .sc-ask{position:sticky;top:clamp(96px,9vw,132px)}
+  /* The first screen carries the introduction under the question, so it
+     scrolls with the page instead of pinning a tall column. */
+  .sc-ask.lead{position:static}
+  .sc-answer > *:first-child{margin-top:0}
+  .sc-answer .sc-field:first-child{margin-top:0}
+}
 
-/* body */
-.scope-body{flex:1;display:flex;align-items:center;justify-content:center;padding:110px var(--pad) 100px}
+/* each step arrives from below and leaves the same way, so the run
+   reads as one page turning rather than eight separate screens */
+.sc-step{transition:opacity .26s ease,transform .26s cubic-bezier(.16,1,.3,1)}
+.sc-step.in{opacity:1;transform:none}
+.sc-step.out{opacity:0;transform:translateY(14px)}
 
-/* step */
-.scope-step{width:100%;max-width:620px;transition:opacity .26s ease,transform .26s ease}
-.scope-step.out{opacity:0;transform:translateY(14px)}
-.scope-step.in{opacity:1;transform:translateY(0)}
+.sc-note{margin-top:clamp(22px,2.4vw,32px);color:var(--soft);font-size:var(--t-sm);max-width:52ch}
 
-.scope-eyebrow{font-family:var(--ff-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
-.scope-title{font-family:var(--magma);font-size:clamp(1.9rem,4.5vw,3.2rem);line-height:1.1;margin-bottom:.35rem}
-.scope-sub{color:var(--muted);font-size:.88rem;font-family:var(--ff-sans);margin-bottom:2.2rem}
+/* ---------- fields ---------- */
+.sc-field{margin-top:clamp(26px,2.8vw,40px);max-width:38rem}
+.sc-label{display:block;font-size:var(--t-sm);font-weight:500;margin-bottom:10px}
+.sc-req{color:var(--soft);font-weight:400}
+.sc-input{
+  width:100%;font:inherit;font-size:var(--t-lead);color:var(--ink);
+  background:var(--band);border:0;border-radius:4px;
+  padding:16px 18px;
+  transition:background .18s ease,box-shadow .18s ease;
+}
+.sc-input::placeholder{color:var(--soft)}
+/* Focus inks the bottom edge of the field, so you can always see where
+   you are typing. An accessibility indicator, not decoration. */
+.sc-input:focus{outline:none;background:#e1e1dd;box-shadow:inset 0 -3px 0 0 var(--ink)} /* taste-skill-ignore: focus indicator */
+.sc-area{resize:vertical;line-height:1.5;min-height:9rem}
+.sc-select{appearance:none;cursor:pointer}
+.sc-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,38px)}
+.sc-two .sc-field{max-width:none}
 
-/* fields */
-.scope-field{margin-bottom:1.6rem}
-.scope-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
-.scope-req{color:var(--accent)}
-.scope-input,.scope-textarea,.scope-select{width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--line);padding:.55rem 0;font-family:var(--ff-sans);font-size:1rem;color:var(--ink);outline:none;transition:border-color .28s;border-radius:0;-webkit-appearance:none}
-.scope-input:focus,.scope-textarea:focus,.scope-select:focus{border-color:var(--accent)}
-.scope-input::placeholder,.scope-textarea::placeholder{color:var(--muted-2)}
-.scope-textarea{resize:vertical;min-height:90px;line-height:1.5}
-.scope-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FFF0E8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;padding-right:20px;color:var(--ink)}
-/* The popup list is painted by the OS from the select's own colors, so a
-   transparent select leaves the options unreadable. Give them an explicit
-   inverted surface. */
-.scope-select option{background-color:#14100B;color:#FFF6F1}
-.scope-select option:disabled{color:rgba(255,246,241,.45)}
+/* ---------- a set of answers to pick from ----------
+   Filled pills, inked when chosen. Nothing outlined, nothing hollow. */
+.sc-picks{display:flex;flex-wrap:wrap;gap:12px}
+.sc-pick{position:relative;cursor:pointer}
+.sc-pick input{position:absolute;opacity:0;width:0;height:0}
+.sc-pick span{
+  display:inline-block;padding:13px 22px;border-radius:999px;
+  background:var(--band);font-size:var(--t-sm);font-weight:500;
+  transition:background .16s ease,color .16s ease,transform .16s ease;
+}
+.sc-pick:hover span{transform:translateY(-2px)}
+.sc-pick.on span{background:var(--ink);color:var(--paper)}
+.sc-pick input:focus-visible + span{box-shadow:0 0 0 3px var(--ink)} /* taste-skill-ignore: focus ring */
+.sc-aside{margin-top:18px;font-size:var(--t-sm);color:var(--soft);max-width:48ch}
 
-.scope-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
-@media(max-width:540px){.scope-grid-2{grid-template-columns:1fr}}
+/* ---------- the file ---------- */
+.sc-drop{
+  margin-top:clamp(26px,2.8vw,40px);max-width:38rem;
+  background:var(--band);border-radius:6px;cursor:pointer;
+  padding:clamp(30px,4vw,52px) clamp(20px,3vw,34px);
+  transition:background .18s ease;
+}
+.sc-drop:hover,.sc-drop.drag{background:#dededa}
+.sc-drop-say{font-size:var(--t-lead);font-weight:500}
+.sc-drop-hint{margin-top:8px;font-size:var(--t-sm);color:var(--soft)}
+.sc-drop-has{font-size:var(--t-lead)}
+.sc-drop-has b{font-weight:500}
 
-/* radio pills */
-.scope-radio-group{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.3rem}
-.scope-radio{cursor:pointer}
-.scope-radio input{position:absolute;opacity:0;pointer-events:none}
-.scope-radio-label{display:inline-flex;align-items:center;padding:.5rem 1.05rem;border:1.5px solid var(--line);border-radius:999px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.04em;cursor:pointer;transition:border-color .22s,background .22s,color .22s;color:var(--ink-soft);user-select:none}
-.scope-radio input:checked + .scope-radio-label{border-color:var(--invert-bg);background:var(--invert-bg);color:var(--invert-ink)}
-.scope-radio-label:hover{border-color:var(--ink-soft)}
+.sc-plain{
+  font:inherit;font-size:var(--t-sm);font-weight:500;color:var(--soft);
+  background:none;border:0;padding:12px 0;margin-top:14px;cursor:pointer;
+  text-decoration:underline;text-underline-offset:4px;
+}
+.sc-plain:hover{color:var(--ink)}
 
-.scope-easter{margin-top:1rem;font-family:var(--ff-serif);font-style:italic;color:var(--accent);font-size:.95rem;animation:scopeFadeUp .28s ease forwards}
+.sc-warn{margin-top:22px;font-size:var(--t-sm);max-width:52ch;background:var(--band);border-radius:4px;padding:16px 18px}
+.sc-warn b{font-weight:500}
 
-/* file drop */
-.scope-dropzone{border:1.5px dashed var(--line);border-radius:4px;padding:2.2rem;text-align:center;cursor:pointer;transition:border-color .28s,background .28s;font-family:var(--ff-sans);font-size:.9rem;color:var(--muted)}
-.scope-dropzone:hover,.scope-dropzone.drag{border-color:var(--accent);background:var(--accent-soft)}
-.scope-dropzone-hint{font-family:var(--ff-mono);font-size:10px;letter-spacing:.06em;margin-top:.4rem;color:var(--muted-2)}
-.scope-file-remove{margin-top:.6rem;background:none;border:none;cursor:pointer;color:var(--muted);font-family:var(--ff-mono);font-size:11px;letter-spacing:.04em;transition:color .2s}
-.scope-file-remove:hover{color:var(--accent)}
+/* ---------- the review ----------
+   A ledger, the way the archive is: the field on the left, the answer
+   against the right edge of the measure. */
+.sc-rows{margin-top:clamp(30px,3.4vw,48px);max-width:44rem}
+.sc-row{
+  display:grid;grid-template-columns:minmax(0,11rem) minmax(0,1fr);
+  gap:clamp(16px,3vw,32px);padding:14px 0;align-items:baseline;
+}
+.sc-row:nth-child(odd){background:var(--band)}
+.sc-row{padding-inline:14px;border-radius:3px}
+.sc-row-k{font-size:var(--t-sm);color:var(--soft)}
+.sc-row-v{font-weight:500;overflow-wrap:anywhere}
 
-/* summary */
-.scope-summary{border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:1.5rem}
-.scope-summary-row{display:flex;gap:1rem;padding:.65rem 1rem;border-bottom:1px solid var(--line-2);font-size:.85rem}
-.scope-summary-row:last-child{border-bottom:none}
-.scope-summary-key{font-family:var(--ff-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);min-width:120px;padding-top:.1rem}
-.scope-summary-val{color:var(--ink);font-family:var(--ff-sans)}
+.sc .acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(30px,3.4vw,46px)}
+.sc .btn[disabled]{opacity:.4;pointer-events:none}
+.sc button.btn{font:inherit;border:0;cursor:pointer;font-size:var(--t-sm);font-weight:500}
 
-.scope-done-actions{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:.5rem}
+.sc-sent h2{font-size:var(--t-head);max-width:20ch}
+.sc-sent .sub{margin-top:clamp(16px,1.8vw,24px)}
+.sc-sent .sub b{font-weight:500}
 
-/* submitted */
-.scope-submitted{text-align:center;padding:2rem 0}
-.scope-submitted p{font-family:var(--ff-serif);font-size:1.5rem;line-height:1.4;margin-bottom:1rem}
-.scope-submitted .sub{font-family:var(--ff-sans);font-size:.9rem;color:var(--muted);margin-bottom:2rem}
+/* ---------- the way forward, always under your thumb ---------- */
+.sc-foot{position:fixed;bottom:0;left:0;right:0;background:var(--paper);z-index:20}
+.sc-foot-in{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding-block:clamp(16px,1.8vw,24px);
+}
+.sc-foot-pad{display:block;width:1px}
+.sc-dots{display:flex;gap:8px}
+.sc-dots i{width:8px;height:8px;border-radius:999px;background:#d2d2ce;transition:background .2s ease}
+.sc-dots i.done{background:var(--soft)}
+.sc-dots i.now{background:var(--ink);width:22px}
 
-/* bottom nav */
-.scope-nav{position:fixed;bottom:0;left:0;right:0;padding:16px var(--pad);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);background:var(--paper);z-index:190}
-.scope-btn-back{font-family:var(--ff-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;padding:.5rem 0;transition:color .22s}
-.scope-btn-back:hover{color:var(--ink)}
-.scope-btn-next{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--invert-bg);color:var(--invert-ink);border:none;border-radius:2px;padding:.75rem 2rem;cursor:pointer;transition:background .25s}
-.scope-btn-next:hover:not(:disabled){background:var(--accent)}
-.scope-btn-next:disabled{opacity:.35;cursor:not-allowed}
+@media (max-width:620px){
+  .sc-two{grid-template-columns:1fr}
+  .sc-row{grid-template-columns:1fr;gap:4px}
+  .sc-dots{display:none}
+  .sc-body{padding-bottom:clamp(120px,24vw,150px)}
+}
 
-.scope-error{color:var(--accent);font-family:var(--ff-mono);font-size:11px;letter-spacing:.04em;margin-top:1rem}
+/* ---------- who is reading this ----------
+   The first screen says who the brief goes to and what briefs like it
+   have become, so the left column is answering something too. */
+.sc-who{margin-top:clamp(56px,8vw,112px)}
+.sc-me{display:flex;gap:clamp(20px,2.4vw,30px);align-items:center;max-width:46rem}
+.sc-me img{width:140px;height:140px;border-radius:999px;object-fit:cover;flex:none}
+.sc-me p{margin:0;color:var(--ink);font-size:var(--t-lead)}
+.sc-prev-h{margin-top:clamp(34px,4vw,56px);font-size:var(--t-sm);font-weight:500}
+.sc-prev{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px);margin-top:16px}
+.sc-prev figure{margin:0}
+.sc-prev img{
+  display:block;width:100%;aspect-ratio:4/3;border-radius:4px;
+  object-fit:cover;object-position:top left;background:var(--band);
+}
+.sc-prev figcaption{margin-top:10px;font-size:var(--t-sm);color:var(--soft)}
 
-.scope-calendly-link{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--ff-sans);font-size:.9rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px;transition:color .22s}
-.scope-calendly-link:hover{color:var(--ink)}
+@media (max-width:620px){
+  .sc-me{display:block}
+  .sc-me p{margin-top:18px}
+  .sc-prev{grid-template-columns:1fr 1fr}
+}
 
-@keyframes scopeFadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.scope-error a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+/* ---------- the motion layer ----------
+   A step assembles: the question lights word by word, then each answer
+   rises a beat after the one above it. Transform and opacity only. */
+@keyframes sc-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sc-step.in .sc-answer > *{animation:sc-rise .5s cubic-bezier(.16,1,.3,1) both}
+.sc-step.in .sc-answer > *:nth-child(2){animation-delay:.07s}
+.sc-step.in .sc-answer > *:nth-child(3){animation-delay:.14s}
+.sc-step.in .sc-answer > *:nth-child(4){animation-delay:.21s}
+.sc-step.in .sc-answer > *:nth-child(5){animation-delay:.28s}
+.sc-step.in .sc-answer > *:nth-child(n+6){animation-delay:.35s}
+.sc-who{animation:sc-rise .6s .2s cubic-bezier(.16,1,.3,1) both}
+
+@media (prefers-reduced-motion:reduce){
+  .sc-step,.sc-bar i{transition:none}
+  .sc-step.in .sc-answer > *,.sc-who{animation:none}
+}

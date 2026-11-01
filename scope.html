@@ -9,8 +9,7 @@
   <meta name="description" content="Scope a smart contract, blockchain infrastructure or documentation project with Chidile Ozoemena in eight short steps — share your brief, attach files, or book a call." />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="author" content="Chidile Ozoemena" />
-  <meta name="theme-color" content="#F2EFE9" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f6f6f4" />
   <link rel="apple-touch-icon" href="/assets/chidile-avatar.jpg" />
 
   <!-- Link previews -->
@@ -33,7 +32,7 @@
   <meta name="twitter:description" content="Scope a smart contract, blockchain infrastructure or documentation project with Chidile Ozoemena in eight short steps — share your brief, attach files, or book a call." />
   <meta name="twitter:image" content="https://www.chidile.xyz/assets/og-card.jpg" />
 
-  <!-- Structured data: who I am, what I do, what I have built -->
+  <!-- Structured data: what this page is, and where it sits -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -72,22 +71,51 @@
     ]
   }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
   <link rel="preconnect" href="https://unpkg.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles/main.css" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles/object.css" />
   <link rel="stylesheet" href="styles/scope.css" />
+
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.27.4/babel.min.js"></script>
 </head>
 <body>
   <div id="root"></div>
-  <script type="text/babel" src="src/shared.jsx"></script>
-  <script type="text/babel" src="src/lumen-motion.jsx"></script>
+
+  <!-- The form is rendered in the browser, so a crawler that does not run
+       JavaScript would otherwise see an empty root. This is what the page
+       asks, in plain HTML, plus the two ways to answer it without the form. -->
+  <noscript>
+    <div style="max-width:760px;margin:0 auto;padding:56px 20px;font:16px/1.65 system-ui,sans-serif">
+      <h1>Scope your project</h1>
+      <p>Eight short questions about you, your organisation and what has to be built —
+      then I read it and reply. The form needs JavaScript, so if you are seeing this,
+      write to me directly instead.</p>
+
+      <h2>What it asks</h2>
+      <ol>
+        <li>Who you are — name, email, organisation</li>
+        <li>Where to find you — LinkedIn, X, Telegram, website</li>
+        <li>What world you operate in — industry, size, your role</li>
+        <li>Why you are here — contract, advisory, proposal, partnership</li>
+        <li>The brief — the project, the timeline, the budget</li>
+        <li>How to reach you — your preferred channel</li>
+        <li>Anything to show me — a deck, a brief, a reference</li>
+        <li>A review of it all, before anything is sent</li>
+      </ol>
+
+      <h2>Reach me directly</h2>
+      <p><a href="mailto:chidileozoemena@gmail.com">chidileozoemena@gmail.com</a> ·
+      <a href="https://calendly.com/afrotechboss/chidile-ozoemena">Book a call</a> ·
+      <a href="/">Back to the front</a></p>
+    </div>
+  </noscript>
+
   <script type="text/babel" src="src/scope.jsx"></script>
 </body>
 </html>
