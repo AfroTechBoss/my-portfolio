@@ -70,6 +70,11 @@ const RUNNING = [
     d: "An AI contract analyser that gives freelancers and small businesses a fast, plain-language read on an agreement before they sign it.",
     st: "Early-stage", s: "helloaca.jpg", alt: "The HelloACA analyser",
     live: "https://helloaca-two.vercel.app", repo: "https://github.com/AfroTechBoss/helloaca" },
+
+  { t: "Leak", cat: "Civic tech · Privacy · PWA",
+    d: "A secure, anonymous whistleblowing app for Nigerian investigative journalists, engineered to leak nothing about the people who use it and deliberately hosted in Frankfurt, outside Nigerian legal reach.",
+    m: { v: "0", l: "Metadata stored" }, s: "leak.jpg", alt: "The Leak submission screen",
+    live: "https://leak.fly.dev", repo: "https://github.com/AfroTechBoss/leak" },
 ];
 
 const WRITTEN = [
@@ -107,19 +112,14 @@ const RECORD = [
     d: "The on-chain infrastructure underneath Honua: a layer-two chain built to support green projects and settle the sustainability ecosystem on-chain. Early development, no public network yet.",
     st: "In development" },
 
-  { t: "Leak", cat: "Civic tech · Privacy · PWA",
-    d: "A secure, anonymous whistleblowing app for Nigerian investigative journalists, engineered to leak nothing about the people who use it and deliberately hosted in Frankfurt, outside Nigerian legal reach.",
-    m: { v: "0", l: "Metadata stored" },
-    repo: "https://github.com/AfroTechBoss/leak" },
-
   { t: "FrensPool", cat: "Web3 · Base · Solidity",
     d: "A Base-testnet pooling concept pairing a Next.js frontend with Solidity contracts: an early exploration of social, on-chain group savings.",
-    st: "Prototype",
+    st: "Prototype", s: "frenspool.jpg", alt: "The FrensPool repository",
     repo: "https://github.com/AfroTechBoss/frenspool" },
 
   { t: "CarbonSystem", cat: "Academic · PHP · Sustainability",
     d: "A PHP carbon-tracking system, my BSc final-year project, kept in the file as an academic build rather than a shipped product.",
-    st: "Academic",
+    st: "Academic", s: "carbonsystem.jpg", alt: "The CarbonSystem repository",
     repo: "https://github.com/AfroTechBoss/CarbonSystem" },
 ];
 
@@ -311,7 +311,7 @@ function Page() {
       <Drawer
         id="running"
         title="Shipped and running"
-        lede="Eleven builds with something at the other end of a link: a product, a demo, a bot you can message."
+        lede="Twelve builds with something at the other end of a link: a product, a demo, a bot you can message."
         list={RUNNING}
         ink
       />
@@ -324,7 +324,7 @@ function Page() {
       <Drawer
         id="record"
         title="In development, and for the record"
-        lede="Five more in the drawer: infrastructure still being built, one deliberately unpublished, and the academic build kept for honesty."
+        lede="Four more in the drawer: infrastructure still being built, an early prototype, and the academic build kept for honesty."
         list={RECORD}
         ink
       />
