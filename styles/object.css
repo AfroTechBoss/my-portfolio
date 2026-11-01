@@ -61,8 +61,10 @@ section{padding-block:var(--gap)}
 .top{
   display:flex;align-items:baseline;justify-content:space-between;
   gap:24px;padding:clamp(22px,2.6vw,34px) var(--mx);
+  width:100%;max-width:var(--hold);margin:0 auto;
 }
 .top b{font-weight:500;font-size:var(--t-lead);letter-spacing:-0.02em}
+.top b a{text-decoration:none}
 .top-go{display:flex;gap:clamp(18px,2.2vw,32px);font-size:var(--t-sm)}
 .top-go a{text-decoration:none;color:var(--soft)}
 .top-go a:hover{color:var(--ink)}
@@ -88,7 +90,7 @@ section{padding-block:var(--gap)}
 .st-say{font-size:var(--t-say);line-height:1.26;letter-spacing:-0.018em;max-width:34ch}
 .st-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,15rem);gap:clamp(40px,6vw,96px);align-items:end}
 .st-facts{display:flex;flex-direction:column;gap:clamp(22px,2.4vw,32px)}
-.st-facts div b{display:block;font-size:clamp(1.9rem,3vw,2.75rem);font-weight:500;letter-spacing:-0.03em;line-height:1}
+.st-facts div b{display:block;font-size:clamp(1.75rem,3vw,2.75rem);font-weight:500;letter-spacing:-0.03em;line-height:1}
 .st-facts div span{display:block;margin-top:6px;font-size:var(--t-sm);color:var(--soft)}
 
 /* ---------- the work ---------- */
@@ -174,7 +176,7 @@ section{padding-block:var(--gap)}
 
 @media (prefers-reduced-motion:reduce){
   .w{color:var(--ink);transform:none;transition:none;transition-delay:0ms}
-  .cl .w{color:var(--paper)}
+  .cl .w,.ink .w{color:var(--paper)}
   .btn{transition:none}
   .btn:hover{transform:none}
 }

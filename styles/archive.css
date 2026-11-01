@@ -1,146 +1,73 @@
 /* =========================================================
-   archive.css — the file drawer
-   Extends object.css: same tokens, same display face, same frame.
+   archive.css — what the archive adds to object.css
+   The archive is the same page language as the home page: ink on
+   paper, one typeface, text that lights word by word. All it needs
+   on top is a wider row (the prose runs longer here) and a column
+   on the right that carries the one number or the stage.
    ========================================================= */
 
-/* the page's muted ink lands at 4.4:1 on white; secondary type here goes darker */
-:root{ --note:#5a6176 }
+/* the line under a section head, before the list starts */
+.ar-lede{
+  font-size:var(--t-lead);line-height:1.5;max-width:52ch;
+  margin-top:calc(clamp(40px,4.6vw,72px) * -0.6);
+  margin-bottom:clamp(34px,3.8vw,56px);
+  color:var(--soft);
+}
+.ink .ar-lede{color:#8d8b85}
 
-/* ---------- head of the page ---------- */
-.ar-ho{
-  padding:clamp(20px,2.4vw,32px) 0 0;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,44%);
-  grid-template-rows:auto minmax(0,1fr);
-  grid-template-areas:"top top" "say pic";
-  align-items:start;
-  /* the picture runs to the fold: no white shelf under the first screen */
-  min-height:100svh;
-}
-.ar-top{
-  grid-area:top;
-  display:flex;align-items:baseline;justify-content:space-between;
-  gap:20px;padding:0 var(--mx);
-}
-.ar-mark{
-  font-weight:800;font-stretch:62%;text-transform:uppercase;
-  font-size:var(--step-lead);letter-spacing:-0.01em;text-decoration:none;
-}
-.ar-where{font-size:var(--step-small);color:var(--note)}
+/* a row in the record: screen, name, the paragraph, the number */
+.ar-row{grid-template-columns:clamp(150px,16vw,240px) minmax(0,10rem) minmax(0,1fr) minmax(0,8rem)}
+.ar-body p{max-width:54ch}
+.ar-links{display:flex;flex-wrap:wrap;gap:clamp(16px,2vw,28px);margin-top:14px}
+.ar-links a{font-size:var(--t-sm);font-weight:500}
 
-.ar-say{grid-area:say;align-self:center;padding:clamp(56px,7vw,112px) var(--mx) clamp(56px,6vw,96px);justify-self:start;max-width:760px}
-.ar-h1{font-size:var(--step-head);max-width:17ch}
-.ar-sub{
-  margin-top:clamp(22px,2.4vw,34px);
-  font-size:var(--step-lead);line-height:1.3;max-width:36ch;
-}
-.ar-say .act{margin-top:clamp(28px,3vw,42px)}
+.ar-m b{display:block;font-weight:500;letter-spacing:-0.03em;line-height:1}
+.ar-m span{display:block;margin-top:6px;font-size:var(--t-sm);color:var(--soft)}
+.ink .ar-m span{color:#8d8b85}
+.ar-st{font-size:var(--t-sm);color:var(--soft)}
+/* the number sits flush against the page's right margin, the way a figure
+   does in a ledger, so every row is closed on both sides */
+.ar-meta{text-align:right}
+.ink .ar-st{color:#8d8b85}
 
-.ar-band{
-  grid-area:pic;align-self:stretch;
-  min-height:clamp(440px,48vw,660px);
-  overflow:hidden;background:var(--surface);
-}
-.ar-band img{width:100%;height:100%;object-fit:cover;object-position:50% 42%}
+.cl-sub{margin-top:clamp(24px,2.6vw,36px);color:#8d8b85}
 
+/* ---------- the first screen ----------
+   The headline runs the full measure; under it the claim sits on the left
+   and the three numbers close the right, so nothing is left standing open. */
+.ar-hero h1{max-width:18ch}
+.ar-hero-b{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,16rem);
+  gap:clamp(40px,6vw,96px);align-items:start;
+  margin-top:clamp(32px,3.6vw,52px);
+}
+.ar-hero-b .sub{margin-top:0}
+.ar-hero-b .acts{margin-top:clamp(30px,3.2vw,46px)}
 
-/* ---------- what is in the drawer ---------- */
-.ar-sum-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  column-gap:clamp(40px,6vw,120px);align-items:start;
-}
-.ar-sheet{
-  margin:0;background:var(--field-2);color:var(--field-2-ink);
-  padding:clamp(28px,3vw,44px);
-  display:flex;flex-direction:column;gap:26px;
-}
-.ar-sheet dt{font-size:var(--step-small);opacity:.7}
-.ar-sheet dd{
-  margin:4px 0 0;font-size:clamp(1.25rem,1.9vw,1.75rem);
-  line-height:1.2;font-weight:500;
-}
+/* ---------- the run of drawers ----------
+   Three sections read as one file, so they sit closer than two chapters would. */
+.ar-sec{padding-block:clamp(66px,7.2vw,112px)}
 
-/* ---------- the ledger ---------- */
-.ar-sec{padding-block:var(--gap) 0}
-.ar-sec-head{
-  display:grid;grid-template-columns:1fr auto;align-items:end;
-  column-gap:clamp(40px,6vw,120px);margin-bottom:clamp(36px,4vw,56px);
+/* ---------- the close ----------
+   The line on the left, the way to answer it on the right. */
+.ar-close{padding-block:clamp(78px,8vw,128px)}
+.ar-close .wrap{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,25rem);
+  gap:clamp(36px,5vw,88px);align-items:start;
 }
-.ar-sec-head .lede{max-width:32ch;justify-self:end;text-align:right}
+.ar-close h2{font-size:var(--t-head);max-width:14ch}
+.ar-close .cl-go{margin-top:clamp(26px,2.8vw,38px)}
+.ar-m b{font-size:clamp(1.75rem,3vw,2.75rem)}
 
-.ar-row{
-  display:grid;
-  grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,2fr);
-  column-gap:clamp(28px,3.4vw,64px);
-  padding:clamp(34px,3.6vw,58px) max(var(--mx), calc((100vw - 1480px) / 2 + var(--mx)));
-  background:var(--bg);
-}
-.ar-row.alt{background:var(--surface)}
-
-.ar-name{font-size:var(--step-sec);line-height:.9}
-.ar-cat{margin-top:14px;font-size:var(--step-small);color:var(--note)}
-.ar-pic{display:block;margin-top:clamp(20px,2vw,28px);aspect-ratio:16/9;overflow:hidden;background:var(--field-2)}
-.ar-pic img{width:100%;height:100%;object-fit:cover;object-position:50% 0}
-
-.ar-body{display:flex;flex-direction:column;gap:clamp(20px,2vw,28px)}
-.ar-body p{max-width:60ch}
-.ar-links{display:flex;flex-wrap:wrap;gap:clamp(18px,2vw,30px)}
-.ar-none{font-size:var(--step-body);color:var(--note)}
-
-.ar-meta{justify-self:end;text-align:right}
-.ar-m b{
-  display:block;font-weight:800;font-stretch:62%;
-  font-size:clamp(2.25rem,3.4vw,3.75rem);line-height:.9;
-}
-.ar-m span{display:block;margin-top:10px;font-size:var(--step-small);color:var(--note)}
-.ar-st{
-  display:inline-block;background:var(--accent);color:var(--accent-ink);
-  padding:10px 18px;font-size:var(--step-small);font-weight:500;
-  clip-path:polygon(0 100%, 8px 0, calc(100% - 8px) 0, 100% 100%);
-}
-
-/* ---------- foot of the page ---------- */
-.ar-end{
-  position:relative;margin-top:var(--gap);
-  min-height:clamp(560px,62vw,760px);
-  display:grid;align-items:center;
-  background:var(--field-1);color:var(--field-1-ink);
-}
-.ar-end-pic{position:absolute;inset:0;overflow:hidden}
-.ar-end-pic img{width:100%;height:100%;object-fit:cover;opacity:.3}
-.ar-end-card{
-  position:relative;z-index:1;
-  width:min(640px,100%);
-  margin:clamp(56px,6vw,96px) auto;
-  padding:0 var(--mx);
-  display:flex;flex-direction:column;gap:clamp(22px,2.4vw,32px);
-}
-.ar-end-card h2{font-size:var(--step-sec)}
-.ar-end-rows{display:flex;flex-direction:column;gap:14px}
-.ar-end-rows div{display:flex;justify-content:space-between;gap:20px}
-.ar-end-rows span:first-child{font-size:var(--step-small);opacity:.7}
-.ar-end-go{display:flex;align-items:center;gap:clamp(20px,2.4vw,34px);flex-wrap:wrap}
-
-/* ---------- phone ---------- */
-@media (max-width:860px){
-  .ar-ho{min-height:0;grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"top" "say" "pic"}
-  .ar-say{justify-self:start;max-width:none;padding-bottom:clamp(36px,6vw,56px)}
-  .ar-band{min-height:clamp(220px,52vw,360px)}
-  .ar-h1{max-width:none}
-  .ar-sum-grid{grid-template-columns:1fr;row-gap:28px}
-  .ar-sec-head{grid-template-columns:1fr;row-gap:18px}
-  .ar-sec-head .lede{justify-self:start;text-align:left;max-width:34ch}
-  .ar-row{
-    grid-template-columns:minmax(0,1fr) auto;
-    grid-template-areas:"id meta" "body body";
-    row-gap:22px;
-    padding:clamp(28px,6vw,40px) var(--mx);
-  }
-  .ar-id{grid-area:id}
-  .ar-meta{grid-area:meta;align-self:start}
-  .ar-body{grid-area:body}
-  .ar-m b{font-size:2.5rem}
-  .ar-body p{max-width:none}
-  .ar-end{min-height:0}
-  .ar-end-card{width:auto}
+@media (max-width:900px){
+  /* narrow: the screen across the top, then the name and its figure on one
+     ledger line, then the paragraph under both */
+  .ar-row{grid-template-columns:minmax(0,1fr) auto;gap:14px clamp(16px,3vw,28px)}
+  .ar-row .wk-shot{grid-column:1 / -1}
+  .ar-row h3{grid-column:1}
+  .ar-row .ar-meta{grid-column:2;align-self:start}
+  .ar-row .ar-body{grid-column:1 / -1}
+  .ar-lede{margin-top:calc(clamp(40px,4.6vw,72px) * -0.5)}
+  .ar-hero-b,.ar-close .wrap{grid-template-columns:1fr;gap:clamp(34px,6vw,52px)}
+  .ar-hero-b .st-facts{flex-direction:row;flex-wrap:wrap;gap:26px 40px}
 }
