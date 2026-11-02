@@ -84,6 +84,31 @@ section{padding-block:var(--gap)}
 .hero-now h2{font-size:var(--t-lead);margin-bottom:clamp(14px,1.6vw,20px)}
 .hero-now p + p{margin-top:1.1em}
 
+/* ---------- what is on now ----------
+   The one part of the first screen that goes stale, so it is written on a
+   note and stuck to the page rather than set into it: warm paper, off the
+   square by a degree and a half, held by a strip of tape. No depth trick
+   under it; the tilt and the colour do the work. */
+.hero-now{
+  position:relative;
+  background:#f2e8b6;
+  padding:clamp(26px,2.6vw,34px) clamp(22px,2.2vw,28px) clamp(24px,2.4vw,30px);
+  transform:rotate(-1.5deg);
+  transform-origin:50% 0;
+  margin:clamp(18px,2vw,26px) 0 clamp(14px,1.6vw,20px);
+}
+/* the strip of tape across the top edge */
+.hero-now::before{
+  content:"";position:absolute;z-index:1;
+  top:-11px;left:50%;
+  width:104px;height:26px;
+  transform:translateX(-50%) rotate(2.8deg);
+  background:rgba(17,17,16,.14);
+}
+.hero-now h2{color:var(--ink)}
+.hero-now .lit .w{color:#8a7f45}
+.hero-now .lit.on .w{color:var(--ink)}
+
 .btn{
   display:inline-block;padding:15px 26px;border-radius:999px;
   background:var(--ink);color:var(--paper);text-decoration:none;
